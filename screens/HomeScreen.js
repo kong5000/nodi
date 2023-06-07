@@ -12,13 +12,24 @@ const HomeScreen = () => {
                 navigation.replace("Login")
             })
     }
+    const goToChat = () => {
+        navigation.navigate("Chat")
+    }
     return (
         <View style={styles.container}>
             <Text>Email:{auth.currentUser?.email}</Text>
             <TouchableOpacity
                 style={styles.button}
+                onPress={goToChat}
+            >
+            <Text style={styles.buttonText}>Chat</Text>
+
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.button}
                 onPress={handleSignOut}
             >
+            <Text style={styles.buttonText}>Signout</Text>
             </TouchableOpacity>
         </View>
     )
