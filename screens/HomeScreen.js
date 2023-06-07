@@ -8,9 +8,9 @@ const HomeScreen = () => {
 
     const handleSignOut = () => {
         auth.signOut()
-        .then(() => {
-            navigation.replace("Login")
-        })
+            .then(() => {
+                navigation.replace("Login")
+            })
     }
     return (
         <View style={styles.container}>
@@ -27,10 +27,10 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     button: {
