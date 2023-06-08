@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/core'
 
 const HomeScreen = () => {
     const navigation = useNavigation()
-
     const handleSignOut = () => {
         auth.signOut()
             .then(() => {
@@ -15,6 +14,9 @@ const HomeScreen = () => {
     const goToChat = () => {
         navigation.navigate("Chat")
     }
+    const goToUpload = () => {
+        navigation.navigate("Upload")
+    }
     return (
         <View style={styles.container}>
             <Text>Email:{auth.currentUser?.email}</Text>
@@ -22,14 +24,20 @@ const HomeScreen = () => {
                 style={styles.button}
                 onPress={goToChat}
             >
-            <Text style={styles.buttonText}>Chat</Text>
-
+                <Text style={styles.buttonText}>Chat</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={goToUpload}
+            >
+                <Text style={styles.buttonText}>Upload Picture</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
                 style={styles.button}
                 onPress={handleSignOut}
             >
-            <Text style={styles.buttonText}>Signout</Text>
+                <Text style={styles.buttonText}>Signout</Text>
             </TouchableOpacity>
         </View>
     )

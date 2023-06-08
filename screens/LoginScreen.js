@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { auth } from '../firebase'
-import { getAuth, signInWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { auth, database } from '../firebase'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
+import { doc, setDoc } from 'firebase/firestore';
+
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -18,16 +20,38 @@ const LoginScreen = () => {
         return unsubscribe
     }, [])
 
-    const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user
-                console.log(`Registered with ${user.email}`)
-            })
-            .catch(error => {
-                alert(error.message)
-            })
+    const handleSignUp = async () => {
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+            const user = userCredentials.user
+            console.log(`Registered with ${user.email}`)
+            const userRef = doc(database, 'users', user.uid);
+            await setDoc(userRef, {
+                email: user.email,
+                displayName: user.displayName,
+                // Add more fields as needed
+            });
+        }
+        catch (error) {
+            alert(error.message)
+        }
     }
+    // createUserWithEmailAndPassword(auth, email, password)
+    //     .then(userCredentials => {
+    //         const user = userCredentials.user
+    //         console.log(`Registered with ${user.email}`)
+    //         const userRef = doc(database, 'users', user.uid);
+    //         await setDoc(userRef, {
+    //           email: user.email,
+    //           displayName: user.displayName,
+    //           // Add more fields as needed
+    //         });
+
+    //     })
+    //     .catch(error => {
+    //         alert(error.message)
+    //     })
+    // }
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
@@ -35,7 +59,6 @@ const LoginScreen = () => {
                 console.log(`Logged in with ${user.email}`)
             })
             .catch(error => {
-                alert(error.message)
             })
     }
     return (

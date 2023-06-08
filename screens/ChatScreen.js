@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native'
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { collection, addDoc, orderBy, query, onSnapshot } from 'firebase/firestore'
