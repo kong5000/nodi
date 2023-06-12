@@ -25,12 +25,6 @@ const LoginScreen = () => {
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
             const user = userCredentials.user
             console.log(`Registered with ${user.email}`)
-            const userRef = doc(database, 'users', user.uid);
-            await setDoc(userRef, {
-                email: user.email,
-                displayName: user.displayName,
-                // Add more fields as needed
-            });
         }
         catch (error) {
             alert(error.message)
