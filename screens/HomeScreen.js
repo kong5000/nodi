@@ -17,6 +17,9 @@ const HomeScreen = () => {
     const goToUpload = () => {
         navigation.navigate("Upload")
     }
+    const goToConversations = () => {
+        navigation.navigate("Conversations")
+    }
     return (
         <View style={styles.container}>
             <Text>Email:{auth.currentUser?.email}</Text>
@@ -38,6 +41,13 @@ const HomeScreen = () => {
                 onPress={handleSignOut}
             >
                 <Text style={styles.buttonText}>Signout</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={goToConversations}
+            >
+                <Text style={styles.buttonText}>Conversations</Text>
             </TouchableOpacity>
         </View>
     )

@@ -4,6 +4,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth,signInWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { getFirestore } from "firebase/firestore";
 import { getStorage} from "firebase/storage"
+import { getFunctions, httpsCallable } from "firebase/functions"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,4 +32,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth()
 const database = getFirestore(app)
 const storage = getStorage()
-export { auth, analytics, database, storage }
+const functions = getFunctions(app, 'us-central1')
+const sayHello = httpsCallable(functions, 'sayHello');
+
+export { auth, analytics, database, storage, sayHello }
