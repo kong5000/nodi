@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { auth, database } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
-import { doc, setDoc } from 'firebase/firestore';
-
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
