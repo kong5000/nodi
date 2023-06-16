@@ -12,15 +12,38 @@ const DUMMY_DATA = [
         id: 1,
         displayName: 'Ashley',
         age: 20,
-        home:'Mexico City',
-        photoUrl: 'https://picsum.photos/450/800'
+        home: 'Mexico City, Mexico',
+        photoUrl: 'https://picsum.photos/450/800',
+        occupation: 'Reasearch Scientist',
+        travelMatches: [
+            "Paris",
+            "London",
+            "New York"
+        ],
+        travelMisses: [
+            "St. Petersburg",
+            "Skopje"
+        ],
+        blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
     },
     {
         id: 2,
         displayName: 'Barry',
         age: 30,
-        home:"Vancouver",
-        photoUrl: 'https://picsum.photos/450/800'
+        home: "Vancouver, Canada",
+        photoUrl: 'https://picsum.photos/450/800',
+        occupation: 'Lawyer',
+        travelMatches: [
+            "Paris",
+            "London",
+            "New York"
+        ],
+        travelMisses: [
+            "Budapest",
+            "Istanbul",
+            "Riga"
+        ],
+        blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
     }
 ]
 
@@ -60,26 +83,47 @@ const HomeScreen = () => {
                     containerStyle={{ backgroundColor: 'transparent' }}
                     cards={DUMMY_DATA}
                     renderCard={(card) =>
-                        <ScrollView style={styles.scroll}>
+                        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
                             <TouchableOpacity activeOpacity={1}>
                                 <View key={card.id} style={styles.card}>
                                     <Image style={styles.cardImage} source={{ uri: card.photoUrl }} />
+                                    <View style={styles.cardSummary}>
+                                        <View style={styles.cardNameLocation}>
+                                            <Text style={styles.text}>{card.displayName}, {card.age}</Text>
+                                            <Text style={styles.cardSmallText}>{card.home}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.userDetailsContainer}>
+                                        <View style={styles.userDetail}>
+                                            <Ionicons 
+                                            style={styles.detailIcon}
+                                            name="briefcase-outline" size={32} />
+                                            <Text style={styles.cardSmallText}>{card.occupation}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.travelMatches}>
+                                        <Text style={styles.text}>See You In</Text>
+                                        <View style={styles.cityMatches}>
+                                            {card.travelMatches.map((city) =>
+                                                <View style={styles.city}>
+                                                    <Text style={styles.cityText}>{city}</Text>
+                                                </View>
+                                            )}
+                                        </View>
+                                    </View>
+                                    <View style={styles.travelMatches}>
+                                        <Text style={styles.text}>Missed You In</Text>
+                                        <View style={styles.cityMatches}>
+                                            {card.travelMisses.map((city) =>
+                                                <View style={styles.city}>
+                                                    <Text style={styles.cityText}>{city}</Text>
+                                                </View>
+                                            )}
+                                        </View>
+                                    </View>
                                     <View>
                                         <View>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text >{card.home}</Text>
-                                            <Text >{card.age}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
-                                            <Text style={styles.text}>{card.displayName}</Text>
+                                            <Text >{card.blurb}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -124,6 +168,53 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
+    detailIcon:{
+        padding:10
+    },
+    userDetailsContainer: {
+        borderColor: 'black',
+        borderWidth: 2,
+        borderRadius: 8,
+        width: '90%',
+        margin:10
+    },
+    userDetail: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems:'center'
+    },
+    city: {
+        borderColor: 'black',
+        borderWidth: 2,
+        borderRadius: 8,
+        margin: 10,
+    },
+    cityText: {
+        fontSize: 20,
+        padding: 5
+    },
+    travelMatches: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '95%'
+    },
+    cityMatches: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: '100%',
+    },
+    cardSummary: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        padding: 15
+    },
+    cardNameLocation: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+    },
     header: {
         display: 'flex',
         flexDirection: 'row',
@@ -166,8 +257,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     card: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         flex: 1,
-        borderRadius: 10,
+        borderRadius: 20,
         borderWidth: 4,
         borderColor: "#E8E8E8",
         justifyContent: "center",
@@ -175,12 +269,20 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: "center",
-        fontSize: 50,
+        fontSize: 30,
         backgroundColor: "transparent"
     },
+    cardSmallText: {
+        textAlign: "center",
+        fontSize: 20,
+        backgroundColor: "transparent",
+        marginTop: 2
+    },
     cardImage: {
-        height: 600,
-        width: 400,
+        height: 450,
+        width: "100%",
         resizeMode: 'stretch',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
     }
 })
