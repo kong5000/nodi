@@ -10,6 +10,7 @@ export const UserDataProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     useEffect(() => {
         if (!user) return;
+        // const userRef = collection(database, 'users')
         const userRef = doc(collection(database, 'users'), user.uid)
 
         const unsubscribe = onSnapshot(userRef, (userSnapshot) => {
@@ -17,7 +18,8 @@ export const UserDataProvider = ({ children }) => {
                 const userInfo = userSnapshot.data();
                 // Handle the user data
                 setUserData(userInfo)
-                console.log(userData);
+                console.log("User data is")
+                console.log(userInfo);
             } else {
                 // Handle the case when the document doesn't exist
                 console.log('User document not found');
