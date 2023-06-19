@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { auth, database } from '../firebase'
 import useAuth from './useAuth';
-import { collection, onSnapshot, query, where, getDoc ,doc} from 'firebase/firestore';
+import { collection, onSnapshot, query, where, getDoc, doc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/core'
 
 const UserDataContext = createContext({});
 
 export const UserDataProvider = ({ children }) => {
+    const navigation = useNavigation()
+
     const { user } = useAuth()
     const [userData, setUserData] = useState(null);
     useEffect(() => {
@@ -17,12 +20,14 @@ export const UserDataProvider = ({ children }) => {
             if (userSnapshot.exists()) {
                 const userInfo = userSnapshot.data();
                 // Handle the user data
-                setUserData(userInfo)
-                console.log("User data is")
-                console.log(userInfo);
-            } else {
-                // Handle the case when the document doesn't exist
-                console.log('User document not found');
+                if (userInfo.profilePicture) {
+                    setUserData(userInfo)
+                    console.log("User data is")
+                    console.log(userInfo);
+                    navigation.navigate('Home')
+                } else {
+                    navigation.navigate('Modal')
+                }
             }
         });
 

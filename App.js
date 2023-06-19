@@ -3,16 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from './hooks/useAuth';
 import { UserDataProvider } from './hooks/userData';
+import { PaperProvider } from 'react-native-paper';
+
 import StackNavigator from './StackNavigator';
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthProvider>
-        <UserDataProvider>
-          <StackNavigator />
-        </UserDataProvider>
-      </AuthProvider>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <AuthProvider>
+          <UserDataProvider>
+            <StackNavigator />
+          </UserDataProvider>
+        </AuthProvider>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
