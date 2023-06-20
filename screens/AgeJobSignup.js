@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const Setup2 = ({ setJob, job, setAge, age, setPage }) => {
+const AgeJobSignup = ({ setJob, job, setAge, age, setPage }) => {
     const formIncomplete = !job || !age
 
     return (
@@ -28,7 +28,7 @@ const Setup2 = ({ setJob, job, setAge, age, setPage }) => {
     )
 }
 
-export default Setup2
+export default AgeJobSignup
 
 const styles = StyleSheet.create({
     container: {
