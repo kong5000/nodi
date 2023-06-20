@@ -4,8 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import { PLACES_API_KEY } from "@env"
 
-const Location = () => {
-    const [location, setLocation] = useState('')
+const Location = ({location, setLocation}) => {
     const [searchVisible, setSearchVisible] = useState(false)
     const ref = useRef()
     useEffect(()=>{

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const DateSelectorRow = () => {
+const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
     const [openFrom, setOpenFrom] = useState(false);
     const [openTo, setOpenTo] = useState(false);
     const [openDaysFrom, setOpenDaysFrom] = useState(null);
@@ -12,6 +12,20 @@ const DateSelectorRow = () => {
     const [valueDayFrom, setValueDayFrom] = useState(null);
     const [valueMonthFrom, setValueMonthFrom] = useState(null);
     const [valueMonthTo, setValueMonthTo] = useState(null);
+
+    // Todo check to is after from
+    useEffect(() => {
+        if (valueMonthFrom && valueDayFrom) {
+            setFrom(valueMonthFrom + "," + valueDayFrom)
+        }
+    }, [valueMonthFrom, valueDayFrom])
+
+    useEffect(() => {
+        if (valueMonthTo && valueDayTo) {
+            setTo(valueMonthTo + "," + valueDayTo)
+        }
+    }, [valueMonthTo, valueDayTo])
+
 
     const [items, setItems] = useState([
         { label: 'January', value: 'January' },
@@ -70,6 +84,7 @@ const DateSelectorRow = () => {
                         setOpen={setOpenFrom}
                         setValue={setValueMonthFrom}
                         setItems={setItems}
+                        disabled={!enabled}
                     />
                 </View>
                 <View style={styles.day}>
@@ -117,7 +132,7 @@ export default DateSelectorRow
 
 const styles = StyleSheet.create({
     dateSelectorFrom: {
-        zIndex: 10
+        zIndex: 1
     },
     dateSelectorLabel: {
         flex: 0.5
