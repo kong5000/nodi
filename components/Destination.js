@@ -4,23 +4,32 @@ import DateSelectorRow from '../components/DataSelectorRow';
 import Location from './Location';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Destination = ({index,removeDestination, addDestination, setValid }) => {
+const Destination = ({ destination, index, removeDestination, updateDestination, setValid }) => {
     const [edit, setEdit] = useState(true)
     const [localValid, setLocalValid] = useState(false)
-    const [location, setLocation] = useState(null)
-    const [from, setFrom] = useState(null)
-    const [to, setTo] = useState(null)
+    const [location, setLocation] = useState(destination.city)
 
-    const save = ()=> {
+    const [dayTo, setDayTo] = useState(destination.dayTo);
+    const [dayFrom, setDayFrom] = useState(destination.dayFrom);
+    const [monthFrom, setMonthFrom] = useState(destination.monthFrom);
+    const [monthTo, setMonthTo] = useState(destination.monthTo);
+
+    const save = () => {
         console.log("ssave")
-        if(!isValid()){
+        if (!isValid()) {
             alert("Please complete")
-        }else{
+        } else {
+            updateDestination(index, { city: location, dayFrom, monthFrom, dayTo, monthTo })
             setEdit(false)
             setValid(true)
         }
     }
-
+    const updateLocation = (newLocation) => {
+        updateDestination(index, { city: newLocation, dayFrom, monthFrom, dayTo, monthTo })
+    }
+    useEffect(() => {
+        updateDestination(index, { city: location, dayFrom, monthFrom, dayTo, monthTo })
+    }, [dayTo, dayFrom, monthTo, monthFrom])
 
     useEffect(() => {
         if (isValid()) {
@@ -29,24 +38,35 @@ const Destination = ({index,removeDestination, addDestination, setValid }) => {
             setLocalValid(false)
             setValid(false)
         }
-    }, [location, from, to])
+    }, [location])
 
     const isValid = () => {
-        return (to && from && location) 
+        return (dayTo && dayFrom && monthTo && monthFrom
+            && location
+        )
     }
     return (
         <View style={styles.container}>
-            <Text>{index}</Text>
-            <Location setLocation={setLocation} location={location} />
-            <DateSelectorRow enabled={edit} to={to} setTo={setTo} from={from} setFrom={setFrom} />
-            {(!edit && localValid) &&
+            <Location updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
+            <DateSelectorRow
+                enabled={edit}
+                dayTo={destination.dayTo}
+                setDayTo={setDayTo}
+                dayFrom={destination.dayFrom}
+                setDayFrom={setDayFrom}
+                monthTo={destination.monthTo}
+                setMonthTo={setMonthTo}
+                monthFrom={destination.monthFrom}
+                setMonthFrom={setMonthFrom}
+            />
+            {(!edit ) &&
                 <TouchableOpacity onPress={() => setEdit(true)}>
                     <Ionicons name="create" size={32} />
                 </TouchableOpacity>
             }
             {edit &&
                 <View style={styles.editRow}>
-                    <TouchableOpacity onPress={() => {save()}}>
+                    <TouchableOpacity onPress={() => { save() }}>
                         <Ionicons name="checkmark-circle-outline" size={32} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => removeDestination(index)}>
@@ -61,7 +81,7 @@ const Destination = ({index,removeDestination, addDestination, setValid }) => {
 export default Destination
 
 const styles = StyleSheet.create({
-    editRow:{
+    editRow: {
         display: 'flex',
         flexDirection: 'row'
     },

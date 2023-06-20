@@ -3,30 +3,15 @@ import React, { useState, useEffect } from 'react'
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
+const DateSelectorRow = ({ enabled,
+    dayTo, setDayTo, dayFrom, setDayFrom,
+    monthTo, setMonthTo, monthFrom, setMonthFrom
+
+}) => {
     const [openFrom, setOpenFrom] = useState(false);
     const [openTo, setOpenTo] = useState(false);
     const [openDaysFrom, setOpenDaysFrom] = useState(null);
     const [openDaysTo, setOpenDaysTo] = useState(null);
-    const [valueDayTo, setValueDayTo] = useState(null);
-    const [valueDayFrom, setValueDayFrom] = useState(null);
-    const [valueMonthFrom, setValueMonthFrom] = useState(null);
-    const [valueMonthTo, setValueMonthTo] = useState(null);
-
-    // Todo check to is after from
-    useEffect(() => {
-        if (valueMonthFrom && valueDayFrom) {
-            setFrom(valueMonthFrom + "," + valueDayFrom)
-        }
-    }, [valueMonthFrom, valueDayFrom])
-
-    useEffect(() => {
-        if (valueMonthTo && valueDayTo) {
-            setTo(valueMonthTo + "," + valueDayTo)
-        }
-    }, [valueMonthTo, valueDayTo])
-
-
     const [items, setItems] = useState([
         { label: 'January', value: 'January' },
         { label: 'February', value: 'February' },
@@ -63,13 +48,14 @@ const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
     }
     const [daysFrom, setDaysFrom] = useState(getDays('January'))
     const [daysTo, setDaysTo] = useState(getDays('January'))
-    useEffect(() => {
-        setDaysFrom(getDays(valueMonthFrom))
-    }, [valueMonthFrom])
 
     useEffect(() => {
-        setDaysTo(getDays(valueMonthTo))
-    }, [valueMonthTo])
+        setDaysFrom(getDays(monthFrom))
+    }, [monthFrom])
+
+    useEffect(() => {
+        setDaysTo(getDays(monthTo))
+    }, [monthTo])
 
     return (
         <View>
@@ -79,10 +65,10 @@ const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
                     <DropDownPicker
                         placeholder="Month"
                         open={openFrom}
-                        value={valueMonthFrom}
+                        value={monthFrom}
                         items={items}
                         setOpen={setOpenFrom}
-                        setValue={setValueMonthFrom}
+                        setValue={setMonthFrom}
                         setItems={setItems}
                         disabled={!enabled}
                     />
@@ -91,10 +77,10 @@ const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
                     <DropDownPicker
                         placeholder="Day"
                         open={openDaysFrom}
-                        value={valueDayFrom}
+                        value={dayFrom}
                         items={daysFrom}
                         setOpen={setOpenDaysFrom}
-                        setValue={setValueDayFrom}
+                        setValue={setDayFrom}
                         setItems={setDaysFrom}
                     />
                 </View>
@@ -105,10 +91,10 @@ const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
                     <DropDownPicker
                         placeholder="Month"
                         open={openTo}
-                        value={valueMonthTo}
+                        value={monthTo}
                         items={items}
                         setOpen={setOpenTo}
-                        setValue={setValueMonthTo}
+                        setValue={setMonthTo}
                         setItems={setItems}
                     />
                 </View>
@@ -116,10 +102,10 @@ const DateSelectorRow = ({ enabled, setFrom, setTo }) => {
                     <DropDownPicker
                         placeholder="Day"
                         open={openDaysTo}
-                        value={valueDayTo}
+                        value={dayTo}
                         items={daysTo}
                         setOpen={setOpenDaysTo}
-                        setValue={setValueDayTo}
+                        setValue={setDayTo}
                         setItems={setDaysTo}
                     />
                 </View>

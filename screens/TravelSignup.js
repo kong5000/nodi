@@ -4,8 +4,26 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Destination from '../components/Destination';
 
 const TravelSignup = () => {
-    const [destinations, setDestinations] = useState([])
- 
+    const test = [
+        {
+            "city": "Canada",
+            "dayFrom": "5",
+            "monthFrom": "January",
+            "dayTo": "7",
+            "monthTo": "February",
+
+        },
+        {
+            "city": "Poland",
+            "dayFrom": "9",
+            "monthFrom": "March",
+            "dayTo": "10",
+            "monthTo": "April",
+
+        },
+    ]
+    const [destinations, setDestinations] = useState(test)
+
     const emptyDestination = {
         city: "",
         from: "",
@@ -16,21 +34,32 @@ const TravelSignup = () => {
 
     const removeDestination = (index) => {
         console.log(index)
-        const newDestinations = [...destinations];
+        console.log(destinations)
+        const newDestinations = destinations.map(a => { return { ...a } })
         console.log(newDestinations)
         newDestinations.splice(index, 1);
+        console.log(newDestinations)
         setDestinations(newDestinations);
-      };
- 
+    };
+    const updateDestination = (index, newDestination) => {
+        const newDestinations = destinations.map(a => { return { ...a } })
+        newDestinations[index] = newDestination
+        setDestinations(newDestinations);
 
+    }
     return (
         <View style={styles.container}>
             <Text>Destination</Text>
             {destinations.map((location, index) => (
                 <View key={index} style={styles.destinationContainer}>
-                    <Destination removeDestination={removeDestination} setValid={setValid} index={index} destinations={destinations} setDestinations={setDestinations} />
-                    <Text>{location.city + location.from + location.to}</Text>
-
+                    <Destination
+                        destination={location}
+                        removeDestination={removeDestination}
+                        setValid={setValid}
+                        index={index}
+                        updateDestination={updateDestination}
+                        setDestinations={setDestinations}
+                    />
                 </View>
             ))}
             {(valid || destinations.length == 0) && <TouchableOpacity style={styles.addContainer} onPress={() => {
@@ -55,7 +84,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        backgroundColor: 'red',
         flexDirection: 'column',
     },
     dateSelectorLabel: {
