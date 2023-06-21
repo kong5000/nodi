@@ -1,21 +1,20 @@
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
-import { storage, auth, database } from '../firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { updateDoc, doc } from 'firebase/firestore'
-import { useNavigation } from '@react-navigation/core'
-import CalendarPicker from 'react-native-calendar-picker';
 import PictureSignup from './PictureSignup';
 import AgeJobSignup from './AgeJobSignup';
 import TravelSignup from './TravelSignup';
 import GenderSignup from './GenderSignup'
 import TravelWithGenderSignup from './TravelWithGenderSignup'
+import NameSignup from './NameSignup';
+import Interests from './Interests'
+import { ProgressBar } from 'react-native-paper'
 
 const ModalScreen = () => {
     const { user } = useAuth()
     const [updatingProfile, setUpdatingProfile] = useState(false)
-    const [page, setPage] = useState(1)
+    const [name, setName] = useState('')
+    const [page, setPage] = useState(0)
     const [age, setAge] = useState(null)
     const [job, setJob] = useState(null)
     const [gender, setGender] = useState(null)
@@ -23,18 +22,8 @@ const ModalScreen = () => {
     const [travelWithWomen, setTravelWithWomen] = useState(null)
     const [travelWithNonbinary, setTravelWithNonbinary] = useState(null)
     const [travelWithOther, setTravelWithOther] = useState(null)
-
     const [imageUri, setImageUri] = useState(null)
     const [imageBucketUrl, setImageBucketUrl] = useState(null)
-    const navigation = useNavigation()
-    const [selected, setSelected] = useState('');
-    // const { selectedStartDate, selectedEndDate } = this.state;
-    const [selectedStartDate, setSelectedStartDate] = useState('')
-    const [selectedEndDate, setSelectedEndDate] = useState('')
-    const minDate = new Date(); // Today
-    const maxDate = new Date(2027, 6, 3);
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-    const endDate = selectedEndDate ? selectedEndDate.toString() : '';
 
     useEffect(() => {
         if (user.profilePicture) {
@@ -42,20 +31,12 @@ const ModalScreen = () => {
         }
     }, [user])
 
-    const onDateChange = (date, type) => {
-        if (type === 'END_DATE') {
-            setSelectedEndDate(date)
-        } else {
-            setSelectedEndDate(null)
-            setSelectedStartDate(date)
-        }
-    }
-
-
-
     return (
-        <View style={styles.container}>
-            <Text>Welcome to APP</Text>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.progressBar}>
+                <ProgressBar progress={page / 5} color='black' />
+            </View>
+            {page == 0 && <NameSignup setName={setName} name={name} setPage={setPage} />}
             {page == 1 &&
                 <PictureSignup
                     setJob={setJob}
@@ -87,28 +68,35 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 1 && <TravelSignup />}
-
+            {page == 5 && <TravelSignup setPage={setPage}/>}
+            {page == 6 && <Interests />}
             {updatingProfile &&
                 <>
                     <Text>Updating Your Profile</Text>
                     <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
                 </>
             }
-
-        </View>
+        </SafeAreaView>
     )
 }
 
 export default ModalScreen
 
 const styles = StyleSheet.create({
+    progressBar:{
+        width: '100%'
+    },  
+    welcomeText: {
+        fontWeight: 'bold',
+        fontSize: 30
+    },
     container: {
         display: 'flex',
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        backgroundColor: 'gold'
     },
     modalHeader: {
         fontWeight: 'bold',

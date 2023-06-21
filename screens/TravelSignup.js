@@ -1,36 +1,35 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Destination from '../components/Destination';
 
-const TravelSignup = () => {
-    const test = [
-        {
-            "city": "Canada",
-            "dayFrom": "5",
-            "monthFrom": "January",
-            "dayTo": "7",
-            "monthTo": "February",
-
-        },
-        {
-            "city": "Poland",
-            "dayFrom": "9",
-            "monthFrom": "March",
-            "dayTo": "10",
-            "monthTo": "April",
-
-        },
-    ]
-    const [destinations, setDestinations] = useState(test)
-
+const TravelSignup = ({setPage}) => {
+    const [destinations, setDestinations] = useState([])
+    const [formIncomplete, setFormIncomplete] = useState(true)
     const emptyDestination = {
         city: "",
-        from: "",
-        to: ""
+        dayFrom: "",
+        dayTo: "",
+        monthFrom: "",
+        monthTo: ""
     }
-
-    const [valid, setValid] = useState(false)
+    const checkForm = () => {
+        setFormIncomplete(checkIncomplete())
+    }
+    const checkIncomplete = () => {
+        let incomplete = false
+        destinations.forEach(destination => {
+            console.log(destination)
+            if (!(destination.city
+                && destination.dayFrom
+                && destination.monthFrom
+                && destination.dayTo
+                && destination.monthTo)) {
+                incomplete = true
+            }
+        })
+        return incomplete
+    }
 
     const removeDestination = (index) => {
         console.log(index)
@@ -40,34 +39,51 @@ const TravelSignup = () => {
         newDestinations.splice(index, 1);
         console.log(newDestinations)
         setDestinations(newDestinations);
+        checkForm()
     };
     const updateDestination = (index, newDestination) => {
         const newDestinations = destinations.map(a => { return { ...a } })
         newDestinations[index] = newDestination
         setDestinations(newDestinations);
-
+        checkForm()
     }
+
+    useEffect(() => {
+        checkForm()
+    }, [destinations])
     return (
         <View style={styles.container}>
             <Text>Destination</Text>
+            {formIncomplete && <Text>form incomplete</Text>}
             {destinations.map((location, index) => (
                 <View key={index} style={styles.destinationContainer}>
                     <Destination
+                        checkForm={checkForm}
                         destination={location}
                         removeDestination={removeDestination}
-                        setValid={setValid}
                         index={index}
                         updateDestination={updateDestination}
                         setDestinations={setDestinations}
                     />
                 </View>
             ))}
-            {(valid || destinations.length == 0) && <TouchableOpacity style={styles.addContainer} onPress={() => {
-                setDestinations([...destinations, { ...emptyDestination }])
-            }} >
-                <Ionicons name="add-circle-outline" size={32} color="orange" />
-            </TouchableOpacity>}
+            {!formIncomplete &&
+                <TouchableOpacity style={styles.addContainer} onPress={() => {
+                    setDestinations([...destinations, { ...emptyDestination }])
+                }} >
+                    <Ionicons name="add-circle-outline" size={32} color="orange" />
+                </TouchableOpacity>
+            }
 
+
+            <TouchableOpacity
+                disabled={formIncomplete || (destinations.length == 0)}
+                onPress={() => {
+                    setPage(6)
+                }}
+            >
+                <Text style={formIncomplete || (destinations.length == 0) ? styles.greyedOut : styles.updateButton}>Next</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -104,5 +120,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    greyedOut: {
+        color: 'gray'
+    },
+    updateButton: {
+
+    },
 })

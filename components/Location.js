@@ -4,20 +4,24 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import { PLACES_API_KEY } from "@env"
 
-const Location = ({location, setLocation, updateLocation}) => {
-    const [searchVisible, setSearchVisible] = useState(false)
+const Location = ({ searchVisible, setSearchVisible, enabled, location, setLocation, updateLocation }) => {
     const ref = useRef()
-    useEffect(()=>{
-        if(searchVisible){
-            ref.current.focus()
+    useEffect(() => {
+        if (searchVisible) {
+            ref.current.setAddressText(location)
         }
-    },[searchVisible])
+    }, [searchVisible])
+
     return (
         <View>
             <ScrollView keyboardShouldPersistTaps='always' >
-                {!searchVisible && <TouchableOpacity onPress={() => {
-                    setSearchVisible(true)
-                }}>
+                {!searchVisible && <TouchableOpacity
+                    disabled={!enabled}
+                    onPress={() => {
+                        setSearchVisible(true)
+                        ref.current.focus()
+
+                    }}>
                     <View style={styles.dummySearch}>
                         <Text>
                             {location}
@@ -25,26 +29,28 @@ const Location = ({location, setLocation, updateLocation}) => {
                     </View>
 
                 </TouchableOpacity>}
-                {searchVisible && <GooglePlacesAutocomplete
-                    ref={ref}
-                    listViewDisplayed={false}
-                    placeholder='Search'
-                    onPress={(data, details = null) => {
-                        console.log(data.description);
-                        setLocation(data.description)
-                        updateLocation(data.description)
-                        setSearchVisible(false)
-                        ref.current.setAddressText(data.description)
-                    }}
-                    query={{
-                        key: PLACES_API_KEY,
-                        language: 'en',
-                    }}
-                    onFail={error => console.error(error)}
-                    debounce={200}
-                    fetchDetails={false}
-                />}
-
+                <View style={searchVisible ? {} : { display: 'none' }}
+                >
+                    <GooglePlacesAutocomplete
+                        ref={ref}
+                        listViewDisplayed={false}
+                        placeholder='Search'
+                        onPress={(data, details = null) => {
+                            console.log(data.description);
+                            setLocation(data.description)
+                            updateLocation(data.description)
+                            setSearchVisible(false)
+                            ref.current.setAddressText(data.description)
+                        }}
+                        query={{
+                            key: PLACES_API_KEY,
+                            language: 'en',
+                        }}
+                        onFail={error => console.error(error)}
+                        debounce={200}
+                        fetchDetails={false}
+                    />
+                </View>
             </ScrollView>
         </View>
     )

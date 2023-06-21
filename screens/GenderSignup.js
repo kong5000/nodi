@@ -4,8 +4,6 @@ import { RadioButton, Text } from 'react-native-paper';
 import React, { useState } from 'react'
 
 const GenderSignup = ({ setGender, gender, setPage }) => {
-    const [value, setValue] = useState('first');
-
     const formIncomplete = !gender
 
     return (
@@ -35,14 +33,28 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
                         status={gender === 'nonbinary' ? 'checked' : 'unchecked'}
                     />
                 </View>
+                <View style={styles.radioRow}>
+                    <Text style={styles.radioLabel}>Other</Text>
+                    <RadioButton.Android
+                        value="other"
+                        status={gender === 'other' ? 'checked' : 'unchecked'}
+                    />
+                </View>
             </RadioButton.Group>
             <TouchableOpacity
                 disabled={formIncomplete}
                 onPress={() => {
-                    setPage(5)
+                    setPage(4)
                 }}
             >
                 <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    setPage(2)
+                }}
+            >
+                <Text>Back</Text>
             </TouchableOpacity>
         </View>
     )

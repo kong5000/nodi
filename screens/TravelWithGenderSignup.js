@@ -95,6 +95,13 @@ const TravelWithGenderSignup = (
             >
                 <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    setPage(3)
+                }}
+            >
+                <Text>Back</Text>
+            </TouchableOpacity>
         </View>
     )
 }

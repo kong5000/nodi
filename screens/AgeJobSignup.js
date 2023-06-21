@@ -24,6 +24,13 @@ const AgeJobSignup = ({ setJob, job, setAge, age, setPage }) => {
             >
                 <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    setPage(1)
+                }}
+            >
+                <Text>Back</Text>
+            </TouchableOpacity>
         </View>
     )
 }

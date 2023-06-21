@@ -23,7 +23,7 @@ const PictureSignup = ({ setImageUri, setPage, imageUri }) => {
             alert(e)
         }
     }
-    
+
     const uploadImageToBucket = async () => {
         try {
             const uid = user.uid;
@@ -74,6 +74,13 @@ const PictureSignup = ({ setImageUri, setPage, imageUri }) => {
                 }}
             >
                 <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    setPage(0)
+                }}
+            >
+                <Text>Back</Text>
             </TouchableOpacity>
         </>
     )

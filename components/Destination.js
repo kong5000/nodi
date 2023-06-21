@@ -4,7 +4,9 @@ import DateSelectorRow from '../components/DataSelectorRow';
 import Location from './Location';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Destination = ({ destination, index, removeDestination, updateDestination, setValid }) => {
+const Destination = ({ checkForm, destination, index, removeDestination, updateDestination }) => {
+    const [searchVisible, setSearchVisible] = useState(false)
+
     const [edit, setEdit] = useState(true)
     const [localValid, setLocalValid] = useState(false)
     const [location, setLocation] = useState(destination.city)
@@ -17,11 +19,14 @@ const Destination = ({ destination, index, removeDestination, updateDestination,
     const save = () => {
         console.log("ssave")
         if (!isValid()) {
+            checkForm()
             alert("Please complete")
         } else {
+            checkForm()
+            setSearchVisible(false)
             updateDestination(index, { city: location, dayFrom, monthFrom, dayTo, monthTo })
             setEdit(false)
-            setValid(true)
+            setLocalValid(true)
         }
     }
     const updateLocation = (newLocation) => {
@@ -36,7 +41,6 @@ const Destination = ({ destination, index, removeDestination, updateDestination,
             setLocalValid(true)
         } else {
             setLocalValid(false)
-            setValid(false)
         }
     }, [location])
 
@@ -47,7 +51,7 @@ const Destination = ({ destination, index, removeDestination, updateDestination,
     }
     return (
         <View style={styles.container}>
-            <Location updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
+            <Location searchVisible={searchVisible} setSearchVisible={setSearchVisible} enabled={edit} updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
             <DateSelectorRow
                 enabled={edit}
                 dayTo={destination.dayTo}
@@ -59,8 +63,11 @@ const Destination = ({ destination, index, removeDestination, updateDestination,
                 monthFrom={destination.monthFrom}
                 setMonthFrom={setMonthFrom}
             />
-            {(!edit ) &&
-                <TouchableOpacity onPress={() => setEdit(true)}>
+            {(!edit) &&
+                <TouchableOpacity onPress={() => {
+                    setEdit(true)
+                    setSearchVisible(true)
+                }}>
                     <Ionicons name="create" size={32} />
                 </TouchableOpacity>
             }
