@@ -1,23 +1,52 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
+import React, { useState } from 'react'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const NameSignup = ({ name, setName, setPage }) => {
+const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setBirthDate(currentDate);
+    };
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    };
+
     const formIncomplete = !name
     return (
         <View style={styles.namePage}>
-            <Text style={styles.modalHeader}>What's your name?</Text>
-            <TextInput
-                style={styles.textInput}
-                placeholder='Add your first name'
-                onChangeText={(text) => setName(text)}
-            />
+            <View style={styles.nameSection}>
+                <Text style={styles.modalHeader}>What's your name?</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder='Add your first name'
+                    onChangeText={(text) => setName(text)}
+                />
+            </View>
+            <View style={styles.border}>
+                <Ionicons name="globe-outline" size={70} />
+            </View>
+            <View style={styles.birthdayContainer}>
+                <Text style={styles.modalHeader}>When were you born?</Text>
+                <DateTimePicker
+                    style={styles.datePicker}
+                    testID="dateTimePicker"
+                    value={birthDate}
+                    mode='date'
+                    onChange={onChange}
+                    display='spinner'
+                />
+            </View>
             <TouchableOpacity
+                style={styles.nextButton}
                 disabled={formIncomplete}
                 onPress={() => {
                     setPage(1)
                 }}
             >
-                <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
+                <Ionicons name="arrow-forward-circle-outline" size={60} color={formIncomplete ? 'grey' : "black"} />
             </TouchableOpacity>
         </View>
     )
@@ -26,24 +55,40 @@ const NameSignup = ({ name, setName, setPage }) => {
 export default NameSignup
 
 const styles = StyleSheet.create({
-    textInput:{
+    nextButton: {
+        marginTop: 30,
+        marginBottom: 30,
+    },
+    border: {
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    nameSection: {
+        marginTop: 30,
+        marginBottom: 30,
+    },
+    birthdayContainer: {
+        marginTop: 30,
+        marginBottom: 30,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textInput: {
         backgroundColor: 'white',
         borderRadius: 7,
         height: 40,
         padding: 10
     },
-    namePage:{
-    },
-    container: {
+    namePage: {
         display: 'flex',
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+        alignItems: 'center'
     },
+
     modalHeader: {
         fontWeight: 'bold',
-        fontSize:'30',
+        fontSize: 30,
         margin: 10
     },
     updateButton: {

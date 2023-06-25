@@ -12,6 +12,7 @@ import { ProgressBar } from 'react-native-paper'
 
 const ModalScreen = () => {
     const { user } = useAuth()
+    const [birthDate, setBirthDate] = useState(new Date())
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [name, setName] = useState('')
     const [page, setPage] = useState(0)
@@ -25,18 +26,12 @@ const ModalScreen = () => {
     const [imageUri, setImageUri] = useState(null)
     const [imageBucketUrl, setImageBucketUrl] = useState(null)
 
-    useEffect(() => {
-        if (user.profilePicture) {
-            // navigation.navigate("Home")
-        }
-    }, [user])
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.progressBar}>
                 <ProgressBar progress={page / 5} color='black' />
             </View>
-            {page == 0 && <NameSignup setName={setName} name={name} setPage={setPage} />}
+            {page == 0 && <NameSignup birthDate={birthDate} setBirthDate={setBirthDate} setName={setName} name={name} setPage={setPage} />}
             {page == 1 &&
                 <PictureSignup
                     setJob={setJob}
@@ -68,7 +63,7 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 5 && <TravelSignup setPage={setPage}/>}
+            {page == 5 && <TravelSignup setPage={setPage} />}
             {page == 6 && <Interests />}
             {updatingProfile &&
                 <>
@@ -83,9 +78,9 @@ const ModalScreen = () => {
 export default ModalScreen
 
 const styles = StyleSheet.create({
-    progressBar:{
+    progressBar: {
         width: '100%'
-    },  
+    },
     welcomeText: {
         fontWeight: 'bold',
         fontSize: 30

@@ -263,7 +263,7 @@ const HomeScreen = () => {
                                         <Text style={styles.text}>See You In</Text>
                                         <View style={styles.cityMatches}>
                                             {card.seeYouIn && card.seeYouIn.map((city) =>
-                                                <View style={styles.city}>
+                                                <View key={city} style={styles.city}>
                                                     <Text style={styles.cityText}>{city}</Text>
                                                 </View>
                                             )}
@@ -274,7 +274,7 @@ const HomeScreen = () => {
                                         <Text style={styles.text}>Missed You In</Text>
                                         <View style={styles.cityMatches}>
                                             {card.missedYouIn && card.missedYouIn.map((city) =>
-                                                <View style={styles.city}>
+                                                <View key={city} style={styles.city}>
                                                     <Text style={styles.cityText}>{city}</Text>
                                                 </View>
                                             )}
