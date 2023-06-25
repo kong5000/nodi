@@ -17,11 +17,9 @@ const thingsToDo = [
     { text: "Sporting Events", emoticon: "🏟️" },
     { text: "Concerts", emoticon: "🎤" },
     { text: "Nightlife", emoticon: "🍸" },
-]
-const thingsToSee = [
-
     { text: "Performing Arts", emoticon: "🎭" },
 ]
+
 const foodAndDrink = [
     { text: "Vegan Food", emoticon: "🥬" },
     { text: "Street Food", emoticon: "🥙" },
@@ -57,12 +55,6 @@ const Interests = () => {
                     </View>
                 </TouchableOpacity>)}
 
-            {thingsToSee.map((item) =>
-                <TouchableOpacity onPress={() => toggleInterest(item.text)}>
-                    <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>
-                        <Text style={styles.activityText}>{item.text} {item.emoticon}</Text>
-                    </View>
-                </TouchableOpacity>)}
             {foodAndDrink.map((item) =>
                 <TouchableOpacity onPress={() => toggleInterest(item.text)}>
                     <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>

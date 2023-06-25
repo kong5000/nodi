@@ -1,11 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, ScrollView } from 'react-native'
-import React, { useLayoutEffect } from 'react'
-import { auth } from '../firebase'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import getUserData from '../hooks/userData'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Swiper from 'react-native-deck-swiper'
+import { collection, addDoc, orderBy, query, onSnapshot, where, limit, getDocs, setDoc } from 'firebase/firestore'
+import { auth, database, sayHello } from '../firebase'
+import { Timestamp } from 'firebase/firestore';
+import moment from 'moment';
 
 const DUMMY_DATA = [
     {
@@ -47,10 +50,150 @@ const DUMMY_DATA = [
     }
 ]
 
+const DUMMY_PASSED = ["dummyuserid"]
+
 const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
     const navigation = useNavigation()
+    const [cards, setCards] = useState([])
+    const [userTrips, setUserTrips] = useState([])
+
+    useEffect(() => {
+        // Get your trips
+        const getYourTrips = async () => {
+            const userId = auth.currentUser.uid
+            const tripsRef = collection(database, 'trips')
+            const q = query(tripsRef,
+                where('userInfo.id', '==', userId),
+                limit(15)
+            );
+            const querySnapshot = await getDocs(q)
+            let documents = querySnapshot.docs.map((doc) => doc.data());
+            setUserTrips(documents)
+        }
+        getYourTrips()
+    }, [])
+    useEffect(() => {
+        // console.log(cards)
+    }, [cards])
+
+    const addTrip = () => {
+        function getDates(startDate, stopDate) {
+            var dateArray = [];
+            var currentDate = moment(startDate);
+            var stopDate = moment(stopDate);
+            while (currentDate <= stopDate) {
+                dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+                currentDate = moment(currentDate).add(1, 'days');
+            }
+            return dateArray;
+        }
+
+        const startDate = new Date('2023-06-01');
+        const endDate = new Date('2023-06-04');
+
+        const newTrip = {
+            userInfo: {
+                ...userData,
+                id: auth.currentUser.uid
+            },
+            city: "Paris",
+            country: "France",
+            year: "2023",
+            from: Timestamp.fromDate(startDate),
+            to: Timestamp.fromDate(endDate),
+            dates: getDates(startDate, endDate)
+        };
+
+        const tripsCollectionRef = collection(database, 'trips');
+
+        // Add a new document to the "trips" collection
+        addDoc(tripsCollectionRef, newTrip)
+            .then((docRef) => {
+                console.log('New document ID:', docRef.id);
+            })
+            .catch((error) => {
+                console.error('Error adding document:', error);
+            });
+        console.log(newTrip)
+    }
+
+    const filterDocuments = (potentialCards) => {
+        // todo filter based on user prefrences
+        // Filter out the users own card if it shows up
+        // Filter out users passed on
+        let userRemoved = potentialCards.filter(potentialCard => potentialCard.userInfo.id != auth.currentUser.uid)
+        return userRemoved
+    }
+    const addUserDetails = async (potentialCards) => {
+        let detailedCards = []
+        await Promise.all(potentialCards.map(async (potentialCard) => {
+            console.log(`Getting details for ${potentialCard.userInfo.displayName}`)
+            const tripsRef = collection(database, 'trips')
+            const q = query(tripsRef,
+                where('userInfo.id', '==', potentialCard.userInfo.id),
+                limit(10)
+            );
+            const querySnapshot = await getDocs(q)
+            let documents = querySnapshot.docs.map((doc) => doc.data());
+            let missedYouIn = []
+            let seeYouIn = []
+            let headedTo = []
+            documents.forEach((doc) => {
+                console.log(doc.city)
+                userTrips.forEach(trip => {
+                    if (trip.city == doc.city && trip.country == doc.country) {
+                        if (trip.from.toDate() <= doc.to.toDate() && trip.to.toDate() >= doc.from.toDate()) {
+                            console.log(`See you in ${doc.city}`)
+                            seeYouIn.push(doc.city)
+                        } else {
+                            console.log(`Missed you in ${doc.city}`)
+                            missedYouIn.push(doc.city)
+                        }
+                    } else {
+                        console.log("HERE")
+                        if (!headedTo.includes(doc.city)) {
+                            headedTo.push(doc.city)
+                        }
+                    }
+                })
+            })
+            console.log(headedTo)
+            headedTo = headedTo.filter(city => 
+                !missedYouIn.includes(city) && !seeYouIn.includes(city)
+            )
+            console.log(`See you in ${seeYouIn}`)
+            console.log(`Missed you in ${missedYouIn}`)
+            console.log(`Headed to ${headedTo}`)
+        }));
+
+        return potentialCards
+    }
+
+    const testQuery = async () => {
+        try {
+            const tripsRef = collection(database, 'trips')
+            const q = query(tripsRef,
+                where('dates', 'array-contains-any', userTrips[0].dates),
+                where('year', '==', userTrips[0].year),
+                where('city', '==', userTrips[0].city),
+                where('country', '==', userTrips[0].country),
+                limit(15)
+            );
+            const querySnapshot = await getDocs(q)
+            let documents = querySnapshot.docs.map((doc) => doc.data());
+            documents = filterDocuments(documents)
+            potentialCards = await addUserDetails(documents)
+            setCards(potentialCards)
+        } catch (err) {
+            console.log(err)
+            alert(err)
+        }
+
+    }
+
+
     const handleSignOut = () => {
         auth.signOut()
             .then(() => {
@@ -68,6 +211,12 @@ const HomeScreen = () => {
     }
     return (
         <SafeAreaView style={styles.screen}>
+            <TouchableOpacity onPress={testQuery}>
+                <Text>CLICK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={addTrip}>
+                <Text>Test adding trip</Text>
+            </TouchableOpacity>
             <View style={styles.header}>
                 <TouchableOpacity>
                     {userData && <Image style={styles.headerProfile} source={{ uri: userData.profileUrl }} />}
@@ -83,9 +232,9 @@ const HomeScreen = () => {
                     containerStyle={{ backgroundColor: 'transparent' }}
                     cards={DUMMY_DATA}
                     renderCard={(card) =>
-                        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+                        <ScrollView key={card.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
                             <TouchableOpacity activeOpacity={1}>
-                                <View key={card.id} style={styles.card}>
+                                <View style={styles.card}>
                                     <Image style={styles.cardImage} source={{ uri: card.photoUrl }} />
                                     <View style={styles.cardSummary}>
                                         <View style={styles.cardNameLocation}>
@@ -95,9 +244,9 @@ const HomeScreen = () => {
                                     </View>
                                     <View style={styles.userDetailsContainer}>
                                         <View style={styles.userDetail}>
-                                            <Ionicons 
-                                            style={styles.detailIcon}
-                                            name="briefcase-outline" size={32} />
+                                            <Ionicons
+                                                style={styles.detailIcon}
+                                                name="briefcase-outline" size={32} />
                                             <Text style={styles.cardSmallText}>{card.occupation}</Text>
                                         </View>
                                     </View>
@@ -132,35 +281,6 @@ const HomeScreen = () => {
                     }
                 />
             </View>
-            {/* <View style={styles.container}>
-                <Text>Email:{auth.currentUser?.email}</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={goToChat}
-                >
-                    <Text style={styles.buttonText}>Chat</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={goToUpload}
-                >
-                    <Text style={styles.buttonText}>Upload Picture</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSignOut}
-                >
-                    <Text style={styles.buttonText}>Signout</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={goToConversations}
-                >
-                    <Text style={styles.buttonText}>Conversations</Text>
-                </TouchableOpacity>
-            </View> */}
         </SafeAreaView>
     )
 }
@@ -168,20 +288,20 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-    detailIcon:{
-        padding:10
+    detailIcon: {
+        padding: 10
     },
     userDetailsContainer: {
         borderColor: 'black',
         borderWidth: 2,
         borderRadius: 8,
         width: '90%',
-        margin:10
+        margin: 10
     },
     userDetail: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems:'center'
+        alignItems: 'center'
     },
     city: {
         borderColor: 'black',
