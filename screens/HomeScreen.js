@@ -12,42 +12,53 @@ import moment from 'moment';
 
 const DUMMY_DATA = [
     {
-        id: 1,
-        displayName: 'Ashley',
-        age: 20,
-        home: 'Mexico City, Mexico',
-        photoUrl: 'https://picsum.photos/450/800',
-        occupation: 'Reasearch Scientist',
-        travelMatches: [
+        userInfo: {
+            id: 1,
+            displayName: 'Ashley',
+            age: 20,
+            home: 'Mexico City, Mexico',
+            pictures: ['https://picsum.photos/450/800'],
+            occupation: 'Reasearch Scientist',
+
+            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
+
+        }
+        ,seeYouIn: [
             "Paris",
             "London",
             "New York"
         ],
-        travelMisses: [
+        missedYouIn: [
             "St. Petersburg",
             "Skopje"
         ],
-        blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
+        headedTo: [],
     },
     {
-        id: 2,
-        displayName: 'Barry',
-        age: 30,
-        home: "Vancouver, Canada",
-        photoUrl: 'https://picsum.photos/450/800',
-        occupation: 'Lawyer',
-        travelMatches: [
+        userInfo: {
+            id: 2,
+            displayName: 'Barry',
+            age: 30,
+            home: "Vancouver, Canada",
+            pictures: ['https://picsum.photos/450/800'],
+            occupation: 'Lawyer',
+
+            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
+        }
+        , seeYouIn: [
             "Paris",
             "London",
             "New York"
         ],
-        travelMisses: [
+        missedYouIn: [
             "Budapest",
             "Istanbul",
             "Riga"
         ],
-        blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
+        headedTo: [],
+
     }
+
 ]
 
 const DUMMY_PASSED = ["dummyuserid"]
@@ -56,7 +67,7 @@ const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
     const navigation = useNavigation()
-    const [cards, setCards] = useState([])
+    const [cards, setCards] = useState(DUMMY_DATA)
     const [userTrips, setUserTrips] = useState([])
 
     useEffect(() => {
@@ -145,30 +156,27 @@ const HomeScreen = () => {
                 userTrips.forEach(trip => {
                     if (trip.city == doc.city && trip.country == doc.country) {
                         if (trip.from.toDate() <= doc.to.toDate() && trip.to.toDate() >= doc.from.toDate()) {
-                            console.log(`See you in ${doc.city}`)
                             seeYouIn.push(doc.city)
                         } else {
-                            console.log(`Missed you in ${doc.city}`)
                             missedYouIn.push(doc.city)
                         }
                     } else {
-                        console.log("HERE")
                         if (!headedTo.includes(doc.city)) {
                             headedTo.push(doc.city)
                         }
                     }
                 })
             })
-            console.log(headedTo)
-            headedTo = headedTo.filter(city => 
+            headedTo = headedTo.filter(city =>
                 !missedYouIn.includes(city) && !seeYouIn.includes(city)
             )
             console.log(`See you in ${seeYouIn}`)
             console.log(`Missed you in ${missedYouIn}`)
             console.log(`Headed to ${headedTo}`)
+            detailedCards.push({ ...potentialCard, seeYouIn, missedYouIn, headedTo })
         }));
 
-        return potentialCards
+        return detailedCards
     }
 
     const testQuery = async () => {
@@ -185,6 +193,7 @@ const HomeScreen = () => {
             let documents = querySnapshot.docs.map((doc) => doc.data());
             documents = filterDocuments(documents)
             potentialCards = await addUserDetails(documents)
+            console.log(potentialCards)
             setCards(potentialCards)
         } catch (err) {
             console.log(err)
@@ -230,16 +239,16 @@ const HomeScreen = () => {
                     cardIndex={0}
                     verticalSwipe={false}
                     containerStyle={{ backgroundColor: 'transparent' }}
-                    cards={DUMMY_DATA}
+                    cards={cards}
                     renderCard={(card) =>
-                        <ScrollView key={card.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
+                        <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
                             <TouchableOpacity activeOpacity={1}>
                                 <View style={styles.card}>
-                                    <Image style={styles.cardImage} source={{ uri: card.photoUrl }} />
+                                    <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} />
                                     <View style={styles.cardSummary}>
                                         <View style={styles.cardNameLocation}>
-                                            <Text style={styles.text}>{card.displayName}, {card.age}</Text>
-                                            <Text style={styles.cardSmallText}>{card.home}</Text>
+                                            <Text style={styles.text}>{card.userInfo.displayName}, {card.userInfo.age}</Text>
+                                            <Text style={styles.cardSmallText}>{card.userInfo.home}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.userDetailsContainer}>
@@ -247,23 +256,24 @@ const HomeScreen = () => {
                                             <Ionicons
                                                 style={styles.detailIcon}
                                                 name="briefcase-outline" size={32} />
-                                            <Text style={styles.cardSmallText}>{card.occupation}</Text>
+                                            <Text style={styles.cardSmallText}>{card.userInfo.occupation}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.travelMatches}>
                                         <Text style={styles.text}>See You In</Text>
                                         <View style={styles.cityMatches}>
-                                            {card.travelMatches.map((city) =>
+                                            {card.seeYouIn && card.seeYouIn.map((city) =>
                                                 <View style={styles.city}>
                                                     <Text style={styles.cityText}>{city}</Text>
                                                 </View>
                                             )}
+
                                         </View>
                                     </View>
                                     <View style={styles.travelMatches}>
                                         <Text style={styles.text}>Missed You In</Text>
                                         <View style={styles.cityMatches}>
-                                            {card.travelMisses.map((city) =>
+                                            {card.missedYouIn && card.missedYouIn.map((city) =>
                                                 <View style={styles.city}>
                                                     <Text style={styles.cityText}>{city}</Text>
                                                 </View>
@@ -271,9 +281,9 @@ const HomeScreen = () => {
                                         </View>
                                     </View>
                                     <View>
-                                        <View>
-                                            <Text >{card.blurb}</Text>
-                                        </View>
+                                        {/* <View>
+                                            <Text >{card.userInfo.blurb}</Text>
+                                        </View> */}
                                     </View>
                                 </View>
                             </TouchableOpacity>
