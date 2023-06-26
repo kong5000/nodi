@@ -1,12 +1,13 @@
-import { StyleSheet, Text, Button, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, Button, TouchableOpacity, Image, View } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
-
 import React from 'react'
-
-const PictureSignup = ({ setImageUri, setPage, imageUri }) => {
-    const formIncomplete = !imageUri
+import PictureButton from '../components/PictureButton';
+import NextButton from '../components/NextButton';
+const PictureSignup = ({ setPage, images, setImages }) => {
+    const formIncomplete = images.length < 2
     // Todo, filter nsfw images on backend (possibly on front end too?)
-    const pickImage = async () => {
+
+    const pickImage = async (index) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -16,7 +17,9 @@ const PictureSignup = ({ setImageUri, setPage, imageUri }) => {
                 allowsMultipleSelection: false,
             });
             if (!result.canceled) {
-                setImageUri(result.uri)
+                let newImages = [...images]
+                newImages[index] = result.uri
+                setImages(newImages)
             }
         } catch (e) {
             console.log(e)
@@ -61,33 +64,55 @@ const PictureSignup = ({ setImageUri, setPage, imageUri }) => {
         }
     }
     return (
-        <>
+        <View style={styles.pictureSelection}>
+            <Text>{images.length}</Text>
             <Text style={styles.modalHeader}>Step1: Select a profile picture </Text>
             <Button
                 title="Upload Picture"
                 onPress={pickImage}
             />
+            <View style={styles.mainPictureContainer}>
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} />
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} />
+            </View>
+            <View style={styles.smallPictureContainer}>
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} />
+            </View>
+
             <TouchableOpacity
                 disabled={formIncomplete}
                 onPress={() => {
                     setPage(2)
                 }}
             >
-                <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    setPage(0)
-                }}
-            >
-                <Text>Back</Text>
-            </TouchableOpacity>
-        </>
+            <NextButton index={1} setPage={setPage} formIncomplete={formIncomplete}/>
+
+        </View>
     )
 }
 
 export default PictureSignup
 const styles = StyleSheet.create({
+    pictureSelection: {
+        height: "100%",
+        width: "100%",
+    },
+    mainPictureContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        margin: 20
+    },
+    smallPictureContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    },
     container: {
         display: 'flex',
         flex: 1,
@@ -104,5 +129,19 @@ const styles = StyleSheet.create({
     },
     greyedOut: {
         color: 'gray'
-    }
+    },
+    imageContainer: {
+        aspectRatio: 1, // Maintain a 1:1 aspect ratio for the container
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '25%',
+        borderRadius: 20,
+        backgroundColor: 'white'
+    },
+    image: {
+        flex: 1, // Take up the entire space within the container
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover', // Resize the image to cover the container
+    },
 });

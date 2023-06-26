@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'rea
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import NextButton from '../components/NextButton';
 const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -39,15 +39,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                     display='spinner'
                 />
             </View>
-            <TouchableOpacity
-                style={styles.nextButton}
-                disabled={formIncomplete}
-                onPress={() => {
-                    setPage(1)
-                }}
-            >
-                <Ionicons name="arrow-forward-circle-outline" size={60} color={formIncomplete ? 'grey' : "black"} />
-            </TouchableOpacity>
+            <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete}/>
         </View>
     )
 }

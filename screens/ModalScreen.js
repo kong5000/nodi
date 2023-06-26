@@ -24,6 +24,7 @@ const ModalScreen = () => {
     const [travelWithNonbinary, setTravelWithNonbinary] = useState(null)
     const [travelWithOther, setTravelWithOther] = useState(null)
     const [imageUri, setImageUri] = useState(null)
+    const [images, setImages] = useState([])
     const [imageBucketUrl, setImageBucketUrl] = useState(null)
 
     return (
@@ -38,6 +39,8 @@ const ModalScreen = () => {
                     job={job}
                     setAge={setAge}
                     age={age}
+                    images={images}
+                    setImages={setImages}
                     setImageUri={setImageUri}
                     imageUri={imageUri}
                     setPage={setPage}
