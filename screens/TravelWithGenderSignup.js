@@ -3,7 +3,7 @@ import { RadioButton } from 'react-native-paper';
 import { Switch } from 'react-native-paper';
 import React, { useState } from 'react'
 import NextButton from '../components/NextButton';
-
+import { TEXT_STYLES } from '../style';
 const TravelWithGenderSignup = (
     {
         setTravelWithMen,
@@ -36,15 +36,18 @@ const TravelWithGenderSignup = (
     };
 
     return (
-        <View>
-            <Text>Any gender preferences for a travel partner?</Text>
+        <View style={styles.radioContainer}>
+            <Text style={TEXT_STYLES.header}>Who would you prefer to travel with?</Text>
             <View style={styles.switchRow}>
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
-                <Text>Travel with everyone</Text>
+                <Text style={TEXT_STYLES.radioLabel}>Everyone</Text>
             </View>
-            <View style={styles.radioContainer}>
-                <View style={styles.radioRow}>
-                    <Text style={styles.radioLabel}>Male</Text>
+            <View >
+                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                    setTravelWithMen(!travelWithMen)
+                    setIsSwitchOn(false)
+                }}>
+                    <Text style={TEXT_STYLES.radioLabel}>Male</Text>
                     <RadioButton.Android
                         value="male"
                         status={travelWithMen == true ? "checked" : "unchecked"}
@@ -53,9 +56,12 @@ const TravelWithGenderSignup = (
                             setIsSwitchOn(false)
                         }}
                     />
-                </View>
-                <View style={styles.radioRow}>
-                    <Text style={styles.radioLabel}>Female</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                    setTravelWithWomen(!travelWithWomen)
+                    setIsSwitchOn(false)
+                }}>
+                    <Text style={TEXT_STYLES.radioLabel}>Female</Text>
                     <RadioButton.Android
                         value="female"
                         status={travelWithWomen == true ? "checked" : "unchecked"}
@@ -64,9 +70,12 @@ const TravelWithGenderSignup = (
                             setIsSwitchOn(false)
                         }}
                     />
-                </View>
-                <View style={styles.radioRow}>
-                    <Text style={styles.radioLabel}>Nonbinary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                    setTravelWithNonbinary(!travelWithNonBinary)
+                    setIsSwitchOn(false)
+                }}>
+                    <Text style={TEXT_STYLES.radioLabel}>Nonbinary</Text>
                     <RadioButton.Android
                         value="nonbinary"
                         status={travelWithNonBinary == true ? "checked" : "unchecked"}
@@ -75,9 +84,12 @@ const TravelWithGenderSignup = (
                             setIsSwitchOn(false)
                         }}
                     />
-                </View>
-                <View style={styles.radioRow}>
-                    <Text style={styles.radioLabel}>Other</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                    setTravelWithOther(!travelWithOther)
+                    setIsSwitchOn(false)
+                }}>
+                    <Text style={TEXT_STYLES.radioLabel}>Other</Text>
                     <RadioButton.Android
                         value="other"
                         status={travelWithOther == true ? "checked" : "unchecked"}
@@ -86,16 +98,8 @@ const TravelWithGenderSignup = (
                             setIsSwitchOn(false)
                         }}
                     />
-                </View>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                disabled={formIncomplete}
-                onPress={() => {
-                    setPage(5)
-                }}
-            >
-                <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
-            </TouchableOpacity>
             <NextButton
                 index={3}
                 setPage={setPage}
@@ -115,7 +119,6 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red'
     },
     radioLabel: {
         marginRight: "20%"
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'grey',
+        backgroundColor: 'white',
         justifyContent: 'space-between',
         margin: 5,
         padding: 5,
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'grey',
+        backgroundColor: 'white',
         justifyContent: 'space-between',
         margin: 5,
         padding: 5,
