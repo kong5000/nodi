@@ -31,15 +31,16 @@ const foodAndDrink = [
 
 const Interests = ({setPage}) => {
     const [interests, setInterests] = useState([])
-    const [valid, setValid] = useState(false)
+    const [formIncomplete, setFormIncomplete] = useState(true)
 
     useEffect(() => {
         if (interests.length >= 2) {
-            setValid(true)
+            setFormIncomplete(false)
         } else {
-            setValid(false)
+            setFormIncomplete(true)
         }
     }, [interests])
+
     const toggleInterest = (activity) => {
         if (interests.includes(activity)) {
             const updatedArray = interests.filter((item) => item !== activity);
@@ -64,14 +65,6 @@ const Interests = ({setPage}) => {
                         <Text style={styles.activityText}>{item.text} {item.emoticon}</Text>
                     </View>
                 </TouchableOpacity>)}
-            <TouchableOpacity
-                disabled={!valid}
-                onPress={() => {
-                    alert("done")
-                }}
-            >
-                <Text style={!valid ? styles.greyedOut : styles.updateButton}>Next</Text>
-            </TouchableOpacity>
             <NextButton
                 index={5}
                 setPage={setPage}
@@ -92,14 +85,12 @@ const styles = StyleSheet.create({
     interestsContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        backgroundColor: 'red',
         width: '100%',
         flexDirection: 'row'
     },
     activity: {
         backgroundColor: 'white',
         borderRadius: 20,
-        // height: 30,
         margin: 10,
         padding: 8,
     },

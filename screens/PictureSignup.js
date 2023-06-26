@@ -4,6 +4,9 @@ import React, { useState } from 'react'
 import PictureButton from '../components/PictureButton';
 import NextButton from '../components/NextButton';
 import { TEXT_STYLES } from '../style'
+import { auth, storage, database } from '../firebase';
+import { collection, onSnapshot, updateDoc, doc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const PictureSignup = ({ setPage, images, setImages }) => {
     const [loadingStates, setLoadingStates] = useState(new Array(images.length).fill(false))
@@ -22,13 +25,35 @@ const PictureSignup = ({ setPage, images, setImages }) => {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 4],
-                quality: 1,
+                quality: 0,
                 allowsMultipleSelection: false,
             });
             if (!result.canceled) {
                 let newImages = [...images]
                 newImages[index] = result.uri
                 setImages(newImages)
+
+                const uid = auth.currentUser?.uid;
+                const filename = `profile_picture_${index + "_" + uid}`;
+                console.log("Fetching uri")
+                const response = await fetch(result.uri);
+                console.log("awaiting blob")
+
+                const blob = await response.blob();
+                const storageRef = ref(storage, filename);
+                console.log("awaiting uploadbytes")
+
+                await uploadBytes(storageRef, blob);
+                console.log("getting download url")
+
+                const downloadURL = await getDownloadURL(storageRef);
+
+                const userRef = doc(database, 'users', uid);
+                console.log("updating user doc")
+
+                await updateDoc(userRef, {
+                    profilePicture: downloadURL,
+                });
             }
             updateLoadingStates(index, false)
         } catch (e) {

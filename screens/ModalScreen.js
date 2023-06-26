@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import PictureSignup from './PictureSignup';
 import TravelSignup from './TravelSignup';
@@ -8,6 +8,8 @@ import TravelWithGenderSignup from './TravelWithGenderSignup'
 import NameSignup from './NameSignup';
 import Interests from './Interests'
 import { ProgressBar } from 'react-native-paper'
+import { TEXT_STYLES } from '../style';
+const LAST_PAGE = 6
 
 const ModalScreen = () => {
     const { user } = useAuth()
@@ -25,7 +27,16 @@ const ModalScreen = () => {
     const [imageUri, setImageUri] = useState(null)
     const [images, setImages] = useState([])
     const [imageBucketUrl, setImageBucketUrl] = useState(null)
-
+    useEffect(() => {
+        if (page == LAST_PAGE) {
+            setUpdatingProfile(true)
+            images.forEach(image => {
+                if(image){
+                    console.log(image)
+                }
+            })
+        }
+    }, [page])
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.progressBar}>
@@ -67,11 +78,11 @@ const ModalScreen = () => {
             />}
             {page == 4 && <TravelSignup setPage={setPage} />}
             {page == 5 && <Interests setPage={setPage} />}
-            {updatingProfile &&
-                <>
-                    <Text>Updating Your Profile</Text>
-                    <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
-                </>
+            {(page == 6 && updatingProfile) && 
+            <>
+                <Text style={TEXT_STYLES.header}>Updating Your Profile</Text>
+                <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
+            </>
             }
         </SafeAreaView>
     )
