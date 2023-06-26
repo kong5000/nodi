@@ -2,6 +2,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { TEXT_STYLES } from '../style'
+import NextButton from '../components/NextButton';
 
 const thingsToDo = [
     { text: "Festivals", emoticon: "🎊" },
@@ -27,7 +29,7 @@ const foodAndDrink = [
     { text: "Pubs and Bars", emoticon: "🍺" },
 ]
 
-const Interests = () => {
+const Interests = ({setPage}) => {
     const [interests, setInterests] = useState([])
     const [valid, setValid] = useState(false)
 
@@ -48,6 +50,7 @@ const Interests = () => {
     }
     return (
         <View style={styles.interestsContainer}>
+            <Text style={TEXT_STYLES.header}>Favorite things to do on a trip?</Text>
             {thingsToDo.map((item) =>
                 <TouchableOpacity onPress={() => toggleInterest(item.text)}>
                     <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>
@@ -69,6 +72,11 @@ const Interests = () => {
             >
                 <Text style={!valid ? styles.greyedOut : styles.updateButton}>Next</Text>
             </TouchableOpacity>
+            <NextButton
+                index={5}
+                setPage={setPage}
+                formIncomplete={formIncomplete}
+                incompleteMessage="Please pick at least two interests" />
         </View>
     )
 }

@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useRef, useEffect } from 'react'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { PLACES_API_KEY } from "@env"

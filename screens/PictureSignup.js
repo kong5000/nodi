@@ -1,8 +1,10 @@
-import { StyleSheet, Text, Button, TouchableOpacity, Image, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react'
 import PictureButton from '../components/PictureButton';
 import NextButton from '../components/NextButton';
+import { TEXT_STYLES } from '../style'
+
 const PictureSignup = ({ setPage, images, setImages }) => {
     const [loadingStates, setLoadingStates] = useState(new Array(images.length).fill(false))
 
@@ -75,12 +77,7 @@ const PictureSignup = ({ setPage, images, setImages }) => {
     }
     return (
         <View style={styles.pictureSelection}>
-            <Text>{images.length}</Text>
-            <Text style={styles.modalHeader}>Step1: Select a profile picture </Text>
-            <Button
-                title="Upload Picture"
-                onPress={pickImage}
-            />
+            <Text style={TEXT_STYLES.header}>Add photos! (min 2)</Text>
             <View style={styles.mainPictureContainer}>
                 <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loadingStates={loadingStates} />
                 <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loadingStates={loadingStates} />
@@ -127,7 +124,10 @@ const styles = StyleSheet.create({
     },
     modalHeader: {
         fontWeight: 'bold',
-        margin: 10
+        margin: 10,
+        fontSize: 30,
+        margin: 20,
+        marginTop: 30
     },
     updateButton: {
 

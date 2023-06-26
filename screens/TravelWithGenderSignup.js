@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { RadioButton } from 'react-native-paper';
 import { Switch } from 'react-native-paper';
 import React, { useState } from 'react'
+import NextButton from '../components/NextButton';
 
 const TravelWithGenderSignup = (
     {
@@ -95,13 +96,12 @@ const TravelWithGenderSignup = (
             >
                 <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    setPage(3)
-                }}
-            >
-                <Text>Back</Text>
-            </TouchableOpacity>
+            <NextButton
+                index={3}
+                setPage={setPage}
+                formIncomplete={formIncomplete}
+                incompleteMessage="Please select your preferences"
+            />
         </View>
     )
 }

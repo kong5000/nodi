@@ -1,7 +1,5 @@
-import { View, Text } from 'react-native'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth, database } from '../firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../firebase'
 
 const AuthContext = createContext({})
 export const AuthProvider = ({ children }) => {

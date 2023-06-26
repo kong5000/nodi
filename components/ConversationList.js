@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
-import { collection, addDoc, orderBy, query, onSnapshot, where, limit } from 'firebase/firestore'
-import { auth, database, sayHello } from '../firebase'
+import React, { useState, useLayoutEffect } from 'react'
+import { collection, orderBy, query, onSnapshot, where, limit } from 'firebase/firestore'
+import { auth, database } from '../firebase'
 import ChatRow from './ChatRow'
 
 const ConversationList = () => {

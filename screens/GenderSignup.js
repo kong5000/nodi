@@ -1,11 +1,11 @@
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { RadioButton, Text } from 'react-native-paper';
+import NextButton from '../components/NextButton';
 
 import React, { useState } from 'react'
 
 const GenderSignup = ({ setGender, gender, setPage }) => {
     const formIncomplete = !gender
-
     return (
         <View style={styles.radioContainer}>
             <RadioButton.Group
@@ -41,21 +41,12 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
                     />
                 </View>
             </RadioButton.Group>
-            <TouchableOpacity
-                disabled={formIncomplete}
-                onPress={() => {
-                    setPage(4)
-                }}
-            >
-                <Text style={formIncomplete ? styles.greyedOut : styles.updateButton}>Next</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    setPage(2)
-                }}
-            >
-                <Text>Back</Text>
-            </TouchableOpacity>
+            <NextButton
+                index={2}
+                setPage={setPage}
+                formIncomplete={formIncomplete}
+                incompleteMessage={"Please select a gender"}
+            />
         </View>
     )
 }

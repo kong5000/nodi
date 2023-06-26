@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { TEXT_STYLES } from '../style'
 
 const AgeJobSignup = ({ setJob, job, setAge, age, setPage }) => {
     const formIncomplete = !job || !age

@@ -2,8 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Destination from '../components/Destination';
+import NextButton from '../components/NextButton';
+import { TEXT_STYLES } from '../style'
 
-const TravelSignup = ({setPage}) => {
+const TravelSignup = ({ setPage }) => {
     const [destinations, setDestinations] = useState([])
     const [formIncomplete, setFormIncomplete] = useState(true)
     const emptyDestination = {
@@ -53,7 +55,8 @@ const TravelSignup = ({setPage}) => {
     }, [destinations])
     return (
         <View style={styles.container}>
-            <Text>Destination</Text>
+            <Text style={TEXT_STYLES.header}>Where and when are you going?</Text>
+            <Text >(Or where would you like to go)</Text>
             {formIncomplete && <Text>form incomplete</Text>}
             {destinations.map((location, index) => (
                 <View key={index} style={styles.destinationContainer}>
@@ -74,16 +77,11 @@ const TravelSignup = ({setPage}) => {
                     <Ionicons name="add-circle-outline" size={32} color="orange" />
                 </TouchableOpacity>
             }
-
-
-            <TouchableOpacity
-                disabled={formIncomplete || (destinations.length == 0)}
-                onPress={() => {
-                    setPage(6)
-                }}
-            >
-                <Text style={formIncomplete || (destinations.length == 0) ? styles.greyedOut : styles.updateButton}>Next</Text>
-            </TouchableOpacity>
+            <NextButton
+                index={4}
+                setPage={setPage}
+                formIncomplete={formIncomplete}
+                incompleteMessage="Please add at least one trip" />
         </View>
     )
 }

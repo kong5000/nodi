@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { auth, database } from '../firebase'
+import { auth } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'

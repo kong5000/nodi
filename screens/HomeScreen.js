@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, ScrollView } from 'react-native'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import getUserData from '../hooks/userData'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Swiper from 'react-native-deck-swiper'
-import { collection, addDoc, orderBy, query, onSnapshot, where, limit, getDocs, setDoc } from 'firebase/firestore'
-import { auth, database, sayHello } from '../firebase'
+import { collection, addDoc, query, where, limit, getDocs } from 'firebase/firestore'
+import { auth, database } from '../firebase'
 import { Timestamp } from 'firebase/firestore';
 import moment from 'moment';
 
@@ -23,7 +23,7 @@ const DUMMY_DATA = [
             blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
 
         }
-        ,seeYouIn: [
+        , seeYouIn: [
             "Paris",
             "London",
             "New York"

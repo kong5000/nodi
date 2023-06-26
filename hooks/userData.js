@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth, database } from '../firebase'
+import { database } from '../firebase'
 import useAuth from './useAuth';
-import { collection, onSnapshot, query, where, getDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, onSnapshot, getDoc, doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
 

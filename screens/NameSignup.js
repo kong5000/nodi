@@ -1,24 +1,21 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
+import React from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import NextButton from '../components/NextButton';
+import { TEXT_STYLES } from '../style';
+
 const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setBirthDate(currentDate);
     };
 
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-
     const formIncomplete = !name
     return (
         <View style={styles.namePage}>
             <View style={styles.nameSection}>
-                <Text style={styles.modalHeader}>What's your name?</Text>
+                <Text style={TEXT_STYLES.header}>What's your name?</Text>
                 <TextInput
                     style={styles.textInput}
                     placeholder='Add your first name'
@@ -29,7 +26,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                 <Ionicons name="globe-outline" size={70} />
             </View>
             <View style={styles.birthdayContainer}>
-                <Text style={styles.modalHeader}>When were you born?</Text>
+                <Text style={TEXT_STYLES.header}>When were you born?</Text>
                 <DateTimePicker
                     style={styles.datePicker}
                     testID="dateTimePicker"
@@ -39,7 +36,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                     display='spinner'
                 />
             </View>
-            <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete}/>
+            <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete} incompleteMessage={"Please fill out a name"} />
         </View>
     )
 }
@@ -76,12 +73,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-
-    modalHeader: {
-        fontWeight: 'bold',
-        fontSize: 30,
-        margin: 10
     },
     updateButton: {
 

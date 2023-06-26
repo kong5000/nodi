@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import PictureSignup from './PictureSignup';
-import AgeJobSignup from './AgeJobSignup';
 import TravelSignup from './TravelSignup';
 import GenderSignup from './GenderSignup'
 import TravelWithGenderSignup from './TravelWithGenderSignup'
@@ -32,30 +31,30 @@ const ModalScreen = () => {
             <View style={styles.progressBar}>
                 <ProgressBar progress={page / 5} color='black' />
             </View>
-            {page == 0 && <NameSignup birthDate={birthDate} setBirthDate={setBirthDate} setName={setName} name={name} setPage={setPage} />}
-            {page == 1 &&
-                <PictureSignup
-                    setJob={setJob}
-                    job={job}
-                    setAge={setAge}
-                    age={age}
-                    images={images}
-                    setImages={setImages}
-                    setImageUri={setImageUri}
-                    imageUri={imageUri}
-                    setPage={setPage}
-                />}
-            {page == 2 &&
-                <AgeJobSignup
-                    setJob={setJob}
-                    job={job}
-                    setAge={setAge}
-                    age={age}
-                    setPage={setPage}
-                />
-            }
-            {page == 3 && <GenderSignup gender={gender} setGender={setGender} setPage={setPage} />}
-            {page == 4 && <TravelWithGenderSignup
+            {page == 0 && <NameSignup
+                birthDate={birthDate}
+                setBirthDate={setBirthDate}
+                setName={setName}
+                name={name}
+                setPage={setPage}
+            />}
+            {page == 1 && <PictureSignup
+                setJob={setJob}
+                job={job}
+                setAge={setAge}
+                age={age}
+                images={images}
+                setImages={setImages}
+                setImageUri={setImageUri}
+                imageUri={imageUri}
+                setPage={setPage}
+            />}
+            {page == 2 && <GenderSignup
+                gender={gender}
+                setGender={setGender}
+                setPage={setPage}
+            />}
+            {page == 3 && <TravelWithGenderSignup
                 setTravelWithMen={setTravelWithMen}
                 travelWithMen={travelWithMen}
                 setTravelWithWomen={setTravelWithWomen}
@@ -66,8 +65,8 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 5 && <TravelSignup setPage={setPage} />}
-            {page == 6 && <Interests />}
+            {page == 4 && <TravelSignup setPage={setPage} />}
+            {page == 5 && <Interests setPage={setPage} />}
             {updatingProfile &&
                 <>
                     <Text>Updating Your Profile</Text>

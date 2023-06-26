@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import DateSelectorRow from '../components/DataSelectorRow';
 import Location from './Location';
 import Ionicons from '@expo/vector-icons/Ionicons';
