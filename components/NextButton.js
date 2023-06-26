@@ -2,13 +2,16 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const NextButton = ({index, setPage, formIncomplete}) => {
+const NextButton = ({index, setPage, formIncomplete, incompleteMessage}) => {
     return (
         <TouchableOpacity
             style={styles.nextButton}
-            disabled={formIncomplete}
             onPress={() => {
-                setPage(index + 1)
+                if(formIncomplete){
+                    alert(incompleteMessage)
+                }else{
+                    setPage(index + 1)
+                }
             }}
         >
             <Ionicons name="arrow-forward-circle-outline" size={60} color={formIncomplete ? 'grey' : "black"} />

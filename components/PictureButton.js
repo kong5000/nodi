@@ -1,8 +1,8 @@
-import { StyleSheet, TouchableOpacity, Image, View, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity, Image, View, Text, ActivityIndicator } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react'
 
-const PictureButton = ({ onPress, images, size, index }) => {
+const PictureButton = ({ onPress, images, size, index, loadingStates }) => {
     return (
         <TouchableOpacity onPress={() => onPress(index)} style={size == "large" ? styles.imageContainer : styles.imageContainerSmall}>
             {images[index] ? <Image
@@ -10,6 +10,9 @@ const PictureButton = ({ onPress, images, size, index }) => {
                 source={{ uri: images[index] }}
             /> : <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} />
             }
+
+            {loadingStates[index] && <ActivityIndicator animating={true} size="large" color="#ff0000" />
+}
         </TouchableOpacity>
     )
 }

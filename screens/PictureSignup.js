@@ -1,14 +1,21 @@
 import { StyleSheet, Text, Button, TouchableOpacity, Image, View } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
-import React from 'react'
+import React, { useState } from 'react'
 import PictureButton from '../components/PictureButton';
 import NextButton from '../components/NextButton';
 const PictureSignup = ({ setPage, images, setImages }) => {
+    const [loadingStates, setLoadingStates] = useState(new Array(images.length).fill(false))
+
     const formIncomplete = images.length < 2
     // Todo, filter nsfw images on backend (possibly on front end too?)
-
+    const updateLoadingStates = (index, state) => {
+        let newLoadingStates = [...loadingStates]
+        newLoadingStates[index] = state
+        setLoadingStates(newLoadingStates)
+    }
     const pickImage = async (index) => {
         try {
+            updateLoadingStates(index, true)
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
@@ -17,11 +24,14 @@ const PictureSignup = ({ setPage, images, setImages }) => {
                 allowsMultipleSelection: false,
             });
             if (!result.canceled) {
+                updateLoadingStates(index, false)
                 let newImages = [...images]
                 newImages[index] = result.uri
                 setImages(newImages)
             }
         } catch (e) {
+            updateLoadingStates(index, false)
+
             console.log(e)
             alert(e)
         }
@@ -72,24 +82,19 @@ const PictureSignup = ({ setPage, images, setImages }) => {
                 onPress={pickImage}
             />
             <View style={styles.mainPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} />
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} />
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loadingStates={loadingStates} />
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loadingStates={loadingStates} />
             </View>
             <View style={styles.smallPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} loadingStates={loadingStates} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} loadingStates={loadingStates} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} loadingStates={loadingStates} />
             </View>
-
-            <TouchableOpacity
-                disabled={formIncomplete}
-                onPress={() => {
-                    setPage(2)
-                }}
-            >
-            </TouchableOpacity>
-            <NextButton index={1} setPage={setPage} formIncomplete={formIncomplete}/>
-
+            <NextButton
+                index={1}
+                setPage={setPage}
+                formIncomplete={formIncomplete}
+                incompleteMessage="Please select at least 2 photos" />
         </View>
     )
 }
