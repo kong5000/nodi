@@ -24,11 +24,11 @@ const PictureSignup = ({ setPage, images, setImages }) => {
                 allowsMultipleSelection: false,
             });
             if (!result.canceled) {
-                updateLoadingStates(index, false)
                 let newImages = [...images]
                 newImages[index] = result.uri
                 setImages(newImages)
             }
+            updateLoadingStates(index, false)
         } catch (e) {
             updateLoadingStates(index, false)
 
