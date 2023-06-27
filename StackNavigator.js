@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
-import UploadScreen from './screens/UploadScreen';
 import ConversationScreen from './screens/ConversationsScreen';
 import useAuth from './hooks/useAuth';
 import ModalScreen from './screens/ModalScreen';
@@ -26,7 +25,6 @@ const StackNavigator = () => {
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Modal" component={ModalScreen} />
                         <Stack.Screen name="Chat" component={ChatScreen} />
-                        <Stack.Screen name="Upload" component={UploadScreen} />
                         <Stack.Screen name="Conversations" component={ConversationScreen} />
                     </Stack.Group>
                 </>

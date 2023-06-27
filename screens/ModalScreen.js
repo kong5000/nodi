@@ -12,21 +12,17 @@ import { TEXT_STYLES } from '../style';
 const LAST_PAGE = 6
 
 const ModalScreen = () => {
-    const { user } = useAuth()
     const [birthDate, setBirthDate] = useState(new Date())
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [name, setName] = useState('')
     const [page, setPage] = useState(0)
-    const [age, setAge] = useState(null)
-    const [job, setJob] = useState(null)
     const [gender, setGender] = useState(null)
     const [travelWithMen, setTravelWithMen] = useState(null)
     const [travelWithWomen, setTravelWithWomen] = useState(null)
     const [travelWithNonbinary, setTravelWithNonbinary] = useState(null)
     const [travelWithOther, setTravelWithOther] = useState(null)
-    const [imageUri, setImageUri] = useState(null)
     const [images, setImages] = useState([])
-    const [imageBucketUrl, setImageBucketUrl] = useState(null)
+
     useEffect(() => {
         if (page == LAST_PAGE) {
             setUpdatingProfile(true)
@@ -42,7 +38,7 @@ const ModalScreen = () => {
             <View style={styles.progressBar}>
                 <ProgressBar progress={page / 5} color='black' />
             </View>
-            {page == 1110 && <NameSignup
+            {page == 0 && <NameSignup
                 birthDate={birthDate}
                 setBirthDate={setBirthDate}
                 setName={setName}
@@ -50,14 +46,8 @@ const ModalScreen = () => {
                 setPage={setPage}
             />}
             {page == 1 && <PictureSignup
-                setJob={setJob}
-                job={job}
-                setAge={setAge}
-                age={age}
                 images={images}
                 setImages={setImages}
-                setImageUri={setImageUri}
-                imageUri={imageUri}
                 setPage={setPage}
             />}
             {page == 2 && <GenderSignup
@@ -76,7 +66,7 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 0 && <TravelSignup setPage={setPage} />}
+            {page == 4 && <TravelSignup setPage={setPage} />}
             {page == 5 && <Interests setPage={setPage} />}
             {(page == 6 && updatingProfile) && 
             <>
