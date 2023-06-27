@@ -53,25 +53,21 @@ const PictureSignup = ({ setPage, images, setImages }) => {
 
                 const uid = auth.currentUser?.uid;
                 const filename = `profile_picture_${index + "_" + uid}`;
-                console.log("Fetching uri")
                 const response = await fetch(result.uri);
-                console.log("awaiting blob")
 
                 const blob = await response.blob();
                 const storageRef = ref(storage, filename);
-                console.log("awaiting uploadbytes")
 
                 await uploadBytes(storageRef, blob);
-                console.log("getting download url")
 
                 const downloadURL = await getDownloadURL(storageRef);
 
                 const userRef = doc(database, 'users', uid);
-                console.log("updating user doc")
 
                 await updateDoc(userRef, {
-                    profilePicture: downloadURL,
-                });
+                    [`pictures.${index}`]: downloadURL,
+                })
+
             }
             updateLoadingStates(index, false)
         } catch (e) {

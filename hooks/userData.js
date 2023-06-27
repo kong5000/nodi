@@ -5,14 +5,21 @@ import { collection, onSnapshot, getDoc, doc, setDoc } from 'firebase/firestore'
 import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
 
-const UserDataContext = createContext({});
+export const UserDataContext = createContext({
+    userData: null,
+    setUserData: () => {}
+});
 
 export const UserDataProvider = ({ children }) => {
     const navigation = useNavigation()
-
+    
     const { user } = useAuth()
     const [userData, setUserData] = useState(null);
+    const value = { userData, setUserData };
 
+    const setData = (data) => {
+        setUserData(data)
+    }
 
     const getUserDoc = async (userId) => {
         const userRef = doc(database, 'users', userId);
@@ -52,14 +59,11 @@ export const UserDataProvider = ({ children }) => {
                     const docRef = doc(database, 'users', user.uid);
                     const docSnap = await getDoc(docRef);
                     console.log('User document created successfully!');
-                    console.log(docSnap.data())
                     setUserData(docSnap.data())
                     navigation.navigate('Modal')
                 } catch (err) {
                     console.log(err)
                 }
-
-
             }
         }
         getUserData()
@@ -85,7 +89,7 @@ export const UserDataProvider = ({ children }) => {
     },
         [user])
 
-    return <UserDataContext.Provider value={{ userData }}>{children}</UserDataContext.Provider>;
+    return <UserDataContext.Provider value={{ userData, setUserData }}>{children}</UserDataContext.Provider>;
 }
 
 export default function getUserData() {

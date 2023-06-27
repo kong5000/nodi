@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import PictureSignup from './PictureSignup';
 import TravelSignup from './TravelSignup';
@@ -9,9 +9,15 @@ import NameSignup from './NameSignup';
 import Interests from './Interests'
 import { ProgressBar } from 'react-native-paper'
 import { TEXT_STYLES } from '../style';
-const LAST_PAGE = 6
+import getUserData from '../hooks/userData';
+import { collection, onSnapshot, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { database } from '../firebase';
+
+const LAST_PAGE = 1
 
 const ModalScreen = () => {
+    const { setUserData } = getUserData()
+    const { user } = useAuth()
     const [birthDate, setBirthDate] = useState(new Date())
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [name, setName] = useState('')
@@ -22,15 +28,34 @@ const ModalScreen = () => {
     const [travelWithNonbinary, setTravelWithNonbinary] = useState(null)
     const [travelWithOther, setTravelWithOther] = useState(null)
     const [images, setImages] = useState([])
+    const { userData } = getUserData()
 
     useEffect(() => {
-        if (page == LAST_PAGE) {
+        const updateUser = async () => {
+            console.log("UPDATING USER")
             setUpdatingProfile(true)
-            images.forEach(image => {
-                if(image){
-                    console.log(image)
-                }
-            })
+            setUserData({ "test": "hello world" })
+            const docRef = doc(database, "users", user.uid);
+
+            const travelsWith = [];
+
+            if (travelWithMen) travelsWith.push("male");
+            if (travelWithWomen) travelsWith.push("female");
+            if (travelWithNonbinary) travelsWith.push("nonbinary");
+            if (travelWithOther) travelsWith.push("other");
+
+            const newData = {
+                birthDate,
+                name,
+                gender,
+                travelsWith
+            };
+
+            await updateDoc(docRef, newData);
+            setUpdatingProfile(false)
+        }
+        if (page == LAST_PAGE) {
+            updateUser()
         }
     }, [page])
     return (
@@ -68,11 +93,11 @@ const ModalScreen = () => {
             />}
             {page == 4 && <TravelSignup setPage={setPage} />}
             {page == 5 && <Interests setPage={setPage} />}
-            {(page == 6 && updatingProfile) && 
-            <>
-                <Text style={TEXT_STYLES.header}>Updating Your Profile</Text>
-                <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
-            </>
+            {(page == 6 && updatingProfile) &&
+                <>
+                    <Text style={TEXT_STYLES.header}>Updating Your Profile</Text>
+                    <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
+                </>
             }
         </SafeAreaView>
     )
