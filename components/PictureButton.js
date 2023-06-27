@@ -2,10 +2,10 @@ import { StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-na
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react'
 
-const PictureButton = ({ onPress, images, size, index, loadingStates }) => {
+const PictureButton = ({ onPress, images, size, index, loading }) => {
     return (
         <TouchableOpacity onPress={() => onPress(index)} style={size == "large" ? styles.imageContainer : styles.imageContainerSmall}>
-            {loadingStates[index] ?
+            {loading ?
                 <ActivityIndicator animating={true} size="large" color="#ff0000" />
                 :
                 images[index] ?

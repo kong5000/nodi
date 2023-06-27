@@ -9,14 +9,32 @@ import { collection, onSnapshot, updateDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const PictureSignup = ({ setPage, images, setImages }) => {
-    const [loadingStates, setLoadingStates] = useState(new Array(images.length).fill(false))
+    const [loading0, setLoading0] = useState(false)
+    const [loading1, setLoading1] = useState(false)
+    const [loading2, setLoading2] = useState(false)
+    const [loading3, setLoading3] = useState(false)
+    const [loading4, setLoading4] = useState(false)
 
     const formIncomplete = images.length < 2
     // Todo, filter nsfw images on backend (possibly on front end too?)
     const updateLoadingStates = (index, state) => {
-        let newLoadingStates = [...loadingStates]
-        newLoadingStates[index] = state
-        setLoadingStates(newLoadingStates)
+        switch (index) {
+            case 0:
+                setLoading0(state)
+                break;
+            case 1:
+                setLoading1(state)
+                break;
+            case 2:
+                setLoading2(state)
+                break;
+            case 3:
+                setLoading3(state)
+                break;
+            case 4:
+                setLoading4(state)
+                break;
+        }
     }
     const pickImage = async (index) => {
         try {
@@ -104,13 +122,13 @@ const PictureSignup = ({ setPage, images, setImages }) => {
         <View style={styles.pictureSelection}>
             <Text style={TEXT_STYLES.header}>Add photos! (min 2)</Text>
             <View style={styles.mainPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loadingStates={loadingStates} />
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loadingStates={loadingStates} />
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loading={loading0} />
+                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loading={loading1} />
             </View>
             <View style={styles.smallPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} loadingStates={loadingStates} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} loadingStates={loadingStates} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} loadingStates={loadingStates} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} loading={loading2} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} loading={loading3} />
+                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} loading={loading4} />
             </View>
             <NextButton
                 index={1}

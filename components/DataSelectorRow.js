@@ -1,115 +1,88 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Button } from 'react-native-paper';
+const moment = require('moment');
 
+import React, { useState, useEffect } from 'react'
+import { TEXT_STYLES } from '../style';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { DatePickerModal } from 'react-native-paper-dates';
 
 const DateSelectorRow = ({ enabled,
     dayTo, setDayTo, dayFrom, setDayFrom,
-    monthTo, setMonthTo, monthFrom, setMonthFrom
+    hide
 
 }) => {
-    const [openFrom, setOpenFrom] = useState(false);
-    const [openTo, setOpenTo] = useState(false);
-    const [openDaysFrom, setOpenDaysFrom] = useState(null);
-    const [openDaysTo, setOpenDaysTo] = useState(null);
-    const [items, setItems] = useState([
-        { label: 'January', value: 'January' },
-        { label: 'February', value: 'February' },
-        { label: 'March', value: 'March' },
-        { label: 'April', value: 'April' },
-        { label: 'May', value: 'May' },
-        { label: 'June', value: 'June' },
-        { label: 'July', value: 'July' },
-        { label: 'August', value: 'August' },
-        { label: 'September', value: 'September' },
-        { label: 'October', value: 'October' },
-        { label: 'November', value: 'November' },
-        { label: 'December', value: 'December' },
-    ]);
-    const daysInYear = {
-        January: 31,
-        February: 28,
-        March: 31,
-        April: 30,
-        May: 31,
-        June: 30,
-        July: 31,
-        August: 31,
-        September: 30,
-        October: 31,
-        November: 30,
-        December: 31
-    };
-    const getDays = month => {
-        return Array.from({ length: daysInYear[month] }, (_, index) => ({
-            label: `${index + 1}`,
-            value: `${index + 1}`,
-        }))
-    }
-    const [daysFrom, setDaysFrom] = useState(getDays('January'))
-    const [daysTo, setDaysTo] = useState(getDays('January'))
+    const [range, setRange] = React.useState({ startDate: undefined, endDate: undefined });
+    const [open, setOpen] = React.useState(false);
+    const onDismiss = React.useCallback(() => {
+        setOpen(false);
+    }, [setOpen]);
 
-    useEffect(() => {
-        setDaysFrom(getDays(monthFrom))
-    }, [monthFrom])
-
-    useEffect(() => {
-        setDaysTo(getDays(monthTo))
-    }, [monthTo])
+    const onConfirm = React.useCallback(
+        ({ startDate, endDate }) => {
+            console.log(endDate)
+            if (!endDate || !startDate) {
+                alert("Please select both a start and end date")
+            } else {
+                setDayFrom(moment(startDate).format('YYYY-MM-DD'))
+                setDayTo(moment(endDate).format('YYYY-MM-DD'))
+                setOpen(false);
+                setRange({ startDate, endDate });
+            }
+        },
+        [setOpen, setRange]
+    );
+    // useEffect(() => {
+    //     let {startDate, endDate}= range
+    //     if(startDate > endDate){
+    //         alert("Your end date is before your start date")
+    //     }
+    // },[range])
 
     return (
-        <View>
+        <View style={hide ? styles.hiddenContainer : styles.container}>
             <View style={[styles.dateSelectorRow, styles.dateSelectorFrom]}>
-                <Text style={styles.dateSelectorLabel}>From</Text>
-                <View style={styles.month}>
-                    <DropDownPicker
-                        placeholder="Month"
-                        open={openFrom}
-                        value={monthFrom}
-                        items={items}
-                        setOpen={setOpenFrom}
-                        setValue={setMonthFrom}
-                        setItems={setItems}
-                        disabled={!enabled}
-                    />
+                <DatePickerModal
+                    locale="en"
+                    mode="range"
+                    visible={open}
+                    onDismiss={onDismiss}
+                    startDate={range.startDate}
+                    endDate={range.endDate}
+                    onConfirm={onConfirm}
+                />
+                <View style={styles.dateRow}>
+                    {!dayFrom && <Text style={styles.dateLabel}>When?</Text>}
+                    {dayFrom && <Text style={styles.dateLabel}>From</Text>}
+
+                    <View style={styles.dateContainer}>
+                        {dayFrom ? <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
+                            <Text style={styles.dateText}>{moment(dayFrom).format('MMMM D')}</Text>
+                        </TouchableOpacity> :
+                            <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
+                                <Text style={styles.dateText}>Select Date</Text>
+                            </TouchableOpacity>
+
+                        }
+                    </View>
                 </View>
-                <View style={styles.day}>
-                    <DropDownPicker
-                        placeholder="Day"
-                        open={openDaysFrom}
-                        value={dayFrom}
-                        items={daysFrom}
-                        setOpen={setOpenDaysFrom}
-                        setValue={setDayFrom}
-                        setItems={setDaysFrom}
-                    />
-                </View>
+
+                {dayTo &&
+                    <View style={styles.dateRow}>
+                        <Text style={styles.dateLabel}>To</Text>
+                        <View style={styles.dateContainer}>
+
+                            <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)}>
+                                <Text style={styles.dateText}>{moment(dayTo).format('MMMM D')}</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                }
+                {dayTo && <View style={styles.line}></View>}
+
             </View>
-            <View style={styles.dateSelectorRow}>
-                <Text style={styles.dateSelectorLabel}>To</Text>
-                <View style={styles.month}>
-                    <DropDownPicker
-                        placeholder="Month"
-                        open={openTo}
-                        value={monthTo}
-                        items={items}
-                        setOpen={setOpenTo}
-                        setValue={setMonthTo}
-                        setItems={setItems}
-                    />
-                </View>
-                <View style={styles.day}>
-                    <DropDownPicker
-                        placeholder="Day"
-                        open={openDaysTo}
-                        value={dayTo}
-                        items={daysTo}
-                        setOpen={setOpenDaysTo}
-                        setValue={setDayTo}
-                        setItems={setDaysTo}
-                    />
-                </View>
-            </View>
+
         </View>
     )
 }
@@ -117,33 +90,95 @@ const DateSelectorRow = ({ enabled,
 export default DateSelectorRow
 
 const styles = StyleSheet.create({
+    line: {
+        width: "100%",
+        borderBottomColor: 'black', // Change the color as per your requirement
+        borderBottomWidth: 1,
+        marginRight: "10%",
+        marginTop: 10,
+        marginBottom: 10,
+        flex: 1,
+    },
+    dateText: {
+        fontSize: 22
+    },
+    dateLabel: {
+        ...TEXT_STYLES.radioLabel,
+        fontSize: 26,
+        flex: 0.5,
+    },
+    dateContainer: {
+        flex: 1,
+
+    },
+    dateBubble: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        padding: 10,
+        margin: 15,
+        marginRight: 40
+    },
+    dateRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    dropDownButtonStyle: {
+        borderWidth: 'none',
+    },
+    dropDownPlaceholder: {
+
+    },
+    dropDownPlaceholderDisabled: {
+        color: 'grey'
+    },
+    dropDownContainer: {
+
+    },
+    container: {
+        margin: 15,
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 50,
+    },
+    hiddenContainer: {
+        margin: 15,
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 50,
+        zIndex: -1,
+    },
     dateSelectorFrom: {
-        zIndex: 1
     },
     dateSelectorLabel: {
+        ...TEXT_STYLES.radioLabel,
         flex: 0.5
     },
     dateSelectorRow: {
         display: 'flex',
-        flexDirection: 'row'
+        marginBottom: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     searchBar: {
         width: '85%',
         height: '50%',
-        backgroundColor: 'purple',
         borderWidth: 2,
-        borderColor: 'black'
     },
     month: {
-        backgroundColor: '#171717',
-        flex: 1,
+        flex: 1.25,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 15
     },
     day: {
-        backgroundColor: '#171717',
-        flex: 1,
+        flex: 0.8,
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 15

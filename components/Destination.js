@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View,Text} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import DateSelectorRow from '../components/DataSelectorRow';
 import Location from './Location';
@@ -6,7 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Destination = ({ checkForm, destination, index, removeDestination, updateDestination }) => {
     const [searchVisible, setSearchVisible] = useState(false)
-
+    const [hideDates, setHideDates] = useState(false)
     const [edit, setEdit] = useState(true)
     const [localValid, setLocalValid] = useState(false)
     const [location, setLocation] = useState(destination.city)
@@ -42,17 +42,17 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
         } else {
             setLocalValid(false)
         }
-    }, [location])
+    }, [location, dayFrom, dayTo])
 
     const isValid = () => {
-        return (dayTo && dayFrom && monthTo && monthFrom
-            && location
+        return (dayTo && dayFrom && location
         )
     }
     return (
         <View style={styles.container}>
-            <Location searchVisible={searchVisible} setSearchVisible={setSearchVisible} enabled={edit} updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
+            <Location setHideDates={setHideDates} searchVisible={searchVisible} setSearchVisible={setSearchVisible} enabled={edit} updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
             <DateSelectorRow
+                hide={hideDates}
                 enabled={edit}
                 dayTo={destination.dayTo}
                 setDayTo={setDayTo}
@@ -64,23 +64,26 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
                 setMonthFrom={setMonthFrom}
             />
             {(!edit) &&
-                <TouchableOpacity onPress={() => {
-                    setEdit(true)
-                    setSearchVisible(true)
-                }}>
-                    <Ionicons name="create" size={32} />
-                </TouchableOpacity>
-            }
-            {edit &&
                 <View style={styles.editRow}>
-                    <TouchableOpacity onPress={() => { save() }}>
-                        <Ionicons name="checkmark-circle-outline" size={32} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => removeDestination(index)}>
-                        <Ionicons name="trash" size={32} />
+                    <TouchableOpacity onPress={() => {
+                        setEdit(true)
+                        setSearchVisible(true)
+                    }}>
+                        <Ionicons name="create" size={40} />
                     </TouchableOpacity>
                 </View>
             }
+            {/* {edit &&
+                <View style={styles.editRow}>
+                    <TouchableOpacity onPress={() => { save() }}>
+                        <Ionicons name="checkmark-circle-outline" size={40} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => removeDestination(index)}>
+                        <Ionicons name="trash" size={40} />
+                    </TouchableOpacity>
+                </View>
+            } */}
+
         </View>
     )
 }
@@ -88,27 +91,34 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
 export default Destination
 
 const styles = StyleSheet.create({
+    line: {
+        borderBottomColor: 'black', // Change the color as per your requirement
+        borderBottomWidth: 1,
+        margin: 20,
+    },
     editRow: {
+        position: 'absolute',
+        top: 250,
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-evenly',
+        height: '100%',
     },
     container: {
         width: '100%',
-        height: '100%',
-        backgroundColor: 'green'
+        height: 260,
     },
     dateSelectorLabel: {
         flex: 0.5
     },
     dateSelectorRow: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     searchBar: {
         width: '85%',
         height: '50%',
-        backgroundColor: 'purple',
         borderWidth: 2,
-        borderColor: 'black'
     }
 })

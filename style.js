@@ -17,7 +17,8 @@ const TEXT_STYLES = {
     }
 }
 const SIZES = {
-    profilePicture: 50
+    profilePicture: 50,
+    iconButton: 35
 }
 
 export { COLORS, SIZES, TEXT_STYLES }

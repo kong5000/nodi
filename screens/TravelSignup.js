@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Destination from '../components/Destination';
@@ -8,6 +8,7 @@ import { TEXT_STYLES } from '../style'
 const TravelSignup = ({ setPage }) => {
     const [destinations, setDestinations] = useState([])
     const [formIncomplete, setFormIncomplete] = useState(true)
+    const [allDestinationsComplete, setAllDestinationsComplete] = useState(true)
     const emptyDestination = {
         city: "",
         dayFrom: "",
@@ -15,23 +16,31 @@ const TravelSignup = ({ setPage }) => {
         monthFrom: "",
         monthTo: ""
     }
+    const checkOneDestinationValid = () => {
+        if (destinations.length == 0) return false
+        for (let i = 0; i < destinations.length; i++) {
+            let destination = destinations[i]
+            if (destination.city && destination.dayFrom && destination.dayTo) return true
+        }
+        return false
+    }
+    const checkAllDestinationsComplete = () => {
+        if (destinations.length == 0) return true
+        for (let i = 0; i < destinations.length; i++) {
+            let destination = destinations[i]
+            if (!(destination.city && destination.dayFrom && destination.dayTo)) return false
+        }
+        return true
+    }
+
     const checkForm = () => {
-        setFormIncomplete(checkIncomplete())
+        setFormIncomplete(!checkOneDestinationValid())
+        setAllDestinationsComplete(checkAllDestinationsComplete())
     }
-    const checkIncomplete = () => {
-        let incomplete = false
-        destinations.forEach(destination => {
-            console.log(destination)
-            if (!(destination.city
-                && destination.dayFrom
-                && destination.monthFrom
-                && destination.dayTo
-                && destination.monthTo)) {
-                incomplete = true
-            }
-        })
-        return incomplete
-    }
+
+    useEffect(() => {
+        checkForm()
+    }, [destinations])
 
     const removeDestination = (index) => {
         console.log(index)
@@ -55,33 +64,42 @@ const TravelSignup = ({ setPage }) => {
     }, [destinations])
     return (
         <View style={styles.container}>
-            <Text style={TEXT_STYLES.header}>Where and when are you going?</Text>
-            <Text >(Or where would you like to go)</Text>
-            {formIncomplete && <Text>form incomplete</Text>}
-            {destinations.map((location, index) => (
-                <View key={index} style={styles.destinationContainer}>
-                    <Destination
-                        checkForm={checkForm}
-                        destination={location}
-                        removeDestination={removeDestination}
-                        index={index}
-                        updateDestination={updateDestination}
-                        setDestinations={setDestinations}
-                    />
-                </View>
-            ))}
-            {!formIncomplete &&
-                <TouchableOpacity style={styles.addContainer} onPress={() => {
-                    setDestinations([...destinations, { ...emptyDestination }])
-                }} >
-                    <Ionicons name="add-circle-outline" size={32} color="orange" />
-                </TouchableOpacity>
-            }
-            <NextButton
-                index={4}
-                setPage={setPage}
-                formIncomplete={formIncomplete}
-                incompleteMessage="Please add at least one trip" />
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
+                <Text style={TEXT_STYLES.header}>Where are you planning to go?</Text>
+
+                {destinations.map((location, index) => (
+                    <View key={index} style={styles.destinationContainer}>
+                        <Destination
+                            checkForm={checkForm}
+                            destination={location}
+                            removeDestination={removeDestination}
+                            index={index}
+                            updateDestination={updateDestination}
+                            setDestinations={setDestinations}
+                        />
+
+                    </View>
+                ))}
+                {((!formIncomplete || destinations.length == 0) && allDestinationsComplete) &&
+                    <TouchableOpacity style={styles.addContainer} onPress={() => {
+                        setDestinations([...destinations, { ...emptyDestination }])
+                    }} >
+                        <View>
+                            {destinations.length == 0 ? <Text style={TEXT_STYLES.radioLabel}>Add Destination</Text>
+                                : <Text style={TEXT_STYLES.radioLabel}>Add Another Destination</Text>
+                            }
+
+                        </View>
+                        {/* <Ionicons name="add-circle-outline" size={50} color="black" /> */}
+                    </TouchableOpacity>
+                }
+                <NextButton
+                    index={4}
+                    setPage={setPage}
+                    formIncomplete={formIncomplete}
+                    incompleteMessage="Complete at least one trip, and please use the autocomplete when entering a city!" />
+            </ScrollView>
+
         </View>
     )
 }
@@ -89,9 +107,10 @@ const TravelSignup = ({ setPage }) => {
 export default TravelSignup
 
 const styles = StyleSheet.create({
+
     destinationContainer: {
-        height: 250,
-        margin: 10
+        marginLeft: "7%",
+        marginRight: "7%",
     },
     container: {
         display: 'flex',
@@ -110,14 +129,19 @@ const styles = StyleSheet.create({
     searchBar: {
         width: '85%',
         height: '50%',
-        backgroundColor: 'purple',
         borderWidth: 2,
         borderColor: 'black'
     },
     addContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginLeft: "15%",
+        marginRight: "15%"
     },
     greyedOut: {
         color: 'gray'

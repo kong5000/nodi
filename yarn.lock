@@ -3248,7 +3248,7 @@
     "color-name" "^1.0.0"
     "simple-swizzle" "^0.2.2"
 
-"color@^3.1.2":
+"color@^3.1.2", "color@^3.2.1":
   "integrity" "sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA=="
   "resolved" "https://registry.npmjs.org/color/-/color-3.2.1.tgz"
   "version" "3.2.1"
@@ -6523,7 +6523,14 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react-native-paper@^5.8.0":
+"react-native-paper-dates@^0.18.12":
+  "integrity" "sha512-CyOgwTGFIxSV3lHgvh1R506RTs9gxPVsPo5LXbjLG9NxqsTU17qO6UDXNjck1JhW1Hew98L88TnzvO3saZEYfA=="
+  "resolved" "https://registry.npmjs.org/react-native-paper-dates/-/react-native-paper-dates-0.18.12.tgz"
+  "version" "0.18.12"
+  dependencies:
+    "color" "^3.2.1"
+
+"react-native-paper@*", "react-native-paper@^5.8.0":
   "integrity" "sha512-Mde8KkWt+9VD+KMqGK5VyTskJLZCsF/gAQQxoLgRlC2C8RmVPgyG0xhgu1sD3ED7T7FewE8cKrQm+soB9FAD1Q=="
   "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-5.8.0.tgz"
   "version" "5.8.0"
