@@ -41,15 +41,16 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
     const submitDestinations = async () => {
         console.log("DESTINATIONS")
         console.log(destinations)
+        let tempTrips = []
         for (const destination of destinations) {
             if (destinationValid(destination)) {
-                console.log("valid")
-                let newTrips = [...trips, destination]
-                setTrips(newTrips)
+                tempTrips.push(destination)
             } else {
                 console.log("NOT Valid")
             }
         }
+        let newTrips = [...trips, ...tempTrips]
+        setTrips(newTrips)
     }
 
     const checkForm = () => {

@@ -70,65 +70,23 @@ const HomeScreen = () => {
     const [cards, setCards] = useState(DUMMY_DATA)
     const [userTrips, setUserTrips] = useState([])
 
-    useEffect(() => {
-        // Get your trips
-        const getYourTrips = async () => {
-            const userId = auth.currentUser.uid
-            const tripsRef = collection(database, 'trips')
-            const q = query(tripsRef,
-                where('userInfo.id', '==', userId),
-                limit(15)
-            );
-            const querySnapshot = await getDocs(q)
-            let documents = querySnapshot.docs.map((doc) => doc.data());
-            setUserTrips(documents)
-        }
-        getYourTrips()
-    }, [])
+    const getYourTrips = async () => {
+        const userId = auth.currentUser.uid
+        const tripsRef = collection(database, 'trips')
+        const q = query(tripsRef,
+            where('userInfo.id', '==', userId),
+            limit(15)
+        );
+        const querySnapshot = await getDocs(q)
+        let documents = querySnapshot.docs.map((doc) => doc.data());
+        console.log(documents)
+        setUserTrips(documents)
+    }
+
+
     useEffect(() => {
         // console.log(cards)
     }, [cards])
-
-    const addTrip = () => {
-        function getDates(startDate, stopDate) {
-            var dateArray = [];
-            var currentDate = moment(startDate);
-            var stopDate = moment(stopDate);
-            while (currentDate <= stopDate) {
-                dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
-                currentDate = moment(currentDate).add(1, 'days');
-            }
-            return dateArray;
-        }
-
-        const startDate = new Date('2023-06-01');
-        const endDate = new Date('2023-06-04');
-
-        const newTrip = {
-            userInfo: {
-                ...userData,
-                id: auth.currentUser.uid
-            },
-            city: "Paris",
-            country: "France",
-            year: "2023",
-            from: Timestamp.fromDate(startDate),
-            to: Timestamp.fromDate(endDate),
-            dates: getDates(startDate, endDate)
-        };
-
-        const tripsCollectionRef = collection(database, 'trips');
-
-        // Add a new document to the "trips" collection
-        addDoc(tripsCollectionRef, newTrip)
-            .then((docRef) => {
-                console.log('New document ID:', docRef.id);
-            })
-            .catch((error) => {
-                console.error('Error adding document:', error);
-            });
-        console.log(newTrip)
-    }
 
     const filterDocuments = (potentialCards) => {
         // todo filter based on user prefrences
@@ -220,11 +178,11 @@ const HomeScreen = () => {
     }
     return (
         <SafeAreaView style={styles.screen}>
+            <TouchableOpacity onPress={getYourTrips}>
+                <Text>Get Trips</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={testQuery}>
                 <Text>CLICK</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={addTrip}>
-                <Text>Test adding trip</Text>
             </TouchableOpacity>
             <View style={styles.header}>
                 <TouchableOpacity>

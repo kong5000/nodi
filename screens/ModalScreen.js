@@ -59,6 +59,7 @@ const ModalScreen = () => {
             setUserData(userData)
 
             const tripsCollectionRef = collection(database, "trips");
+            console.log("Your trips", trips)
             for (let trip of trips) {
                 trip = { ...trip, userInfo: userData }
                 await addDoc(tripsCollectionRef, trip);
