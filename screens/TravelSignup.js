@@ -1,11 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import Ionicons from '@expo/vector-icons/Ionicons';
 import Destination from '../components/Destination';
 import NextButton from '../components/NextButton';
 import { TEXT_STYLES } from '../style'
+import { collection, addDoc } from "firebase/firestore";
+import { database } from '../firebase';
 
-const TravelSignup = ({ setPage }) => {
+const TravelSignup = ({ setPage, setTrips, trips }) => {
     const [destinations, setDestinations] = useState([])
     const [formIncomplete, setFormIncomplete] = useState(true)
     const [allDestinationsComplete, setAllDestinationsComplete] = useState(true)
@@ -16,11 +17,15 @@ const TravelSignup = ({ setPage }) => {
         monthFrom: "",
         monthTo: ""
     }
+    const destinationValid = (destination) => {
+        if (destination.city && destination.dayFrom && destination.dayTo) return true
+        return false
+    }
     const checkOneDestinationValid = () => {
         if (destinations.length == 0) return false
         for (let i = 0; i < destinations.length; i++) {
             let destination = destinations[i]
-            if (destination.city && destination.dayFrom && destination.dayTo) return true
+            if (destinationValid(destination)) return true
         }
         return false
     }
@@ -31,6 +36,20 @@ const TravelSignup = ({ setPage }) => {
             if (!(destination.city && destination.dayFrom && destination.dayTo)) return false
         }
         return true
+    }
+
+    const submitDestinations = async () => {
+        console.log("DESTINATIONS")
+        console.log(destinations)
+        for (const destination of destinations) {
+            if (destinationValid(destination)) {
+                console.log("valid")
+                let newTrips = [...trips, destination]
+                setTrips(newTrips)
+            } else {
+                console.log("NOT Valid")
+            }
+        }
     }
 
     const checkForm = () => {
@@ -94,6 +113,14 @@ const TravelSignup = ({ setPage }) => {
                     </TouchableOpacity>
                 }
                 <NextButton
+                    onPressAsync={
+                        () => {
+                            if (checkOneDestinationValid()) {
+                                console.log("onpress async")
+                                submitDestinations()
+                            }
+                        }
+                    }
                     index={4}
                     setPage={setPage}
                     formIncomplete={formIncomplete}

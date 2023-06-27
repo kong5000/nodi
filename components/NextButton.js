@@ -2,15 +2,20 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const NextButton = ({index, setPage, formIncomplete, incompleteMessage}) => {
+const NextButton = ({ index, setPage, formIncomplete, incompleteMessage, onPressAsync }) => {
     return (
         <TouchableOpacity
             style={styles.nextButton}
-            onPress={() => {
-                if(formIncomplete){
-                    alert(incompleteMessage)
-                }else{
-                    setPage(index + 1)
+            onPress={async () => {
+                try {
+                    if (onPressAsync) await onPressAsync()
+                    if (formIncomplete) {
+                        alert(incompleteMessage)
+                    } else {
+                        setPage(index + 1)
+                    }
+                } catch (err) {
+                    alert(err)
                 }
             }}
         >

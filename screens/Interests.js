@@ -29,8 +29,7 @@ const foodAndDrink = [
     { text: "Pubs and Bars", emoticon: "🍺" },
 ]
 
-const Interests = ({setPage}) => {
-    const [interests, setInterests] = useState([])
+const Interests = ({setPage, interests, setInterests}) => {
     const [formIncomplete, setFormIncomplete] = useState(true)
 
     useEffect(() => {

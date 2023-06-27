@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { PLACES_API_KEY } from "@env"
 
 const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, location, setLocation, updateLocation }) => {
@@ -43,8 +42,6 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                         placeholder='Search for a city'
                         onPress={(data, details = null) => {
                             setHideDates(false)
-                            console.log("PREEEES")
-                            console.log(data.description);
                             setLocation(data.description)
                             updateLocation(data.description)
                             setSearchVisible(false)

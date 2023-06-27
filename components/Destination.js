@@ -1,8 +1,9 @@
-import { StyleSheet, TouchableOpacity, View,Text} from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import DateSelectorRow from '../components/DataSelectorRow';
 import Location from './Location';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import moment from 'moment';
 
 const Destination = ({ checkForm, destination, index, removeDestination, updateDestination }) => {
     const [searchVisible, setSearchVisible] = useState(false)
@@ -30,10 +31,22 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
         }
     }
     const updateLocation = (newLocation) => {
-        updateDestination(index, { city: newLocation, dayFrom, monthFrom, dayTo, monthTo })
+        updateDestination(index, { city: newLocation, dayFrom, dayTo })
     }
     useEffect(() => {
-        updateDestination(index, { city: location, dayFrom, monthFrom, dayTo, monthTo })
+        function getDates(startDate, stopDate) {
+            var dateArray = [];
+            var currentDate = moment(startDate);
+            var stopDate = moment(stopDate);
+            while (currentDate <= stopDate) {
+                dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+                currentDate = moment(currentDate).add(1, 'days');
+            }
+            return dateArray;
+        }
+        let dates = getDates(dayFrom, dayTo)
+        console.log(dates)
+        updateDestination(index, { city: location, dayFrom, dayTo, dates})
     }, [dayTo, dayFrom, monthTo, monthFrom])
 
     useEffect(() => {

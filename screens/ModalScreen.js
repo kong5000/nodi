@@ -10,14 +10,15 @@ import Interests from './Interests'
 import { ProgressBar } from 'react-native-paper'
 import { TEXT_STYLES } from '../style';
 import getUserData from '../hooks/userData';
-import { collection, onSnapshot, getDoc, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, collection, addDoc, getDoc } from 'firebase/firestore';
 import { database } from '../firebase';
-
-const LAST_PAGE = 1
+import moment from 'moment';
+const LAST_PAGE = 6
 
 const ModalScreen = () => {
     const { setUserData } = getUserData()
     const { user } = useAuth()
+    const { userData } = getUserData()
     const [birthDate, setBirthDate] = useState(new Date())
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [name, setName] = useState('')
@@ -28,13 +29,12 @@ const ModalScreen = () => {
     const [travelWithNonbinary, setTravelWithNonbinary] = useState(null)
     const [travelWithOther, setTravelWithOther] = useState(null)
     const [images, setImages] = useState([])
-    const { userData } = getUserData()
-
+    const [interests, setInterests] = useState([])
+    const [trips, setTrips] = useState([])
     useEffect(() => {
         const updateUser = async () => {
             console.log("UPDATING USER")
             setUpdatingProfile(true)
-            setUserData({ "test": "hello world" })
             const docRef = doc(database, "users", user.uid);
 
             const travelsWith = [];
@@ -45,13 +45,24 @@ const ModalScreen = () => {
             if (travelWithOther) travelsWith.push("other");
 
             const newData = {
-                birthDate,
+                birthDate: moment(birthDate).format('YYYY-MM-DD'),
                 name,
                 gender,
-                travelsWith
+                travelsWith,
+                interests
             };
 
             await updateDoc(docRef, newData);
+            const userDocRef = doc(database, "users", user.uid);
+            const userDocSnapshot = await getDoc(userDocRef);
+            const userData = userDocSnapshot.data();
+            setUserData(userData)
+
+            const tripsCollectionRef = collection(database, "trips");
+            for (let trip of trips) {
+                trip = { ...trip, userInfo: userData }
+                await addDoc(tripsCollectionRef, trip);
+            }
             setUpdatingProfile(false)
         }
         if (page == LAST_PAGE) {
@@ -91,8 +102,8 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 4 && <TravelSignup setPage={setPage} />}
-            {page == 5 && <Interests setPage={setPage} />}
+            {page == 4 && <TravelSignup setTrips={setTrips} trips={trips} setPage={setPage} />}
+            {page == 5 && <Interests interests={interests} setInterests={setInterests} setPage={setPage} />}
             {(page == 6 && updatingProfile) &&
                 <>
                     <Text style={TEXT_STYLES.header}>Updating Your Profile</Text>
