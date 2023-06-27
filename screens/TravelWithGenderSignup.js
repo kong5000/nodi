@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { RadioButton } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
 import { Switch } from 'react-native-paper';
 import React, { useState } from 'react'
 import NextButton from '../components/NextButton';
@@ -48,7 +48,7 @@ const TravelWithGenderSignup = (
                     setIsSwitchOn(false)
                 }}>
                     <Text style={TEXT_STYLES.radioLabel}>Male</Text>
-                    <RadioButton.Android
+                    <Checkbox.Android
                         value="male"
                         status={travelWithMen == true ? "checked" : "unchecked"}
                         onPress={() => {
@@ -62,7 +62,7 @@ const TravelWithGenderSignup = (
                     setIsSwitchOn(false)
                 }}>
                     <Text style={TEXT_STYLES.radioLabel}>Female</Text>
-                    <RadioButton.Android
+                    <Checkbox.Android
                         value="female"
                         status={travelWithWomen == true ? "checked" : "unchecked"}
                         onPress={() => {
@@ -76,7 +76,7 @@ const TravelWithGenderSignup = (
                     setIsSwitchOn(false)
                 }}>
                     <Text style={TEXT_STYLES.radioLabel}>Nonbinary</Text>
-                    <RadioButton.Android
+                    <Checkbox.Android
                         value="nonbinary"
                         status={travelWithNonBinary == true ? "checked" : "unchecked"}
                         onPress={() => {
@@ -90,7 +90,7 @@ const TravelWithGenderSignup = (
                     setIsSwitchOn(false)
                 }}>
                     <Text style={TEXT_STYLES.radioLabel}>Other</Text>
-                    <RadioButton.Android
+                    <Checkbox.Android
                         value="other"
                         status={travelWithOther == true ? "checked" : "unchecked"}
                         onPress={() => {
