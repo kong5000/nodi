@@ -51,7 +51,8 @@ export const UserDataProvider = ({ children }) => {
                 const userData = {
                     email: user.email,
                     joinDate: Timestamp.now(),
-                    lastActive: Timestamp.now()
+                    lastActive: Timestamp.now(),
+                    id: user.uid
                 };
                 try {
                     await setDoc(doc(database, 'users', user.uid), userData)

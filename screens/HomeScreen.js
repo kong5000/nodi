@@ -4,74 +4,19 @@ import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import getUserData from '../hooks/userData'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Swiper from 'react-native-deck-swiper'
-import { collection, addDoc, query, where, limit, getDocs } from 'firebase/firestore'
+import { collection, query, where, limit, getDocs } from 'firebase/firestore'
 import { auth, database } from '../firebase'
-import { Timestamp } from 'firebase/firestore';
-import moment from 'moment';
-
-const DUMMY_DATA = [
-    {
-        userInfo: {
-            id: 1,
-            displayName: 'Ashley',
-            age: 20,
-            home: 'Mexico City, Mexico',
-            pictures: ['https://picsum.photos/450/800'],
-            occupation: 'Reasearch Scientist',
-
-            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
-
-        }
-        , seeYouIn: [
-            "Paris",
-            "London",
-            "New York"
-        ],
-        missedYouIn: [
-            "St. Petersburg",
-            "Skopje"
-        ],
-        headedTo: [],
-    },
-    {
-        userInfo: {
-            id: 2,
-            displayName: 'Barry',
-            age: 30,
-            home: "Vancouver, Canada",
-            pictures: ['https://picsum.photos/450/800'],
-            occupation: 'Lawyer',
-
-            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
-        }
-        , seeYouIn: [
-            "Paris",
-            "London",
-            "New York"
-        ],
-        missedYouIn: [
-            "Budapest",
-            "Istanbul",
-            "Riga"
-        ],
-        headedTo: [],
-
-    }
-
-]
-
-const DUMMY_PASSED = ["dummyuserid"]
+import Deck from '../components/Deck'
 
 const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
     const navigation = useNavigation()
-    const [cards, setCards] = useState(DUMMY_DATA)
+    const [cards, setCards] = useState([])
     const [userTrips, setUserTrips] = useState([])
 
     const getYourTrips = async () => {
-        const userId = auth.currentUser.uid
+        const userId = user.uid
         const tripsRef = collection(database, 'trips')
         const q = query(tripsRef,
             where('userInfo.id', '==', userId),
@@ -79,7 +24,6 @@ const HomeScreen = () => {
         );
         const querySnapshot = await getDocs(q)
         let documents = querySnapshot.docs.map((doc) => doc.data());
-        console.log(documents)
         setUserTrips(documents)
     }
 
@@ -112,8 +56,8 @@ const HomeScreen = () => {
             documents.forEach((doc) => {
                 console.log(doc.city)
                 userTrips.forEach(trip => {
-                    if (trip.city == doc.city && trip.country == doc.country) {
-                        if (trip.from.toDate() <= doc.to.toDate() && trip.to.toDate() >= doc.from.toDate()) {
+                    if (trip.city == doc.city) {
+                        if (trip.dayFrom <= doc.dayTo && trip.dayTo >= doc.dayFrom) {
                             seeYouIn.push(doc.city)
                         } else {
                             missedYouIn.push(doc.city)
@@ -128,9 +72,6 @@ const HomeScreen = () => {
             headedTo = headedTo.filter(city =>
                 !missedYouIn.includes(city) && !seeYouIn.includes(city)
             )
-            console.log(`See you in ${seeYouIn}`)
-            console.log(`Missed you in ${missedYouIn}`)
-            console.log(`Headed to ${headedTo}`)
             detailedCards.push({ ...potentialCard, seeYouIn, missedYouIn, headedTo })
         }));
 
@@ -139,16 +80,17 @@ const HomeScreen = () => {
 
     const testQuery = async () => {
         try {
+            if (userTrips.length == 0) return
             const tripsRef = collection(database, 'trips')
             const q = query(tripsRef,
-                where('dates', 'array-contains-any', userTrips[0].dates),
-                where('year', '==', userTrips[0].year),
-                where('city', '==', userTrips[0].city),
-                where('country', '==', userTrips[0].country),
+                where('dates', 'array-contains-any', userTrips[1].dates),
+                where('city', '==', userTrips[1].city),
+                where('userInfo.gender', 'in', userData.travelsWith),
                 limit(15)
             );
             const querySnapshot = await getDocs(q)
             let documents = querySnapshot.docs.map((doc) => doc.data());
+            console.log(documents)
             documents = filterDocuments(documents)
             potentialCards = await addUserDetails(documents)
             console.log(potentialCards)
@@ -157,9 +99,7 @@ const HomeScreen = () => {
             console.log(err)
             alert(err)
         }
-
     }
-
 
     const handleSignOut = () => {
         auth.signOut()
@@ -167,15 +107,7 @@ const HomeScreen = () => {
                 navigation.replace("Login")
             })
     }
-    const goToChat = () => {
-        navigation.navigate("Chat")
-    }
-    const goToUpload = () => {
-        navigation.navigate("Upload")
-    }
-    const goToConversations = () => {
-        navigation.navigate("Conversations")
-    }
+
     return (
         <SafeAreaView style={styles.screen}>
             <TouchableOpacity onPress={getYourTrips}>
@@ -190,65 +122,9 @@ const HomeScreen = () => {
                 </TouchableOpacity>
                 <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
             </View>
-            <View style={styles.container}>
-                <Swiper
-                    animateCardOpacity={false}
-                    stackSize={2}
-                    cardIndex={0}
-                    verticalSwipe={false}
-                    containerStyle={{ backgroundColor: 'transparent' }}
-                    cards={cards}
-                    renderCard={(card) =>
-                        <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
-                            <TouchableOpacity activeOpacity={1}>
-                                <View style={styles.card}>
-                                    <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} />
-                                    <View style={styles.cardSummary}>
-                                        <View style={styles.cardNameLocation}>
-                                            <Text style={styles.text}>{card.userInfo.displayName}, {card.userInfo.age}</Text>
-                                            <Text style={styles.cardSmallText}>{card.userInfo.home}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.userDetailsContainer}>
-                                        <View style={styles.userDetail}>
-                                            <Ionicons
-                                                style={styles.detailIcon}
-                                                name="briefcase-outline" size={32} />
-                                            <Text style={styles.cardSmallText}>{card.userInfo.occupation}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.travelMatches}>
-                                        <Text style={styles.text}>See You In</Text>
-                                        <View style={styles.cityMatches}>
-                                            {card.seeYouIn && card.seeYouIn.map((city) =>
-                                                <View key={city} style={styles.city}>
-                                                    <Text style={styles.cityText}>{city}</Text>
-                                                </View>
-                                            )}
-
-                                        </View>
-                                    </View>
-                                    <View style={styles.travelMatches}>
-                                        <Text style={styles.text}>Missed You In</Text>
-                                        <View style={styles.cityMatches}>
-                                            {card.missedYouIn && card.missedYouIn.map((city) =>
-                                                <View key={city} style={styles.city}>
-                                                    <Text style={styles.cityText}>{city}</Text>
-                                                </View>
-                                            )}
-                                        </View>
-                                    </View>
-                                    <View>
-                                        {/* <View>
-                                            <Text >{card.userInfo.blurb}</Text>
-                                        </View> */}
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        </ScrollView>
-                    }
-                />
-            </View>
+            {cards.length > 0 &&
+                <Deck cards={cards} />
+            }
         </SafeAreaView>
     )
 }
