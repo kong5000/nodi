@@ -10,8 +10,17 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
         const currentDate = selectedDate;
         setBirthDate(currentDate);
     };
-
-    const formIncomplete = !name
+    function checkAge(dateOfBirth) {
+        const today = new Date();
+        const birth = new Date(dateOfBirth);
+        const eighteenYearsAgo = new Date(
+            today.getFullYear() - 18,
+            today.getMonth(),
+            today.getDate()
+        );
+        return birth <= eighteenYearsAgo;
+    }
+    const formIncomplete = !name || ! checkAge(birthDate)
     return (
         <View style={styles.namePage}>
             <View style={styles.nameSection}>
@@ -36,7 +45,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                     display='spinner'
                 />
             </View>
-            <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete} incompleteMessage={"Please fill out a name"} />
+            <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete} incompleteMessage={!name ? "Please fill out a name" : "You must be at at least 18 to use this app"} />
         </View>
     )
 }
