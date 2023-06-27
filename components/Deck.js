@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -18,11 +18,10 @@ const Deck = ({ cards }) => {
                     <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
                         <TouchableOpacity activeOpacity={1}>
                             <View style={styles.card}>
-                                {/* <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} /> */}
+                                <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} />
                                 <View style={styles.cardSummary}>
                                     <View style={styles.cardNameLocation}>
-                                        {/* <Text style={styles.text}>{card.userInfo.displayName}, {card.userInfo.age}</Text> */}
-                                        {/* <Text style={styles.cardSmallText}>{card.userInfo.home}</Text> */}
+                                        <Text style={styles.text}>{card.userInfo.name}, {card.userInfo.age}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.userDetailsContainer}>
@@ -30,7 +29,6 @@ const Deck = ({ cards }) => {
                                         <Ionicons
                                             style={styles.detailIcon}
                                             name="briefcase-outline" size={32} />
-                                        {/* <Text style={styles.cardSmallText}>{card.userInfo.occupation}</Text> */}
                                     </View>
                                 </View>
                                 <View style={styles.travelMatches}>

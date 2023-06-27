@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore'
 import { auth, database } from '../firebase'
 import Deck from '../components/Deck'
+import { getTripMatches, getUserTrips } from '../services/TripQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -17,16 +18,9 @@ const HomeScreen = () => {
 
     const getYourTrips = async () => {
         const userId = user.uid
-        const tripsRef = collection(database, 'trips')
-        const q = query(tripsRef,
-            where('userInfo.id', '==', userId),
-            limit(15)
-        );
-        const querySnapshot = await getDocs(q)
-        let documents = querySnapshot.docs.map((doc) => doc.data());
+        let documents = await getUserTrips(userId)
         setUserTrips(documents)
     }
-
 
     useEffect(() => {
         // console.log(cards)
@@ -42,7 +36,7 @@ const HomeScreen = () => {
     const addUserDetails = async (potentialCards) => {
         let detailedCards = []
         await Promise.all(potentialCards.map(async (potentialCard) => {
-            console.log(`Getting details for ${potentialCard.userInfo.displayName}`)
+            console.log(`Getting details for ${potentialCard.userInfo.name}`)
             const tripsRef = collection(database, 'trips')
             const q = query(tripsRef,
                 where('userInfo.id', '==', potentialCard.userInfo.id),
@@ -81,20 +75,18 @@ const HomeScreen = () => {
     const testQuery = async () => {
         try {
             if (userTrips.length == 0) return
-            const tripsRef = collection(database, 'trips')
-            const q = query(tripsRef,
-                where('dates', 'array-contains-any', userTrips[1].dates),
-                where('city', '==', userTrips[1].city),
-                where('userInfo.gender', 'in', userData.travelsWith),
-                limit(15)
-            );
-            const querySnapshot = await getDocs(q)
-            let documents = querySnapshot.docs.map((doc) => doc.data());
-            console.log(documents)
-            documents = filterDocuments(documents)
-            potentialCards = await addUserDetails(documents)
-            console.log(potentialCards)
-            setCards(potentialCards)
+            let tempMatches = []
+            for (trip of userTrips) {
+                let documents = await getTripMatches(trip)
+                documents = filterDocuments(documents)
+                potentialCards = await addUserDetails(documents)
+                tempMatches.push(potentialCards)
+            }
+            let potentialMatches = []
+            for (let temp of tempMatches) {
+                potentialMatches = [...potentialMatches, ...temp]
+            }
+            setCards(potentialMatches)
         } catch (err) {
             console.log(err)
             alert(err)
@@ -132,53 +124,6 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-    detailIcon: {
-        padding: 10
-    },
-    userDetailsContainer: {
-        borderColor: 'black',
-        borderWidth: 2,
-        borderRadius: 8,
-        width: '90%',
-        margin: 10
-    },
-    userDetail: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    city: {
-        borderColor: 'black',
-        borderWidth: 2,
-        borderRadius: 8,
-        margin: 10,
-    },
-    cityText: {
-        fontSize: 20,
-        padding: 5
-    },
-    travelMatches: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '95%'
-    },
-    cityMatches: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: '100%',
-    },
-    cardSummary: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        padding: 15
-    },
-    cardNameLocation: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start'
-    },
     header: {
         display: 'flex',
         flexDirection: 'row',
@@ -189,9 +134,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    scroll: {
-        height: 1000
     },
     button: {
         backgroundColor: '#0782F9',
@@ -211,42 +153,15 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25
     },
-    cardStack: {
-        display: 'flex',
-    },
     screen: {
         flex: 1
     },
     container: {
         flex: 1,
     },
-    card: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1,
-        borderRadius: 20,
-        borderWidth: 4,
-        borderColor: "#E8E8E8",
-        justifyContent: "center",
-        backgroundColor: "white"
-    },
     text: {
         textAlign: "center",
         fontSize: 30,
         backgroundColor: "transparent"
     },
-    cardSmallText: {
-        textAlign: "center",
-        fontSize: 20,
-        backgroundColor: "transparent",
-        marginTop: 2
-    },
-    cardImage: {
-        height: 450,
-        width: "100%",
-        resizeMode: 'stretch',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
-    }
 })
