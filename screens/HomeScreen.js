@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { auth } from '../firebase'
 import Deck from '../components/Deck'
 import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
+import { getPasses } from '../services/UserQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -14,6 +15,13 @@ const HomeScreen = () => {
     const navigation = useNavigation()
     const [cards, setCards] = useState([])
     const [userTrips, setUserTrips] = useState([])
+    const [passes, setPasses] = useState([])
+
+    const getPassedUsers = async () => {
+        const passedUsers = await getPasses(user.uid)
+        console.log(passedUsers)
+        setPasses(passedUsers)
+    }
 
     const getYourTrips = async () => {
         const userId = user.uid
@@ -32,6 +40,7 @@ const HomeScreen = () => {
         let userRemoved = potentialCards.filter(potentialCard => potentialCard.userInfo.id != auth.currentUser.uid)
         return userRemoved
     }
+
     const addUserDetails = async (potentialCards) => {
         let detailedCards = []
         await Promise.all(potentialCards.map(async (potentialCard) => {
@@ -98,7 +107,10 @@ const HomeScreen = () => {
                 <Text>Get Trips</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={testQuery}>
-                <Text>CLICK</Text>
+                <Text>Get Matches</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={getPassedUsers}>
+                <Text>Get passes</Text>
             </TouchableOpacity>
             <View style={styles.header}>
                 <TouchableOpacity>

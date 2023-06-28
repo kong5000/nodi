@@ -5,8 +5,8 @@ export const getTripMatches = async (trip) => {
     const tripsRef = collection(database, 'trips')
     console.log(`Querying for your trip in ${trip.city}`)
     const q = query(tripsRef,
-        where('dates', 'array-contains-any', trip.dates),
         where('city', '==', trip.city),
+        where('dates', 'array-contains-any', trip.dates),
         where('userInfo.gender', 'in', trip.userInfo.travelsWith),
         limit(15)
     );

@@ -1,13 +1,23 @@
 import { Image, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { addPass } from '../services/UserQueries';
 import React from 'react'
+import useAuth from '../hooks/useAuth';
 
 const Deck = ({ cards }) => {
+    const { user } = useAuth()
+    
+    const swipeLeft = async (cardIndex) => {
+        let passedUser = cards[cardIndex]
+        console.log(passedUser)
+        await addPass(user.uid, passedUser)
+        console.log("SWIPE")
+    }
     return (
         <View style={styles.container}>
             <Swiper
+                onSwipedLeft={swipeLeft}
                 animateCardOpacity={false}
                 stackSize={2}
                 cardIndex={0}
