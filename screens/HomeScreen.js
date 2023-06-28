@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { auth } from '../firebase'
 import Deck from '../components/Deck'
 import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
-import { getPasses } from '../services/UserQueries'
+import { getPasses, getLikedBy } from '../services/UserQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -16,6 +16,11 @@ const HomeScreen = () => {
     const [cards, setCards] = useState([])
     const [userTrips, setUserTrips] = useState([])
     const [passes, setPasses] = useState([])
+
+    const getUsersWhoLikedMe = async () =>{
+        const likes = await getLikedBy(user.uid)
+        console.log(likes)
+    }
 
     const getPassedUsers = async () => {
         const passedUsers = await getPasses(user.uid)
@@ -114,6 +119,9 @@ const HomeScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity onPress={getPassedUsers}>
                 <Text>Get passes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={getUsersWhoLikedMe}>
+                <Text>Get liked bys</Text>
             </TouchableOpacity>
             {passes.map((pass) => <Text>{pass}</Text>)}
             <View style={styles.header}>
