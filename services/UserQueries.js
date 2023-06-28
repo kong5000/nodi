@@ -25,13 +25,10 @@ export const addPass = async (uid, passedCard) => {
 
 export const getPasses = async (uid) => {
     const passesRef = collection(database, 'users', uid, 'passes')
-
     const q = query(passesRef,
         orderBy('passedOn', 'desc'),
         limit(50)
     );
-    console.log("ccccc")
-
     const querySnapshot = await getDocs(q)
     let passedUsers = querySnapshot.docs.map((doc) => doc.data());
     return passedUsers

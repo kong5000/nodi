@@ -19,8 +19,10 @@ const HomeScreen = () => {
 
     const getPassedUsers = async () => {
         const passedUsers = await getPasses(user.uid)
-        console.log(passedUsers)
-        setPasses(passedUsers)
+        const getPassedUserIds = (passedUsers) => {
+             return passedUsers.map(x => x.id)
+        }
+        setPasses(getPassedUserIds(passedUsers))
     }
 
     const getYourTrips = async () => {
@@ -38,6 +40,7 @@ const HomeScreen = () => {
         // Filter out the users own card if it shows up
         // Filter out users passed on
         let userRemoved = potentialCards.filter(potentialCard => potentialCard.userInfo.id != auth.currentUser.uid)
+        userRemoved = userRemoved.filter(potentialCard => !passes.includes(potentialCard.userInfo.id))
         return userRemoved
     }
 
@@ -112,6 +115,7 @@ const HomeScreen = () => {
             <TouchableOpacity onPress={getPassedUsers}>
                 <Text>Get passes</Text>
             </TouchableOpacity>
+            {passes.map((pass) => <Text>{pass}</Text>)}
             <View style={styles.header}>
                 <TouchableOpacity>
                     {userData && <Image style={styles.headerProfile} source={{ uri: userData.profileUrl }} />}
