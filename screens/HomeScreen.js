@@ -4,10 +4,9 @@ import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import getUserData from '../hooks/userData'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { collection, query, where, limit, getDocs } from 'firebase/firestore'
-import { auth, database } from '../firebase'
+import { auth } from '../firebase'
 import Deck from '../components/Deck'
-import { getTripMatches, getUserTrips } from '../services/TripQueries'
+import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -37,13 +36,7 @@ const HomeScreen = () => {
         let detailedCards = []
         await Promise.all(potentialCards.map(async (potentialCard) => {
             console.log(`Getting details for ${potentialCard.userInfo.name}`)
-            const tripsRef = collection(database, 'trips')
-            const q = query(tripsRef,
-                where('userInfo.id', '==', potentialCard.userInfo.id),
-                limit(10)
-            );
-            const querySnapshot = await getDocs(q)
-            let documents = querySnapshot.docs.map((doc) => doc.data());
+            let documents = await getUserTrips(potentialCard.userInfo.id)
             let missedYouIn = []
             let seeYouIn = []
             let headedTo = []
@@ -68,7 +61,6 @@ const HomeScreen = () => {
             )
             detailedCards.push({ ...potentialCard, seeYouIn, missedYouIn, headedTo })
         }));
-
         return detailedCards
     }
 

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import PictureSignup from './PictureSignup';
 import TravelSignup from './TravelSignup';
@@ -10,15 +10,14 @@ import Interests from './Interests'
 import { ProgressBar } from 'react-native-paper'
 import { TEXT_STYLES } from '../style';
 import getUserData from '../hooks/userData';
-import { doc, updateDoc, collection, addDoc, getDoc } from 'firebase/firestore';
-import { database } from '../firebase';
+import { getUserDoc, updateUserDoc } from '../services/UserQueries';
+import { addTripDoc } from '../services/TripCollectionQueries'
 import moment from 'moment';
 const LAST_PAGE = 6
 
 const ModalScreen = () => {
     const { setUserData } = getUserData()
     const { user } = useAuth()
-    const { userData } = getUserData()
     const [birthDate, setBirthDate] = useState(new Date())
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [name, setName] = useState('')
@@ -35,7 +34,6 @@ const ModalScreen = () => {
         const updateUser = async () => {
             console.log("UPDATING USER")
             setUpdatingProfile(true)
-            const docRef = doc(database, "users", user.uid);
 
             const travelsWith = [];
 
@@ -51,19 +49,13 @@ const ModalScreen = () => {
                 travelsWith,
                 interests
             };
-
-            await updateDoc(docRef, newData);
-            const userDocRef = doc(database, "users", user.uid);
-            const userDocSnapshot = await getDoc(userDocRef);
-            const userData = userDocSnapshot.data();
+            await updateUserDoc(user.uid, newData)
+            const userData = await getUserDoc(user.uid)
             setUserData(userData)
-
-            const tripsCollectionRef = collection(database, "trips");
-            console.log("Your trips", trips)
-            for (let trip of trips) {
-                trip = { ...trip, userInfo: userData }
-                await addDoc(tripsCollectionRef, trip);
-            }
+            const promises = trips.map(async (trip) => {
+                await addTripDoc({ ...trip, userInfo: userData });
+            });
+            await Promise.all(promises);
             setUpdatingProfile(false)
         }
         if (page == LAST_PAGE) {

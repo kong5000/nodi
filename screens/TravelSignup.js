@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react'
 import Destination from '../components/Destination';
 import NextButton from '../components/NextButton';
 import { TEXT_STYLES } from '../style'
-import { collection, addDoc } from "firebase/firestore";
-import { database } from '../firebase';
 
 const TravelSignup = ({ setPage, setTrips, trips }) => {
     const [destinations, setDestinations] = useState([])
