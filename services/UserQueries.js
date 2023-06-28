@@ -32,6 +32,10 @@ export const addLike = async (uid, likedCard) => {
         .catch((error) => {
             console.error('Error creating pass document: ', error);
         });
+
+    // Check if user liked you back
+    let result = await likedBy(uid, likedCard.userInfo.id)
+    console.log(`liked by ${likedCard.userInfo.name}${result}}`)
 }
 
 export const getPasses = async (uid) => {
@@ -64,4 +68,16 @@ export const getLikedBy = async (uid) => {
     const querySnapshot = await getDocs(q)
     let likedBy = querySnapshot.docs.map((doc) => doc.data());
     return likedBy
-}  
+}
+
+const likedBy = async (uid, likedById) => {
+    const likesRef = collectionGroup(database, 'likes')
+    const q = query(likesRef,
+        where('id', '==', uid),
+        where('likedBy', '==', likedById),
+        limit(1)
+    )
+    const querySnapshot = await getDocs(q)
+    console.log(querySnapshot.docs.length)
+    return querySnapshot.docs.length
+}
