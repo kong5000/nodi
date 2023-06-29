@@ -50,14 +50,11 @@ export const addLike = async (userData, likedCard) => {
             displayName: userData.name,
             profilePicture: userData.pictures[0]
         }
-        
-        let members = {}
-        members[likedCard.userInfo.id] = true
-        members[userData.id] = true
+
         const newConversationData = {
             lastActive: new Date(),
             lastMesssage: '',
-            members,
+            members: [userData.id, likedCard.userInfo.id],
             memberInfo
         }
         addNewConversation(newConversationData)

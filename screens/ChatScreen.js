@@ -119,9 +119,12 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { addDoc, collection } from 'firebase/firestore'
+import { database } from '../firebase'
+import useAuth from '../hooks/useAuth'
 
-
-const ChatScreen = ({ setActivePartner }) => {
+const ChatScreen = ({ setActivePartner, activeConversation }) => {
+    const { user } = useAuth()
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
@@ -139,16 +142,17 @@ const ChatScreen = ({ setActivePartner }) => {
         ])
     }, [])
 
-    // const onSend = useCallback((messages = []) => {
-    //     setMessages(previousMessages =>
-    //         GiftedChat.append(previousMessages, messages),
-    //     )
-    // }, [])
-
     const onSend = useCallback(async (messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        const { _id, createdAt, text, user } = messages[0]
+        const { _id, createdAt, text } = messages[0]
         console.log(messages[0])
+        console.log(activeConversation.id)
+        await addDoc(collection(database, 'conversations', activeConversation.id, 'messages'), {
+            conversationId: activeConversation.id,
+            text,
+            author: user.uid,
+            createdAt: new Date()
+        })
         // addDoc(collection(database, 'chats'), {
         //     _id,
         //     createdAt,

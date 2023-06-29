@@ -4,7 +4,7 @@ import { auth } from '../firebase'
 import { SIZES, COLORS } from '../style'
 import moment from 'moment';
 
-const ChatRow = ({ conversationDetails, setActivePartner }) => {
+const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
 
@@ -38,6 +38,7 @@ const ChatRow = ({ conversationDetails, setActivePartner }) => {
 
     const onPress = async () => {
         setActivePartner(partnerInfo)
+        onChatRowPressed(conversationDetails)
     }
 
     return (

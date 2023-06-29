@@ -7,14 +7,22 @@ export const addNewConversation = async (data) => {
 }
 
 export const getConversations = async (uid) => {
-    console.log("AAHH")
     const convRef = collection(database, "conversations");
     const q = query(convRef,
-        where(`members.${uid}`, '==', true),
+        where('members', 'array-contains', uid),
         orderBy('lastActive', 'desc'),
     )
     const querySnapshot = await getDocs(q)
-    let conversations = querySnapshot.docs.map((doc) => doc.data());
+    let conversations = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
+    });
     console.log(conversations)
     return conversations
+}
+
+export const addChatMessage = async (convId) => {
+    const messagesRef = doc(database, 'conversations', convId, 'messages');
+    await addDoc(messagesRef, {hello: "world"});
 }
