@@ -3,7 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import { collection, addDoc, orderBy, query, onSnapshot, where, limit} from 'firebase/firestore'
 import { auth, database, sayHello } from '../firebase'
 
-const ChatScreen = () => {
+const ChatScreen = ({activePartner}) => {
     const [messages, setMessages] = useState([]);
 
     useLayoutEffect(() => {
@@ -14,6 +14,7 @@ const ChatScreen = () => {
         const conversationsQuery = query(
             conversationsRef,
             where(`members.${userId}`, '==', true),
+            where(`members.${activePartner.id}`, '==', true),
             orderBy('lastActive', 'desc'),
             limit(10)
         );

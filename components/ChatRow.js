@@ -4,7 +4,7 @@ import { auth } from '../firebase'
 import { SIZES, COLORS } from '../style'
 import moment from 'moment';
 
-const ChatRow = ({ conversationDetails }) => {
+const ChatRow = ({ conversationDetails, setActivePartner }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
 
@@ -36,11 +36,15 @@ const ChatRow = ({ conversationDetails }) => {
         console.log(conversationDetails)
     }, [conversationDetails])
 
+    const onPress = async () => {
+        setActivePartner(partnerInfo)
+    }
+
     return (
-        <TouchableOpacity style={styles.chatRow} key={conversationDetails.id}>
+        <TouchableOpacity style={styles.chatRow} key={conversationDetails.id} onPress={onPress}>
             {partnerInfo && <Image
                 style={styles.profilePicture}
-                source={{ uri: partnerInfo.profileUrl }} />}
+                source={{ uri: partnerInfo.profilePicture }} />}
             <View>
                 <Text style={styles.displayName}>{partnerInfo?.displayName}</Text>
                 <Text>{conversationDetails.lastMessage}</Text>

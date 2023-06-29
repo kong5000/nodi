@@ -39,21 +39,26 @@ export const addLike = async (userData, likedCard) => {
     let result = await likedBy(uid, likedCard.userInfo.id)
     if (result) {
         // Start a conversation
-        let members = {}
-        members[likedCard.userInfo.id] = {
+        let memberInfo = {}
+        memberInfo[likedCard.userInfo.id] = {
             id: likedCard.userInfo.id,
             displayName: likedCard.userInfo.name,
             profilePicture: likedCard.userInfo.pictures[0]
         }
-        members[userData.id] = {
+        memberInfo[userData.id] = {
             id: userData.id,
             displayName: userData.name,
             profilePicture: userData.pictures[0]
         }
+        
+        let members = {}
+        members[likedCard.userInfo.id] = true
+        members[userData.id] = true
         const newConversationData = {
             lastActive: new Date(),
             lastMesssage: '',
             members,
+            memberInfo
         }
         addNewConversation(newConversationData)
     }

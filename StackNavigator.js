@@ -24,7 +24,6 @@ const StackNavigator = () => {
                     <Stack.Group>
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Modal" component={ModalScreen} />
-                        <Stack.Screen name="Chat" component={ChatScreen} />
                         <Stack.Screen name="Conversations" component={ConversationScreen} />
                     </Stack.Group>
                 </>

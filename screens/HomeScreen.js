@@ -8,6 +8,7 @@ import { auth } from '../firebase'
 import Deck from '../components/Deck'
 import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
 import { getPasses, getLikedBy } from '../services/UserQueries'
+import { getConversations } from '../services/ConversationQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -17,7 +18,7 @@ const HomeScreen = () => {
     const [userTrips, setUserTrips] = useState([])
     const [passes, setPasses] = useState([])
 
-    const getUsersWhoLikedMe = async () =>{
+    const getUsersWhoLikedMe = async () => {
         const likes = await getLikedBy(user.uid)
         console.log(likes)
     }
@@ -25,7 +26,7 @@ const HomeScreen = () => {
     const getPassedUsers = async () => {
         const passedUsers = await getPasses(user.uid)
         const getPassedUserIds = (passedUsers) => {
-             return passedUsers.map(x => x.id)
+            return passedUsers.map(x => x.id)
         }
         setPasses(getPassedUserIds(passedUsers))
     }
@@ -123,12 +124,17 @@ const HomeScreen = () => {
             <TouchableOpacity onPress={getUsersWhoLikedMe}>
                 <Text>Get liked bys</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => getConversations(user.uid)}>
+                <Text>Get Conversations</Text>
+            </TouchableOpacity>
             {passes.map((pass) => <Text>{pass}</Text>)}
             <View style={styles.header}>
-                <TouchableOpacity>
-                    {userData && <Image style={styles.headerProfile} source={{ uri: userData.profileUrl }} />}
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Conversations')
+                }}>
+                    <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
                 </TouchableOpacity>
-                <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
+
             </View>
             {cards.length > 0 &&
                 <Deck cards={cards} />
