@@ -24,5 +24,33 @@ export const getConversations = async (uid) => {
 
 export const addChatMessage = async (convId) => {
     const messagesRef = doc(database, 'conversations', convId, 'messages');
-    await addDoc(messagesRef, {hello: "world"});
+    await addDoc(messagesRef, { hello: "world" });
+}
+
+export const getMessages = async (convId, uid) => {
+    const messagesRef = collection(database, 'conversations', convId, 'messages');
+    const q = query(messagesRef,
+        limit(15),
+        orderBy('createdAt', 'desc'),
+    )
+    const querySnapshot = await getDocs(q);
+    let count = 1
+    let messages = querySnapshot.docs.map((doc) => {
+        const data = doc.data()
+        data.createdAt = data.createdAt.toDate()
+        data._id = count
+        count += 1
+        if(data.author == uid){
+            data.user = {
+                _id: 1,
+            }
+        }else{
+            data.user = {
+                _id: 2,
+            }
+        }
+
+        return data
+    });
+    return messages
 }
