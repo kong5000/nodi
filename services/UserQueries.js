@@ -1,5 +1,6 @@
 import { doc, updateDoc, getDoc, setDoc, query, getDocs, where, limit, orderBy, collection, collectionGroup } from 'firebase/firestore'
 import { database } from '../firebase'
+import { addNewConversation } from './ConversationQueries';
 
 export const updateUserDoc = async (uid, newData) => {
     const docRef = doc(database, "users", uid);
@@ -22,7 +23,8 @@ export const addPass = async (uid, passedCard) => {
             console.error('Error creating pass document: ', error);
         });
 }
-export const addLike = async (uid, likedCard) => {
+export const addLike = async (userData, likedCard) => {
+    const uid = userData.id
     console.log("ADDING LIKE")
     const likeDocRef = doc(database, 'users', uid, 'likes', likedCard.userInfo.id);
     // setDoc(likeDocRef, { ...likedCard.userInfo, likedOn: new Date(), likedBy: uid })
@@ -35,6 +37,26 @@ export const addLike = async (uid, likedCard) => {
 
     // Check if user liked you back
     let result = await likedBy(uid, likedCard.userInfo.id)
+    if (result) {
+        // Start a conversation
+        let members = {}
+        members[likedCard.userInfo.id] = {
+            id: likedCard.userInfo.id,
+            displayName: likedCard.userInfo.name,
+            profilePicture: likedCard.userInfo.pictures[0]
+        }
+        members[userData.id] = {
+            id: userData.id,
+            displayName: userData.name,
+            profilePicture: userData.pictures[0]
+        }
+        const newConversationData = {
+            lastActive: new Date(),
+            lastMesssage: '',
+            members,
+        }
+        addNewConversation(newConversationData)
+    }
     console.log(`liked by ${likedCard.userInfo.name}${result}}`)
 }
 

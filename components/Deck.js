@@ -4,17 +4,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { addPass, addLike } from '../services/UserQueries';
 import React from 'react'
 import useAuth from '../hooks/useAuth';
+import getUserData from '../hooks/userData';
 
 const Deck = ({ cards }) => {
     const { user } = useAuth()
-    
+    const { userData } = getUserData()
+
     const swipeLeft = async (cardIndex) => {
         const passedUser = cards[cardIndex]
         await addPass(user.uid, passedUser)
     }
     const swipeRight = async (cardIndex) => {
         const likedUser = cards[cardIndex]
-        await addLike(user.uid, likedUser)
+        await addLike(userData, likedUser)
     }
 
     return (
