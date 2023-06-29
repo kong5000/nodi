@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
@@ -36,9 +36,24 @@ const ChatScreen = ({ setActivePartner, activeConversation }) => {
         const initializeMessages = async () => {
             let latest = await getMessages(activeConversation.id, user.uid)
             setMessages(latest)
-            console.log(latest)
         }
         initializeMessages()
+    }, [])
+
+    useLayoutEffect(() => {
+        const messagesRef = collection(database, 'conversations', activeConversation.id, 'messages')
+        const q = query(messagesRef)
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            querySnapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    // Handle new messages
+                    const messageData = change.doc.data();
+                    console.log("New message:", messageData);
+                }
+            });
+        });
+        return unsubscribe;
+
     }, [])
 
     const onSend = useCallback(async (messages = []) => {
