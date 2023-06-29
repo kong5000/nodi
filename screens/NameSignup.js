@@ -1,12 +1,16 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, View, Platform, SafeAreaView, Button } from 'react-native'
+import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import NextButton from '../components/NextButton';
 import { TEXT_STYLES } from '../style';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
+    const [showDate, setShowDate] = useState(false)
+
     const onChange = (event, selectedDate) => {
+        setShowDate(false)
         const currentDate = selectedDate;
         setBirthDate(currentDate);
     };
@@ -20,7 +24,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
         );
         return birth <= eighteenYearsAgo;
     }
-    const formIncomplete = !name || ! checkAge(birthDate)
+    const formIncomplete = !name || !checkAge(birthDate)
     return (
         <View style={styles.namePage}>
             <View style={styles.nameSection}>
@@ -34,17 +38,32 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
             <View style={styles.border}>
                 <Ionicons name="globe-outline" size={70} />
             </View>
-            <View style={styles.birthdayContainer}>
-                <Text style={TEXT_STYLES.header}>When were you born?</Text>
-                <DateTimePicker
-                    style={styles.datePicker}
-                    testID="dateTimePicker"
-                    value={birthDate}
-                    mode='date'
-                    onChange={onChange}
-                    display='spinner'
-                />
-            </View>
+            {(Platform.OS == 'android' && showDate) && <DateTimePicker
+                style={styles.datePicker}
+                testID="dateTimePicker"
+                value={birthDate}
+                mode='date'
+                onChange={onChange}
+                display='spinner'
+            />}
+            {Platform.OS == 'android' ?
+                <SafeAreaView>
+                    <Button onPress={() => setShowDate(true)} title="Show date picker!" />
+                </SafeAreaView>
+                :
+                <View style={styles.birthdayContainer}>
+                    <Text style={TEXT_STYLES.header}>When were you born?</Text>
+                    <DateTimePicker
+                        style={styles.datePicker}
+                        testID="dateTimePicker"
+                        value={birthDate}
+                        mode='date'
+                        onChange={onChange}
+                        display='spinner'
+                    />
+                </View>
+            }
+
             <NextButton index={0} setPage={setPage} formIncomplete={formIncomplete} incompleteMessage={!name ? "Please fill out a name" : "You must be at at least 18 to use this app"} />
         </View>
     )
