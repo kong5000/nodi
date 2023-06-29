@@ -84,7 +84,6 @@ const Deck = ({ cards }) => {
 
 export default Deck
 
-
 const styles = StyleSheet.create({
     detailIcon: {
         padding: 10

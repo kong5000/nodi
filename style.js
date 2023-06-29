@@ -14,7 +14,11 @@ const TEXT_STYLES = {
         fontWeight: 'bold',
         margin: 10,
         fontSize: 20,
-    }
+    },
+    displayName: {
+        fontWeight: "bold",
+        fontSize: 17
+    },
 }
 const SIZES = {
     profilePicture: 50,

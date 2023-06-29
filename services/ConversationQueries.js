@@ -38,7 +38,7 @@ export const getMessages = async (convId, uid) => {
     let messages = querySnapshot.docs.map((doc) => {
         const data = doc.data()
         data.createdAt = data.createdAt.toDate()
-        data._id = count
+        data._id = doc.id
         count += 1
         if(data.author == uid){
             data.user = {
@@ -49,7 +49,6 @@ export const getMessages = async (convId, uid) => {
                 _id: 2,
             }
         }
-
         return data
     });
     return messages

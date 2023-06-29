@@ -1,15 +1,21 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
 import { addDoc, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
-
-const ChatScreen = ({ setActivePartner, activeConversation }) => {
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { SIZES, TEXT_STYLES } from '../style'
+import { Menu, Button, Divider } from 'react-native-paper'
+const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
+    const [enableLoadEarlier, setEnableLoadEarlier] = useState([])
+    const [menuVisible, setMenuVisible] = useState(false)
+    const openMenu = () => setMenuVisible(true);
 
+    const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
         setMessages([
             {
@@ -35,6 +41,9 @@ const ChatScreen = ({ setActivePartner, activeConversation }) => {
         ])
         const initializeMessages = async () => {
             let latest = await getMessages(activeConversation.id, user.uid)
+            if (latest.length > 10) {
+                setEnableLoadEarlier(true)
+            }
             setMessages(latest)
         }
         initializeMessages()
@@ -53,7 +62,6 @@ const ChatScreen = ({ setActivePartner, activeConversation }) => {
             });
         });
         return unsubscribe;
-
     }, [])
 
     const onSend = useCallback(async (messages = []) => {
@@ -69,18 +77,67 @@ const ChatScreen = ({ setActivePartner, activeConversation }) => {
     }, [])
 
     return (
-        <>
+        <SafeAreaView style={{ height: "100%" }}>
+            <View style={styles.chatBar}>
+                <View style={styles.partnerDisplay}>
+                    <TouchableOpacity style={{display:'flex', flexDirection:'row'}}onPress={() => {
+                        setActivePartner(null)
+                    }}>
+                        <Ionicons name="arrow-back-outline" size={32} />
+                        <Image style={styles.profilePicture} source={{ uri: activePartner.profilePicture }} />
+                    </TouchableOpacity>
+                    <Text style={styles.displayName}>{activePartner.displayName}</Text>
+                </View>
+                <Menu
+                    visible={menuVisible}
+                    onDismiss={closeMenu}
+                    anchor={<TouchableOpacity style={styles.menuIcon} onPress={openMenu}>
+                        <Ionicons name="menu-outline" size={32} />
+                    </TouchableOpacity>}>
+                    <Menu.Item onPress={() => { }} title="View Profile" />
+                    <Menu.Item onPress={() => { }} title="Mute Notifications" />
+                    <Menu.Item onPress={() => { }} title="Unmatch" />
+                    <Menu.Item onPress={() => { }} title="Block" />
+                    <Menu.Item onPress={() => { }} title="Report" />
+                </Menu>
+            </View>
+
             <GiftedChat
+                loadEarlier={enableLoadEarlier}
                 messages={messages}
                 onSend={messages => onSend(messages)}
                 user={{
                     _id: 1,
                 }}
             />
-            <TouchableOpacity onPress={() => setActivePartner(null)}><Text>Hello</Text>
-            </TouchableOpacity>
-            <Text>Hello</Text>
-        </>
+        </SafeAreaView>
     )
 }
 export default ChatScreen
+
+const styles = StyleSheet.create({
+    partnerDisplay: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    chatBar: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: "100%",
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    profilePicture: {
+        width: SIZES.profilePicture,
+        height: SIZES.profilePicture,
+        borderRadius: SIZES.profilePicture / 2,
+        marginRight: 10
+    },
+    menuIcon: {
+        marginRight: 15
+    },
+    displayName: {
+        ...TEXT_STYLES.displayName
+    }
+})
