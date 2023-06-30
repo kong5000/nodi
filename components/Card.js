@@ -1,39 +1,45 @@
 import { Image, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import Swiper from 'react-native-deck-swiper'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { addPass, addLike } from '../services/UserQueries';
 import React from 'react'
-import useAuth from '../hooks/useAuth';
-import getUserData from '../hooks/userData';
 
-const Card = ({card}) => {
+const Card = ({ card }) => {
+    const calculateAge = (dateOfBirth) => {
+        var today = new Date();
+        var birthDate = new Date(dateOfBirth);
+
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
     return (
         <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
             <TouchableOpacity activeOpacity={1}>
                 <View style={styles.card}>
                     <View style={styles.cardImageContainer} >
-                        <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} />
-                        <View
-                            style={{
-                                position: 'absolute',
-                                bottom: 20,
-                                minWidth: 100,
-                                borderRadius: 20,
-                                backgroundColor: 'white',
-                                display: 'flex',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Text style={{
-                                fontSize: 25,
-
-                            }}>HELLO</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardSummary}>
-                        <View style={styles.cardNameLocation}>
-                            <Text style={styles.text}>{card.userInfo.name}, {card.userInfo.age}</Text>
+                        <Image
+                            style={styles.cardImage}
+                            source={{ uri: card.userInfo.pictures[0] }}
+                        />
+                        <View style={styles.pictureOverlay} >
+                            <View style={styles.matchDaysBubble}>
+                                <Text style={{ fontSize: 15, padding: 10 }}>
+                                    10 Days
+                                </Text>
+                            </View>
+                            <View style={{ display: 'flex', alignItems: 'center' }}>
+                                <Text style={{
+                                    fontSize: 35,
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                    marginTop: 10
+                                }}>{card.userInfo.name}, {calculateAge(card.userInfo.birthDate)}
+                                </Text>
+                            </View>
                         </View>
                     </View>
                     <View style={styles.userDetailsContainer}>
@@ -51,7 +57,6 @@ const Card = ({card}) => {
                                     <Text style={styles.cityText}>{city}</Text>
                                 </View>
                             )}
-
                         </View>
                     </View>
                     <View style={styles.travelMatches}>
@@ -73,6 +78,19 @@ const Card = ({card}) => {
 export default Card
 
 const styles = StyleSheet.create({
+    matchDaysBubble: {
+        minWidth: 100,
+        borderRadius: 20,
+        backgroundColor: '#90EE90',
+        display: 'flex',
+        alignItems: 'center'
+    },
+    pictureOverlay: {
+        position: 'absolute',
+        bottom: 30,
+        display: 'flex',
+        alignItems: 'center'
+    },
     detailIcon: {
         padding: 10
     },
@@ -147,14 +165,7 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25
     },
-    cardStack: {
-        display: 'flex',
-    },
-    screen: {
-        flex: 1
-    },
-    container: {
-    },
+
     card: {
         display: "flex",
         justifyContent: "center",
@@ -177,16 +188,15 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         marginTop: 2
     },
-    cardImageContainer:{
+    cardImageContainer: {
         width: "100%",
         display: 'flex',
         alignItems: 'center'
     },
     cardImage: {
-        height: 450,
+        height: 600,
         width: "100%",
         resizeMode: 'stretch',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
+        borderRadius: 20
     }
 })

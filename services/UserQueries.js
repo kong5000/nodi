@@ -57,9 +57,10 @@ export const addLike = async (userData, likedCard) => {
             members: [userData.id, likedCard.userInfo.id],
             memberInfo
         }
-        addNewConversation(newConversationData)
+        await addNewConversation(newConversationData)
+        return likedCard.userInfo
     }
-    console.log(`liked by ${likedCard.userInfo.name}${result}}`)
+    return null
 }
 
 export const getPasses = async (uid) => {

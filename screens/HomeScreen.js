@@ -11,6 +11,10 @@ import { getPasses, getLikedBy } from '../services/UserQueries'
 import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
 import CityFilter from '../components/CityFilter'
+
+
+const DEBUG = false
+
 const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
@@ -18,7 +22,6 @@ const HomeScreen = () => {
     const [cards, setCards] = useState([])
     const [userTrips, setUserTrips] = useState([])
     const [passes, setPasses] = useState([])
-
     const getUsersWhoLikedMe = async () => {
         const likes = await getLikedBy(user.uid)
         console.log(likes)
@@ -112,35 +115,41 @@ const HomeScreen = () => {
                 navigation.replace("Login")
             })
     }
-
+    const handleMatch = (matchedUserInfo) => {
+        navigation.navigate('Match')
+    }
     return (
         <SafeAreaView style={styles.screen}>
-            <TouchableOpacity onPress={getYourTrips}>
-                <Text>Get Trips</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={testQuery}>
-                <Text>Get Matches</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={getPassedUsers}>
-                <Text>Get passes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={getUsersWhoLikedMe}>
-                <Text>Get liked bys</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => getConversations(user.uid)}>
-                <Text>Get Conversations</Text>
-            </TouchableOpacity>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('Conversations')
-                }}>
-                    <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
+            {DEBUG && <>
+                <TouchableOpacity onPress={getYourTrips}>
+                    <Text>Get Trips</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={testQuery}>
+                    <Text>Get Matches</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={getPassedUsers}>
+                    <Text>Get passes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={getUsersWhoLikedMe}>
+                    <Text>Get liked bys</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => getConversations(user.uid)}>
+                    <Text>Get Conversations</Text>
+                </TouchableOpacity>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('Conversations')
+                    }}>
+                        <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
+                    </TouchableOpacity>
 
-            </View>
+                </View>
+
+            </>}
+
             <CityFilter />
             {cards.length > 0 &&
-                <Deck cards={cards} />
+                <Deck cards={cards} handleMatch={handleMatch} />
             }
         </SafeAreaView>
     )
