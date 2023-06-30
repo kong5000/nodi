@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
-import { addDoc, collection, onSnapshot, query } from 'firebase/firestore'
+import { addDoc, collection, onSnapshot, query, doc } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SIZES, TEXT_STYLES } from '../style'
 import { Menu, Button, Divider } from 'react-native-paper'
+
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
@@ -58,6 +59,16 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                     // Handle new messages
                     const messageData = change.doc.data();
                     console.log("New message:", messageData);
+                    console.log(change.doc.id)
+                    let newMessage = {
+                        _id: change.doc.id,
+                        text: messageData.text,
+                        createdAt: messageData.createdAt.toDate(),
+                        user: {
+                            _id: messageData.author == user.uid ? 1 : 2
+                        }
+                    }
+                    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
                 }
             });
         });
@@ -65,7 +76,6 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
     }, [])
 
     const onSend = useCallback(async (messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         const { text } = messages[0]
         await addDoc(collection(database, 'conversations', activeConversation.id, 'messages'), {
             conversationId: activeConversation.id,
@@ -80,7 +90,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         <SafeAreaView style={{ height: "100%" }}>
             <View style={styles.chatBar}>
                 <View style={styles.partnerDisplay}>
-                    <TouchableOpacity style={{display:'flex', flexDirection:'row'}}onPress={() => {
+                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }} onPress={() => {
                         setActivePartner(null)
                     }}>
                         <Ionicons name="arrow-back-outline" size={32} />
