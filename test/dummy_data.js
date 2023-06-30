@@ -1,49 +1,232 @@
 export const DUMMY_DATA = [
-    {
-        userInfo: {
-            id: 1,
-            displayName: 'Ashley',
-            age: 20,
-            home: 'Mexico City, Mexico',
-            pictures: ['https://picsum.photos/450/800'],
-            occupation: 'Reasearch Scientist',
 
-            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
-
-        }
-        , seeYouIn: [
-            "Paris",
-            "London",
-            "New York"
-        ],
-        missedYouIn: [
-            "St. Petersburg",
-            "Skopje"
-        ],
-        headedTo: [],
+     {
+        "city": "Montreal, QC, Canada",
+        "dates": [
+            "2023-06-27",
+            "2023-06-28",
+            "2023-06-29",
+            "2023-06-30",
+          ],
+        "dayFrom": "2023-06-27",
+        "dayTo": "2023-06-30",
+        "headedTo": [],
+        "missedYouIn": [],
+        "seeYouIn": [
+            "Montreal, QC, Canada",
+          ],
+        "userInfo":  {
+        "birthDate": "1999-06-27",
+        "email": "c@c.com",
+        "gender": "male",
+        "id": "p2t8BgTMjCVONJyxBqueMZdPOVj2",
+        "interests": [
+            "Festivals",
+            "Road Trips",
+            "Markets",
+            "Architecture",
+            ],
+        "joinDate":  {
+        "nanoseconds": 556000000,
+        "seconds": 1687912479,
     },
-    {
-        userInfo: {
-            id: 2,
-            displayName: 'Barry',
-            age: 30,
-            home: "Vancouver, Canada",
-            pictures: ['https://picsum.photos/450/800'],
-            occupation: 'Lawyer',
-
-            blurb: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus lacus in egestas iaculis. Proin in turpis eget velit luctus rhoncus suscipit commodo tellus. Aliquam sed ornare leo. Aliquam eget sapien vitae velit fringilla efficitur."
-        }
-        , seeYouIn: [
-            "Paris",
-            "London",
-            "New York"
-        ],
-        missedYouIn: [
-            "Budapest",
-            "Istanbul",
-            "Riga"
-        ],
-        headedTo: [],
-
-    }
-]
+    "lastActive":  {
+        "nanoseconds": 556000000,
+        "seconds": 1687912479,
+    },
+    "name": "Charlie",
+    "pictures":  {
+        "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_p2t8BgTMjCVONJyxBqueMZdPOVj2?alt=media&token=6b3b0e60-486d-4a8e-989c-f540f597ffb0",
+        "2": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_2_p2t8BgTMjCVONJyxBqueMZdPOVj2?alt=media&token=3bf7b1ef-1b4a-4573-9888-d9f6b272c831",
+    },
+    "travelsWith": [
+    "male",
+    "female",
+    "nonbinary",
+    "other",
+            ],
+          },
+        },
+         {
+    "city": "Montreal, QC, Canada",
+        "dates": [
+            "2023-06-28",
+            "2023-06-29",
+            "2023-06-30",
+            "2023-07-01",
+            "2023-07-02",
+            "2023-07-03",
+            "2023-07-04",
+            "2023-07-05",
+            "2023-07-06",
+            "2023-07-07",
+            "2023-07-08",
+            "2023-07-09",
+            "2023-07-10",
+            "2023-07-11",
+            "2023-07-12",
+            "2023-07-13",
+          ],
+            "dayFrom": "2023-06-28",
+                "dayTo": "2023-07-13",
+                    "headedTo": [],
+                        "missedYouIn": [],
+                            "seeYouIn": [
+                                "Vancouver, BC, Canada",
+                                "Montreal, QC, Canada",
+          ],
+                                "userInfo":  {
+        "birthDate": "1999-06-28",
+            "email": "d@d.com",
+                "gender": "female",
+                    "id": "zjvhqx505pTPKMXNM7Jr5S7XyJm1",
+                        "interests": [
+                            "Festivals",
+                            "Fine Dining",
+                            "Pubs and Bars",
+                            "Walking Tours",
+            ],
+                            "joinDate":  {
+            "nanoseconds": 704000000,
+                "seconds": 1687995655,
+            },
+        "lastActive":  {
+            "nanoseconds": 704000000,
+                "seconds": 1687995655,
+            },
+        "name": "Denise",
+            "pictures":  {
+            "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=4607b0bd-8266-4c73-964e-c7fcc57da971",
+                "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=08841a3d-31a9-449d-b521-334c2dac725c",
+            },
+        "travelsWith": [
+            "male",
+            "female",
+            "nonbinary",
+            "other",
+            ],
+          },
+},
+         {
+    "city": "Vancouver, BC, Canada",
+        "dates": [
+            "2023-06-01",
+            "2023-06-02",
+            "2023-06-03",
+            "2023-06-04",
+            "2023-06-05",
+            "2023-06-06",
+            "2023-06-07",
+            "2023-06-08",
+            "2023-06-09",
+            "2023-06-10",
+            "2023-06-11",
+            "2023-06-12",
+            "2023-06-13",
+            "2023-06-14",
+            "2023-06-15",
+            "2023-06-16",
+            "2023-06-17",
+            "2023-06-18",
+            "2023-06-19",
+            "2023-06-20",
+            "2023-06-21",
+            "2023-06-22",
+            "2023-06-23",
+            "2023-06-24",
+            "2023-06-25",
+            "2023-06-26",
+            "2023-06-27",
+            "2023-06-28",
+            "2023-06-29",
+            "2023-06-30",
+            "2023-07-01",
+          ],
+            "dayFrom": "2023-06-01",
+                "dayTo": "2023-07-01",
+                    "headedTo": [],
+                        "missedYouIn": [],
+                            "seeYouIn": [
+                                "Vancouver, BC, Canada",
+                                "Montreal, QC, Canada",
+          ],
+                                "userInfo":  {
+        "birthDate": "1999-06-28",
+            "email": "d@d.com",
+                "gender": "female",
+                    "id": "zjvhqx505pTPKMXNM7Jr5S7XyJm1",
+                        "interests": [
+                            "Festivals",
+                            "Fine Dining",
+                            "Pubs and Bars",
+                            "Walking Tours",
+            ],
+                            "joinDate":  {
+            "nanoseconds": 704000000,
+                "seconds": 1687995655,
+            },
+        "lastActive":  {
+            "nanoseconds": 704000000,
+                "seconds": 1687995655,
+            },
+        "name": "Denise",
+            "pictures":  {
+            "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=4607b0bd-8266-4c73-964e-c7fcc57da971",
+                "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=08841a3d-31a9-449d-b521-334c2dac725c",
+            },
+        "travelsWith": [
+            "male",
+            "female",
+            "nonbinary",
+            "other",
+            ],
+          },
+},
+         {
+    "city": "Vancouver, BC, Canada",
+        "dates": [
+            "2023-06-27",
+            "2023-06-28",
+          ],
+            "dayFrom": "2023-06-27",
+                "dayTo": "2023-06-28",
+                    "headedTo": [
+                        "São Paulo, State of São Paulo, Brazil",
+          ],
+                        "missedYouIn": [],
+                            "seeYouIn": [
+                                "Vancouver, BC, Canada",
+          ],
+                                "userInfo":  {
+        "birthDate": "1996-06-27",
+            "email": "b@b.com",
+                "gender": "male",
+                    "id": "v2lKW2J0AyTvofdi5aLiaRACCkf2",
+                        "interests": [
+                            "Walking Tours",
+                            "Beaches",
+                            "Parks and Nature",
+                            "Museums and Art",
+            ],
+                            "joinDate":  {
+            "nanoseconds": 144000000,
+                "seconds": 1687912174,
+            },
+        "lastActive":  {
+            "nanoseconds": 144000000,
+                "seconds": 1687912174,
+            },
+        "name": "Barry",
+            "pictures":  {
+            "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_v2lKW2J0AyTvofdi5aLiaRACCkf2?alt=media&token=f7295701-e571-4af3-84e0-956238c7e55b",
+                "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_v2lKW2J0AyTvofdi5aLiaRACCkf2?alt=media&token=eccae10e-d24f-4b8c-95ba-4d32f0ec13fc",
+            },
+        "travelsWith": [
+            "male",
+            "female",
+            "nonbinary",
+            "other",
+            ],
+          },
+},
+      ]

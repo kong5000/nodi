@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
@@ -9,7 +9,8 @@ import Deck from '../components/Deck'
 import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
 import { getPasses, getLikedBy } from '../services/UserQueries'
 import { getConversations } from '../services/ConversationQueries'
-
+import { DUMMY_DATA } from '../test/dummy_data'
+import CityFilter from '../components/CityFilter'
 const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
@@ -39,7 +40,8 @@ const HomeScreen = () => {
 
     useEffect(() => {
         // console.log(cards)
-    }, [cards])
+        setCards(DUMMY_DATA)
+    }, [])
 
     const filterDocuments = (potentialCards) => {
         // todo filter based on user prefrences
@@ -97,6 +99,7 @@ const HomeScreen = () => {
                 potentialMatches = [...potentialMatches, ...temp]
             }
             setCards(potentialMatches)
+            console.log(potentialMatches)
         } catch (err) {
             console.log(err)
             alert(err)
@@ -127,7 +130,6 @@ const HomeScreen = () => {
             <TouchableOpacity onPress={() => getConversations(user.uid)}>
                 <Text>Get Conversations</Text>
             </TouchableOpacity>
-            {passes.map((pass) => <Text>{pass}</Text>)}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => {
                     navigation.navigate('Conversations')
@@ -136,6 +138,7 @@ const HomeScreen = () => {
                 </TouchableOpacity>
 
             </View>
+            <CityFilter />
             {cards.length > 0 &&
                 <Deck cards={cards} />
             }

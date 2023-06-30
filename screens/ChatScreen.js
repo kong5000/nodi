@@ -18,28 +18,6 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-            {
-                _id: 2,
-                text: 'Hello developer 2',
-                createdAt: new Date(),
-                user: {
-                    _id: 1,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ])
         const initializeMessages = async () => {
             let latest = await getMessages(activeConversation.id, user.uid)
             if (latest.length > 10) {

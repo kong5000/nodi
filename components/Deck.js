@@ -5,7 +5,7 @@ import { addPass, addLike } from '../services/UserQueries';
 import React from 'react'
 import useAuth from '../hooks/useAuth';
 import getUserData from '../hooks/userData';
-
+import Card from './Card';
 const Deck = ({ cards }) => {
     const { user } = useAuth()
     const { userData } = getUserData()
@@ -22,6 +22,7 @@ const Deck = ({ cards }) => {
     return (
         <View style={styles.container}>
             <Swiper
+                cardHorizontalMargin={2}
                 onSwipedLeft={swipeLeft}
                 onSwipedRight={swipeRight}
                 animateCardOpacity={false}
@@ -31,51 +32,7 @@ const Deck = ({ cards }) => {
                 containerStyle={{ backgroundColor: 'transparent' }}
                 cards={cards}
                 renderCard={(card) =>
-                    <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
-                        <TouchableOpacity activeOpacity={1}>
-                            <View style={styles.card}>
-                                <Image style={styles.cardImage} source={{ uri: card.userInfo.pictures[0] }} />
-                                <View style={styles.cardSummary}>
-                                    <View style={styles.cardNameLocation}>
-                                        <Text style={styles.text}>{card.userInfo.name}, {card.userInfo.age}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.userDetailsContainer}>
-                                    <View style={styles.userDetail}>
-                                        <Ionicons
-                                            style={styles.detailIcon}
-                                            name="briefcase-outline" size={32} />
-                                    </View>
-                                </View>
-                                <View style={styles.travelMatches}>
-                                    <Text style={styles.text}>See You In</Text>
-                                    <View style={styles.cityMatches}>
-                                        {card.seeYouIn && card.seeYouIn.map((city) =>
-                                            <View key={city} style={styles.city}>
-                                                <Text style={styles.cityText}>{city}</Text>
-                                            </View>
-                                        )}
-
-                                    </View>
-                                </View>
-                                <View style={styles.travelMatches}>
-                                    <Text style={styles.text}>Missed You In</Text>
-                                    <View style={styles.cityMatches}>
-                                        {card.missedYouIn && card.missedYouIn.map((city) =>
-                                            <View key={city} style={styles.city}>
-                                                <Text style={styles.cityText}>{city}</Text>
-                                            </View>
-                                        )}
-                                    </View>
-                                </View>
-                                <View>
-                                    {/* <View>
-                                   <Text >{card.userInfo.blurb}</Text>
-                               </View> */}
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </ScrollView>
+                    <Card card={card} />
                 }
             />
         </View>
@@ -138,13 +95,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     scroll: {
-        height: 1000
+        height: 1000,
     },
     button: {
         backgroundColor: '#0782F9',
@@ -171,7 +123,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     container: {
-        flex: 1,
     },
     card: {
         display: "flex",
@@ -179,10 +130,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1,
         borderRadius: 20,
-        borderWidth: 4,
+        borderWidth: 2,
         borderColor: "#E8E8E8",
         justifyContent: "center",
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     text: {
         textAlign: "center",
@@ -194,6 +145,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         backgroundColor: "transparent",
         marginTop: 2
+    },
+    cardImageContainer: {
+        width: "100%",
+        display: 'flex',
+        alignItems: 'center'
     },
     cardImage: {
         height: 450,
