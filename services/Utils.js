@@ -1,6 +1,7 @@
 import { getTripMatches, getUserTrips } from './TripCollectionQueries'
 import { getPasses, getLikedBy, getUserLikes } from './UserQueries'
 import { getConversations } from './ConversationQueries'
+import { some } from 'lodash'
 
 const getPassedUsers = async (uid) => {
     const passedUsers = await getPasses(uid)
@@ -22,25 +23,31 @@ const filterDocuments = (potentialCards, passes, uid) => {
 const addUserDetails = async (potentialCards, userTrips) => {
     let detailedCards = []
     await Promise.all(potentialCards.map(async (potentialCard) => {
+        console.log(potentialCard)
         console.log(`Getting details for ${potentialCard.userInfo.name}`)
         let missedYouIn = []
         let seeYouIn = []
         let headedTo = []
-        userTrips.forEach((doc) => {
-            console.log(doc.city)
-            userTrips.forEach(trip => {
-                if (trip.city == doc.city) {
-                    if (trip.dayFrom <= doc.dayTo && trip.dayTo >= doc.dayFrom) {
-                        seeYouIn.push(doc.city)
-                    } else {
-                        missedYouIn.push(doc.city)
-                    }
+        userTrips.forEach(trip => {
+            let overLapDays = 0
+            if (trip.city == potentialCard.city) {
+                if (trip.dayFrom <= potentialCard.dayTo && trip.dayTo >= potentialCard.dayFrom) {
+                    potentialCard.dates.forEach(date => {
+                        if(trip.dates.includes(date)){
+                            console.log("included date", date, trip.city, potentialCard.city)
+                            overLapDays += 1
+                        }
+                    })
+                    seeYouIn.push(potentialCard.city)
                 } else {
-                    if (!headedTo.includes(doc.city)) {
-                        headedTo.push(doc.city)
-                    }
+                    missedYouIn.push(potentialCard.city)
                 }
-            })
+                potentialCard.daysMatching = overLapDays
+            } else {
+                if (!headedTo.includes(potentialCard.city)) {
+                    headedTo.push(potentialCard.city)
+                }
+            }
         })
         headedTo = headedTo.filter(city =>
             !missedYouIn.includes(city) && !seeYouIn.includes(city)
@@ -67,6 +74,23 @@ export const getCards = async (uid) => {
     for (let temp of tempMatches) {
         potentialMatches = [...potentialMatches, ...temp]
     }
+
+    // potentialMatches = potentialMatches.map(match => {
+    //     let daysMatched = 0
+    //     userTrips.forEach(userTrip => {
+    //         if (userTrip.city == match.city) {
+    //             match.dates.forEach(date => {
+    //                 if (userTrips.dates.includes(date)) {
+    //                     daysMatched += 1
+    //                 }
+    //             })
+    //             return { ...match, daysMatched }
+    //         }
+    //     })
+    // })
+    console.log("POTENTIAL MATCHES")
+    console.log(potentialMatches)
+    console.log("USER TRIPS", userTrips)
 
     return potentialMatches
 }

@@ -8,7 +8,6 @@ import Deck from '../components/Deck'
 import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
-import CityFilter from '../components/CityFilter'
 import Footer from '../components/Footer'
 
 const DEBUG = false
@@ -31,11 +30,12 @@ const HomeScreen = () => {
     useEffect(() => {
         const queryData = async () => {
             try {
-                // let potentialMatches = await getCards(user.uid)
-                potentialMatches = DUMMY_DATA
+                let potentialMatches = await getCards(user.uid)
+                // potentialMatches = DUMMY_DATA
                 setCards(potentialMatches)
             } catch (err) {
-                alert(err)
+                // alert(err)
+                console.log(err)
             }
         }
         queryData()
@@ -63,7 +63,7 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                 </View>
             </>}
-            {cards.length > 0 &&
+            {(cards && cards.length > 0) &&
                 <Deck cards={cards} handleMatch={handleMatch} />
             }
             <Footer/>

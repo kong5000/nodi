@@ -12,14 +12,14 @@ const Deck = ({ cards, handleMatch }) => {
 
     const swipeLeft = async (cardIndex) => {
         const passedUser = cards[cardIndex]
-        await addPass(user.uid, passedUser)
+        // await addPass(user.uid, passedUser)
     }
     const swipeRight = async (cardIndex) => {
         const likedUser = cards[cardIndex]
-        const likedBack = await addLike(userData, likedUser)
-        if(likedBack){
-            handleMatch(likedBack)
-        }
+        // const likedBack = await addLike(userData, likedUser)
+        // if(likedBack){
+        //     handleMatch(likedBack)
+        // }
     }
 
     return (

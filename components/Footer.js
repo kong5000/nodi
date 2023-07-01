@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigation } from '@react-navigation/core'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
