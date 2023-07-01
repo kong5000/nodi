@@ -1,7 +1,5 @@
-import { Image, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, View} from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { addPass, addLike } from '../services/UserQueries';
 import React from 'react'
 import useAuth from '../hooks/useAuth';
 import getUserData from '../hooks/userData';

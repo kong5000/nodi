@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native'
+import React, { useState } from 'react'
 import ConversationList from '../components/ConversationList';
 import ChatScreen
     from './ChatScreen'

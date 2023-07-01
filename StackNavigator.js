@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import ChatScreen from './screens/ChatScreen';
 import ConversationScreen from './screens/ConversationsScreen';
 import useAuth from './hooks/useAuth';
 import ModalScreen from './screens/ModalScreen';
 import MatchScreen from './screens/MatchScreen';
-import Footer from './components/Footer';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {

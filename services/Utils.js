@@ -1,7 +1,6 @@
 import { getTripMatches, getUserTrips } from './TripCollectionQueries'
-import { getPasses, getLikedBy, getUserLikes } from './UserQueries'
-import { getConversations } from './ConversationQueries'
-import { some } from 'lodash'
+import { getPasses, getUserLikes } from './UserQueries'
+
 
 const getPassedUsers = async (uid) => {
     const passedUsers = await getPasses(uid)
@@ -22,7 +21,6 @@ const filterDocuments = (potentialCards, passes, uid) => {
 
 const addUserDetails = async (potentialCards, userTrips) => {
     let detailedCards = []
-    let matchMap = {}
     potentialCards.map(async (potentialCard) => {
         console.log(potentialCard)
         console.log(`Getting details for ${potentialCard.userInfo.name}`)

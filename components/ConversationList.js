@@ -1,7 +1,5 @@
 import { View, Text, FlatList } from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
-import { collection, orderBy, query, onSnapshot, where, limit } from 'firebase/firestore'
-import { auth, database } from '../firebase'
 import ChatRow from './ChatRow'
 import { getConversations } from '../services/ConversationQueries'
 import useAuth from '../hooks/useAuth'
