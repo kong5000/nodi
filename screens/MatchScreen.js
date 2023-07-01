@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/core'
 
 const MatchScreen = () => {
+  const navigation = useNavigation()
   return (
-    <View>
+    <SafeAreaView>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Text>HOME</Text>
+      </TouchableOpacity>
       <Text>MatchScreen</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 

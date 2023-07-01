@@ -7,6 +7,7 @@ import ConversationScreen from './screens/ConversationsScreen';
 import useAuth from './hooks/useAuth';
 import ModalScreen from './screens/ModalScreen';
 import MatchScreen from './screens/MatchScreen';
+import Footer from './components/Footer';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {

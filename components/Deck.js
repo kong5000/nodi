@@ -46,6 +46,8 @@ export default Deck
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'red',
+        borderColor: 'black'
     },
 
     text: {

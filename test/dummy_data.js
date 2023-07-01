@@ -34,7 +34,7 @@ export const DUMMY_DATA = [
         "nanoseconds": 556000000,
         "seconds": 1687912479,
     },
-    "name": "Charlie",
+    "name": "CharlieDUMMY",
     "pictures":  {
         "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_p2t8BgTMjCVONJyxBqueMZdPOVj2?alt=media&token=6b3b0e60-486d-4a8e-989c-f540f597ffb0",
         "2": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_2_p2t8BgTMjCVONJyxBqueMZdPOVj2?alt=media&token=3bf7b1ef-1b4a-4573-9888-d9f6b272c831",
@@ -94,7 +94,7 @@ export const DUMMY_DATA = [
             "nanoseconds": 704000000,
                 "seconds": 1687995655,
             },
-        "name": "Denise",
+        "name": "DeniseDUMMY",
             "pictures":  {
             "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=4607b0bd-8266-4c73-964e-c7fcc57da971",
                 "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=08841a3d-31a9-449d-b521-334c2dac725c",
@@ -169,7 +169,7 @@ export const DUMMY_DATA = [
             "nanoseconds": 704000000,
                 "seconds": 1687995655,
             },
-        "name": "Denise",
+        "name": "DeniseDUMMY",
             "pictures":  {
             "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=4607b0bd-8266-4c73-964e-c7fcc57da971",
                 "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_zjvhqx505pTPKMXNM7Jr5S7XyJm1?alt=media&token=08841a3d-31a9-449d-b521-334c2dac725c",
@@ -216,7 +216,7 @@ export const DUMMY_DATA = [
             "nanoseconds": 144000000,
                 "seconds": 1687912174,
             },
-        "name": "Barry",
+        "name": "BarryDUMMY",
             "pictures":  {
             "0": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_0_v2lKW2J0AyTvofdi5aLiaRACCkf2?alt=media&token=f7295701-e571-4af3-84e0-956238c7e55b",
                 "1": "https://firebasestorage.googleapis.com/v0/b/react-native-test-8d90d.appspot.com/o/profile_picture_1_v2lKW2J0AyTvofdi5aLiaRACCkf2?alt=media&token=eccae10e-d24f-4b8c-95ba-4d32f0ec13fc",

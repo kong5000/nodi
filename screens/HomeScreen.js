@@ -1,113 +1,22 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, BackHandler } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
-import getUserData from '../hooks/userData'
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { auth } from '../firebase'
 import Deck from '../components/Deck'
-import { getTripMatches, getUserTrips } from '../services/TripCollectionQueries'
-import { getPasses, getLikedBy } from '../services/UserQueries'
 import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
+import { getCards } from '../services/Utils'
 import CityFilter from '../components/CityFilter'
-
+import Footer from '../components/Footer'
 
 const DEBUG = false
 
 const HomeScreen = () => {
     const { user } = useAuth()
-    const { userData } = getUserData()
     const navigation = useNavigation()
-    const [cards, setCards] = useState([])
-    const [userTrips, setUserTrips] = useState([])
-    const [passes, setPasses] = useState([])
-    const getUsersWhoLikedMe = async () => {
-        const likes = await getLikedBy(user.uid)
-        console.log(likes)
-    }
-
-    const getPassedUsers = async () => {
-        const passedUsers = await getPasses(user.uid)
-        const getPassedUserIds = (passedUsers) => {
-            return passedUsers.map(x => x.id)
-        }
-        setPasses(getPassedUserIds(passedUsers))
-    }
-
-    const getYourTrips = async () => {
-        const userId = user.uid
-        let documents = await getUserTrips(userId)
-        setUserTrips(documents)
-    }
-
-    useEffect(() => {
-        // console.log(cards)
-        setCards(DUMMY_DATA)
-    }, [])
-
-    const filterDocuments = (potentialCards) => {
-        // todo filter based on user prefrences
-        // Filter out the users own card if it shows up
-        // Filter out users passed on
-        let userRemoved = potentialCards.filter(potentialCard => potentialCard.userInfo.id != auth.currentUser.uid)
-        userRemoved = userRemoved.filter(potentialCard => !passes.includes(potentialCard.userInfo.id))
-        return userRemoved
-    }
-
-    const addUserDetails = async (potentialCards) => {
-        let detailedCards = []
-        await Promise.all(potentialCards.map(async (potentialCard) => {
-            console.log(`Getting details for ${potentialCard.userInfo.name}`)
-            let documents = await getUserTrips(potentialCard.userInfo.id)
-            let missedYouIn = []
-            let seeYouIn = []
-            let headedTo = []
-            documents.forEach((doc) => {
-                console.log(doc.city)
-                userTrips.forEach(trip => {
-                    if (trip.city == doc.city) {
-                        if (trip.dayFrom <= doc.dayTo && trip.dayTo >= doc.dayFrom) {
-                            seeYouIn.push(doc.city)
-                        } else {
-                            missedYouIn.push(doc.city)
-                        }
-                    } else {
-                        if (!headedTo.includes(doc.city)) {
-                            headedTo.push(doc.city)
-                        }
-                    }
-                })
-            })
-            headedTo = headedTo.filter(city =>
-                !missedYouIn.includes(city) && !seeYouIn.includes(city)
-            )
-            detailedCards.push({ ...potentialCard, seeYouIn, missedYouIn, headedTo })
-        }));
-        return detailedCards
-    }
-
-    const testQuery = async () => {
-        try {
-            if (userTrips.length == 0) return
-            let tempMatches = []
-            for (trip of userTrips) {
-                let documents = await getTripMatches(trip)
-                documents = filterDocuments(documents)
-                potentialCards = await addUserDetails(documents)
-                tempMatches.push(potentialCards)
-            }
-            let potentialMatches = []
-            for (let temp of tempMatches) {
-                potentialMatches = [...potentialMatches, ...temp]
-            }
-            setCards(potentialMatches)
-            console.log(potentialMatches)
-        } catch (err) {
-            console.log(err)
-            alert(err)
-        }
-    }
+    const [cards, setCards] = useState(DUMMY_DATA)
 
     const handleSignOut = () => {
         auth.signOut()
@@ -118,13 +27,23 @@ const HomeScreen = () => {
     const handleMatch = (matchedUserInfo) => {
         navigation.navigate('Match')
     }
+
+    useEffect(() => {
+        const queryData = async () => {
+            try {
+                // let potentialMatches = await getCards(user.uid)
+                potentialMatches = DUMMY_DATA
+                setCards(potentialMatches)
+            } catch (err) {
+                alert(err)
+            }
+        }
+        queryData()
+    }, [])
     return (
-        <SafeAreaView style={styles.screen}>
+        <View style={styles.screen}>
             {DEBUG && <>
-                <TouchableOpacity onPress={getYourTrips}>
-                    <Text>Get Trips</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={testQuery}>
+                <TouchableOpacity onPress={getCards}>
                     <Text>Get Matches</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={getPassedUsers}>
@@ -142,16 +61,13 @@ const HomeScreen = () => {
                     }}>
                         <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
                     </TouchableOpacity>
-
                 </View>
-
             </>}
-
-            <CityFilter />
             {cards.length > 0 &&
                 <Deck cards={cards} handleMatch={handleMatch} />
             }
-        </SafeAreaView>
+            <Footer/>
+        </View>
     )
 }
 
@@ -188,7 +104,7 @@ const styles = StyleSheet.create({
         borderRadius: 25
     },
     screen: {
-        flex: 1
+        flex: 1,
     },
     container: {
         flex: 1,

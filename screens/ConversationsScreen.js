@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 import ConversationList from '../components/ConversationList';
 import ChatScreen
     from './ChatScreen'
+import Footer from '../components/Footer';
 const ConversationScreen = () => {
     const [activePartner, setActivePartner] = useState(null)
     const [activeConversation, setActiveConversation] = useState(null)

@@ -5,7 +5,8 @@ import { auth, database } from '../firebase'
 import ChatRow from './ChatRow'
 import { getConversations } from '../services/ConversationQueries'
 import useAuth from '../hooks/useAuth'
-const ConversationList = ({setActivePartner, setActiveConversation, activeConversation}) => {
+import Footer from './Footer'
+const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
     const [conversations, setConversations] = useState([]);
 
@@ -16,22 +17,23 @@ const ConversationList = ({setActivePartner, setActiveConversation, activeConver
         }
         loadConversations()
     }, [])
-    const onChatRowPressed = async(conversationDetails) => {
+    const onChatRowPressed = async (conversationDetails) => {
         setActiveConversation(conversationDetails)
     }
 
     return (
-        conversations.length > 0 ? (
-            <FlatList
-                data={conversations}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => <ChatRow onChatRowPressed={onChatRowPressed} setActiveConversation={setActiveConversation} conversationDetails={item} setActivePartner={setActivePartner} />}
-            />
-        ) : (
-            <View>
-                <Text>You have no conversations at the moment</Text>
-            </View>
-        )
+        <>
+            {conversations.length > 0 ?
+                <FlatList
+                    data={conversations}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => <ChatRow onChatRowPressed={onChatRowPressed} setActiveConversation={setActiveConversation} conversationDetails={item} setActivePartner={setActivePartner} />}
+                /> : <View>
+                    <Text>You have no conversations at the moment</Text>
+                </View>
+            }
+            <Footer />
+        </>
     )
 }
 

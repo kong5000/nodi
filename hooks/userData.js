@@ -40,7 +40,6 @@ export const UserDataProvider = ({ children }) => {
                 console.log("Doc exists")
                 if (checkUserDocumentComplete(userDoc)) {
                     setUserData(userDoc.data())
-                    console.log("User data is", userDoc.data())
                     navigation.navigate('Home')
                 } else {
                     navigation.navigate('Modal')
