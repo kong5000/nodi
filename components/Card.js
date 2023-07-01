@@ -52,9 +52,10 @@ const Card = ({ card }) => {
                     <View style={styles.travelMatches}>
                         <Text style={styles.text}>See You In</Text>
                         <View style={styles.cityMatches}>
-                            {card.seeYouIn && card.seeYouIn.map((city) =>
-                                <View key={city} style={styles.city}>
-                                    <Text style={styles.cityText}>{city}</Text>
+                            {card.seeYouIn && card.seeYouIn.map((cityDate) =>
+                                <View key={cityDate.city} style={styles.city}>
+                                    <Text style={styles.cityText}>{cityDate.city}</Text>
+                                    {cityDate.matchDays && cityDate.matchDays.map(date => <Text>{date}</Text>)}
                                 </View>
                             )}
                         </View>

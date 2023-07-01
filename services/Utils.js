@@ -22,7 +22,8 @@ const filterDocuments = (potentialCards, passes, uid) => {
 
 const addUserDetails = async (potentialCards, userTrips) => {
     let detailedCards = []
-    await Promise.all(potentialCards.map(async (potentialCard) => {
+    let matchMap = {}
+    potentialCards.map(async (potentialCard) => {
         console.log(potentialCard)
         console.log(`Getting details for ${potentialCard.userInfo.name}`)
         let missedYouIn = []
@@ -32,13 +33,14 @@ const addUserDetails = async (potentialCards, userTrips) => {
             let overLapDays = 0
             if (trip.city == potentialCard.city) {
                 if (trip.dayFrom <= potentialCard.dayTo && trip.dayTo >= potentialCard.dayFrom) {
+                    let matchDays = []
                     potentialCard.dates.forEach(date => {
-                        if(trip.dates.includes(date)){
-                            console.log("included date", date, trip.city, potentialCard.city)
+                        if (trip.dates.includes(date)) {
+                            matchDays.push(date)
                             overLapDays += 1
                         }
                     })
-                    seeYouIn.push(potentialCard.city)
+                    seeYouIn.push({city: potentialCard.city, matchDays})
                 } else {
                     missedYouIn.push(potentialCard.city)
                 }
@@ -53,7 +55,7 @@ const addUserDetails = async (potentialCards, userTrips) => {
             !missedYouIn.includes(city) && !seeYouIn.includes(city)
         )
         detailedCards.push({ ...potentialCard, seeYouIn, missedYouIn, headedTo })
-    }));
+    })
     return detailedCards
 }
 export const getCards = async (uid) => {
@@ -74,7 +76,17 @@ export const getCards = async (uid) => {
     for (let temp of tempMatches) {
         potentialMatches = [...potentialMatches, ...temp]
     }
-
+    let matchMap = {}
+    potentialMatches.forEach(match => {
+        if(!matchMap[match.userInfo.id]){
+            matchMap[match.userInfo.id] = match
+        }else{
+            matchMap[match.userInfo.id].seeYouIn.push(match.seeYouIn[0])
+            matchMap[match.userInfo.id].daysMatching += match.daysMatching
+        }
+    })
+    console.log(matchMap, "matchmap")
+    potentialMatches = Object.values(matchMap)
     // potentialMatches = potentialMatches.map(match => {
     //     let daysMatched = 0
     //     userTrips.forEach(userTrip => {
