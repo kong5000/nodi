@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
@@ -16,6 +16,7 @@ const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
     const [cards, setCards] = useState(DUMMY_DATA)
+    const accessToken = "IGQVJXMUtFbVNBZAF9ZAZA3RGUDFlSVNEcUpxUXBFdFF3OFl0MkZA4bWdPMGRrSXpKNDlrNWFyRDFpdEJWOGp4anFuU3Q2RGpkY2d2WkNfS01rMDZAqYmFvUURMdmhZALTZA6cEUxTWs3ZAnVZAV2o5SC1mbXFEcgZDZD"
 
     const handleSignOut = () => {
         auth.signOut()
@@ -66,7 +67,7 @@ const HomeScreen = () => {
             {(cards && cards.length > 0) &&
                 <Deck cards={cards} handleMatch={handleMatch} />
             }
-            <Footer/>
+            <Footer />
         </View>
     )
 }
