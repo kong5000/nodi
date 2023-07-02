@@ -24,11 +24,6 @@ export const getConversations = async (uid) => {
     return conversations
 }
 
-export const addChatMessage = async (convId) => {
-    const messagesRef = doc(database, 'conversations', convId, 'messages');
-    await addDoc(messagesRef, { hello: "world" });
-}
-
 export const getMessages = async (convId, uid) => {
     const messagesRef = collection(database, 'conversations', convId, 'messages');
     const q = query(messagesRef,
@@ -68,4 +63,24 @@ export const deleteConversation = async (documentId) => {
     } catch (err) {
         console.log(err)
     }
+}
+
+export const addChatMessage = async (text, conversationId, authorId) => {
+    await addDoc(collection(database, 'conversations', conversationId, 'messages'), {
+        conversationId: conversationId,
+        text,
+        author: authorId,
+        createdAt: new Date()
+    })
+
+    await updateConversationLastMessage(conversationId, authorId, text)
+}
+
+export const updateConversationLastMessage = async (conversationId, authorId, lastMessage) => {
+    const documentRef = doc(database, 'conversations', conversationId);
+    await updateDoc(documentRef, {
+        lastMessage,
+        lastAuthor: authorId,
+        lastActive: new Date(),
+    })
 }

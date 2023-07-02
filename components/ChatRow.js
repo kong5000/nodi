@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { SIZES, COLORS } from '../style'
 import moment from 'moment';
+import useAuth from '../hooks/useAuth';
 
 const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
-
+    const { user } = useAuth()
     const formatDate = (date) => {
         const now = moment();
         const sentDate = moment(date);
@@ -48,6 +49,7 @@ const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) =>
                 source={{ uri: partnerInfo.profilePicture }} />}
             <View>
                 <Text style={styles.displayName}>{partnerInfo?.displayName}</Text>
+                {conversationDetails.lastAuthor == user.uid && <Text>You:</Text>}
                 <Text>{conversationDetails.lastMessage}</Text>
             </View>
             <Text style={styles.timestamp}>{date}</Text>

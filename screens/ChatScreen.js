@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
-import { addDoc, collection, onSnapshot, query, doc } from 'firebase/firestore'
+import { addDoc, collection, onSnapshot, query, doc, updateDoc } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
@@ -9,6 +9,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { SIZES, TEXT_STYLES } from '../style'
 import { Menu, Portal, Modal, Button } from 'react-native-paper'
 import { deleteConversation } from '../services/ConversationQueries'
+import { addChatMessage } from '../services/ConversationQueries'
 
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
@@ -60,14 +61,9 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     const onSend = useCallback(async (messages = []) => {
         const { text } = messages[0]
-        await addDoc(collection(database, 'conversations', activeConversation.id, 'messages'), {
-            conversationId: activeConversation.id,
-            text,
-            author: user.uid,
-            createdAt: new Date()
-        })
-
+        await addChatMessage(text, activeConversation.id, user.uid)
     }, [])
+    
     const unMatch = async () => {
         await deleteConversation(activeConversation.id)
         console.log("UNMATCHEd")

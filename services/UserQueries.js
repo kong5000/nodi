@@ -53,7 +53,10 @@ export const addLike = async (userData, likedCard) => {
 
         const newConversationData = {
             lastActive: new Date(),
-            lastMesssage: '',
+            lastMesssage: {
+                author: "",
+                message: ""
+            },
             members: [userData.id, likedCard.userInfo.id],
             memberInfo
         }
