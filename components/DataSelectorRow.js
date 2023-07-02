@@ -18,14 +18,18 @@ const DateSelectorRow = ({ enabled,
 
     const onConfirm = React.useCallback(
         ({ startDate, endDate }) => {
-            console.log(endDate)
+
             if (!endDate || !startDate) {
                 alert("Please select both a start and end date")
             } else {
-                setDayFrom(moment(startDate).format('YYYY-MM-DD'))
-                setDayTo(moment(endDate).format('YYYY-MM-DD'))
-                setOpen(false);
-                setRange({ startDate, endDate });
+                if (moment(endDate).diff(moment(startDate), 'days') > 180) {
+                    alert("Trips must be less than 6 months")
+                }else{
+                    setDayFrom(moment(startDate).format('YYYY-MM-DD'))
+                    setDayTo(moment(endDate).format('YYYY-MM-DD'))
+                    setOpen(false);
+                    setRange({ startDate, endDate });
+                }
             }
         },
         [setOpen, setRange]
