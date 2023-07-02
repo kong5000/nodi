@@ -1,9 +1,11 @@
-import { doc, updateDoc, getDoc, deleteDoc, query, getDocs, where, limit, orderBy, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc, setDoc, deleteDoc, query, getDocs, where, limit, orderBy, collection, addDoc } from 'firebase/firestore'
 import { database } from '../firebase'
 
-export const addNewConversation = async (data) => {
-    const convRef = collection(database, "conversations");
-    await addDoc(convRef, data);
+export const addNewConversation = async (data, userIds) => {
+    const sortedIds = userIds.sort();
+    const documentId = sortedIds.join("");
+    const documentRef = doc(database, "conversations", documentId);
+    await setDoc(documentRef, data)
 }
 
 export const getConversations = async (uid) => {

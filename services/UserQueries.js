@@ -57,7 +57,7 @@ export const addLike = async (userData, likedCard) => {
             members: [userData.id, likedCard.userInfo.id],
             memberInfo
         }
-        await addNewConversation(newConversationData)
+        await addNewConversation(newConversationData, [userData.id, likedCard.userInfo.id])
         return likedCard.userInfo
     }
     return null

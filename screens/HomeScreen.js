@@ -16,7 +16,6 @@ const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
     const [cards, setCards] = useState(DUMMY_DATA)
-    const accessToken = "IGQVJXMUtFbVNBZAF9ZAZA3RGUDFlSVNEcUpxUXBFdFF3OFl0MkZA4bWdPMGRrSXpKNDlrNWFyRDFpdEJWOGp4anFuU3Q2RGpkY2d2WkNfS01rMDZAqYmFvUURMdmhZALTZA6cEUxTWs3ZAnVZAV2o5SC1mbXFEcgZDZD"
 
     const handleSignOut = () => {
         auth.signOut()
