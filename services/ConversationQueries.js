@@ -1,4 +1,4 @@
-import { doc, updateDoc, getDoc, setDoc, query, getDocs, where, limit, orderBy, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc, getDoc, deleteDoc, query, getDocs, where, limit, orderBy, collection, addDoc } from 'firebase/firestore'
 import { database } from '../firebase'
 
 export const addNewConversation = async (data) => {
@@ -40,11 +40,11 @@ export const getMessages = async (convId, uid) => {
         data.createdAt = data.createdAt.toDate()
         data._id = doc.id
         count += 1
-        if(data.author == uid){
+        if (data.author == uid) {
             data.user = {
                 _id: 1,
             }
-        }else{
+        } else {
             data.user = {
                 _id: 2,
             }
@@ -52,4 +52,18 @@ export const getMessages = async (convId, uid) => {
         return data
     });
     return messages
+}
+
+export const deleteConversation = async (documentId) => {
+
+    // Create a reference to the document
+    const documentRef = doc(database, "conversations", documentId);
+
+    // Delete the document
+    try {
+        await deleteDoc(documentRef)
+
+    } catch (err) {
+        console.log(err)
+    }
 }

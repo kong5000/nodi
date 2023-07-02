@@ -7,14 +7,19 @@ import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SIZES, TEXT_STYLES } from '../style'
-import { Menu, Button, Divider } from 'react-native-paper'
+import { Menu, Portal, Modal, Button } from 'react-native-paper'
+import { deleteConversation } from '../services/ConversationQueries'
 
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
     const [enableLoadEarlier, setEnableLoadEarlier] = useState([])
     const [menuVisible, setMenuVisible] = useState(false)
+    const [visible, setVisible] = useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
     const openMenu = () => setMenuVisible(true);
+    const containerStyle = { backgroundColor: 'white', padding: 20 };
 
     const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
@@ -63,9 +68,18 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         })
 
     }, [])
-
+    const unMatch = async () => {
+        await deleteConversation(activeConversation.id)
+        console.log("UNMATCHEd")
+        setActivePartner(null)
+    }
     return (
         <SafeAreaView style={{ height: "100%" }}>
+            <Portal>
+                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <Button onPress={unMatch}>Confirm Unmatch?</Button>
+                </Modal>
+            </Portal>
             <View style={styles.chatBar}>
                 <View style={styles.partnerDisplay}>
                     <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }} onPress={() => {
@@ -84,7 +98,10 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                     </TouchableOpacity>}>
                     <Menu.Item onPress={() => { }} title="View Profile" />
                     <Menu.Item onPress={() => { }} title="Mute Notifications" />
-                    <Menu.Item onPress={() => { }} title="Unmatch" />
+                    <Menu.Item onPress={() => {
+                        setMenuVisible(false)
+                        showModal()
+                    }} title="Unmatch" />
                     <Menu.Item onPress={() => { }} title="Block" />
                     <Menu.Item onPress={() => { }} title="Report" />
                 </Menu>
