@@ -28,7 +28,7 @@ const Card = ({ card }) => {
                         <View style={styles.pictureOverlay} >
                             <View style={styles.matchDaysBubble}>
                                 <Text style={{ fontSize: 15, padding: 10 }}>
-                                    {card.daysMatching}
+                                    {card.daysMatching} days
                                 </Text>
                             </View>
                             <View style={{ display: 'flex', alignItems: 'center' }}>

@@ -42,6 +42,8 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                 style={styles.datePicker}
                 testID="dateTimePicker"
                 value={birthDate}
+                maximumDate={new Date()}
+                minimumDate={new Date('1930-01-01')}
                 mode='date'
                 onChange={onChange}
                 display='spinner'
@@ -60,6 +62,8 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                         mode='date'
                         onChange={onChange}
                         display='spinner'
+                        maximumDate={new Date()}
+                        minimumDate={new Date('1930-01-01')}
                     />
                 </View>
             }

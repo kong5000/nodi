@@ -1,10 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { Button } from 'react-native-paper';
 const moment = require('moment');
 
 import React, { useState, useEffect } from 'react'
 import { TEXT_STYLES } from '../style';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { DatePickerModal } from 'react-native-paper-dates';
 
 const DateSelectorRow = ({ enabled,
@@ -32,12 +30,6 @@ const DateSelectorRow = ({ enabled,
         },
         [setOpen, setRange]
     );
-    // useEffect(() => {
-    //     let {startDate, endDate}= range
-    //     if(startDate > endDate){
-    //         alert("Your end date is before your start date")
-    //     }
-    // },[range])
 
     return (
         <View style={hide ? styles.hiddenContainer : styles.container}>
