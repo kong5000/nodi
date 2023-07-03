@@ -39,6 +39,14 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                         return conv
                     }))
                 }
+                if (change.type === 'removed') {
+                    setConversations(prev => prev.filter(conv => {
+                        if(conv.id == change.doc.id){
+                            return false
+                        }
+                        return true
+                    }))
+                }
             });
         });
         return unsubscribe;
