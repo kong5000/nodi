@@ -72,7 +72,6 @@ const PictureSignup = ({ setPage, images, setImages }) => {
             updateLoadingStates(index, false)
         } catch (e) {
             updateLoadingStates(index, false)
-
             console.log(e)
             alert(e)
         }

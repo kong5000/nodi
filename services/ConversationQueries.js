@@ -66,10 +66,11 @@ export const deleteConversation = async (documentId) => {
     }
 }
 
-export const addChatMessage = async (text, conversationId, authorId) => {
+export const addChatMessage = async (text, image, conversationId, authorId) => {
     const docRef = await addDoc(collection(database, 'conversations', conversationId, 'messages'), {
         conversationId: conversationId,
         text,
+        image,
         author: authorId,
         createdAt: new Date()
     })

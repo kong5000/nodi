@@ -11,6 +11,10 @@ import { Menu, Portal, Modal, Button } from 'react-native-paper'
 import { deleteConversation } from '../services/ConversationQueries'
 import { addChatMessage } from '../services/ConversationQueries'
 import { storeInput } from '../services/LocalStorage'
+import { storage } from '../firebase'
+import * as ImagePicker from 'expo-image-picker';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
@@ -38,9 +42,9 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
     useLayoutEffect(() => {
         const messagesRef = collection(database, 'conversations', activeConversation.id, 'messages')
         // Only subcribe to chat messages that were made after opening the chat
-        const q = query(messagesRef,where("createdAt", ">", new Date()),
-                orderBy('createdAt', 'desc'),
-                limit(1))
+        const q = query(messagesRef, where("createdAt", ">", new Date()),
+            orderBy('createdAt', 'desc'),
+            limit(1))
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             querySnapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
@@ -52,7 +56,8 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                         createdAt: messageData.createdAt.toDate(),
                         user: {
                             _id: messageData.author == user.uid ? 1 : 2
-                        }
+                        },
+                        image: messageData.image
                     }
                     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
                 }
@@ -63,7 +68,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     const onSend = useCallback(async (messages = []) => {
         const { text } = messages[0]
-        await addChatMessage(text, activeConversation.id, user.uid)
+        await addChatMessage(text, null, activeConversation.id, user.uid)
     }, [])
 
     const unMatch = async () => {
@@ -71,8 +76,43 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         console.log("UNMATCHEd")
         setActivePartner(null)
     }
+
+    const pickImage = async (index) => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 4],
+                quality: 0,
+                allowsMultipleSelection: false,
+            });
+            if (!result.canceled) {
+                const uid = user.uid;
+                const filename = `chat_pic${"_" + uid}`;
+                const response = await fetch(result.uri);
+
+                const blob = await response.blob();
+                const storageRef = ref(storage, filename);
+
+                await uploadBytes(storageRef, blob);
+
+                const downloadURL = await getDownloadURL(storageRef);
+                console.log(downloadURL)
+                await addChatMessage('', downloadURL, activeConversation.id, user.uid)
+
+                return downloadURL
+            }
+        } catch (e) {
+            console.log(e)
+            alert(e)
+        }
+    }
+
     return (
         <SafeAreaView style={{ height: "100%" }}>
+            <TouchableOpacity onPress={pickImage}>
+                <Text>UPLOAD IMAGE</Text>
+            </TouchableOpacity>
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <Button onPress={unMatch}>Confirm Unmatch?</Button>
