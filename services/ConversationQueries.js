@@ -27,7 +27,7 @@ export const getConversations = async (uid) => {
 export const getMessages = async (convId, uid) => {
     const messagesRef = collection(database, 'conversations', convId, 'messages');
     const q = query(messagesRef,
-        limit(20),
+        limit(15),
         orderBy('createdAt', 'desc'),
     )
     const querySnapshot = await getDocs(q);

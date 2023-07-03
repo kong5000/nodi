@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
-import { where, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
+import { where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
@@ -27,7 +27,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         const initializeMessages = async () => {
             // let latest = await getMessages(activeConversation.id, user.uid)
             let latest = await getMessages(activeConversation.id, user.uid)
-            if (latest.length > 15) {
+            if (latest.length >= 15) {
                 setEnableLoadEarlier(true)
             }
             setMessages(latest)
@@ -37,14 +37,15 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     useLayoutEffect(() => {
         const messagesRef = collection(database, 'conversations', activeConversation.id, 'messages')
-        const q = query(messagesRef, where("createdAt", ">", new Date(), orderBy('lastActive', 'desc')))
+        // Only subcribe to chat messages that were made after opening the chat
+        const q = query(messagesRef,where("createdAt", ">", new Date()),
+                orderBy('createdAt', 'desc'),
+                limit(1))
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             querySnapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
                     // Handle new messages
                     const messageData = change.doc.data();
-                    console.log("New message:", messageData);
-                    console.log(change.doc.id)
                     let newMessage = {
                         _id: change.doc.id,
                         text: messageData.text,
