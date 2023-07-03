@@ -9,6 +9,7 @@ import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
+import * as Location from 'expo-location';
 
 const DEBUG = false
 
@@ -16,6 +17,22 @@ const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
     const [cards, setCards] = useState(DUMMY_DATA)
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            console.log(location)
+            setLocation(location);
+        })();
+    }, []);
 
     const handleSignOut = () => {
         auth.signOut()

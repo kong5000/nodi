@@ -33,11 +33,9 @@ export const UserDataProvider = ({ children }) => {
 
     useEffect(() => {
         if (!user) return;
-        console.log("Getting user data")
         const getUserData = async () => {
             let userDoc = await getUserDoc(user.uid)
             if (userDoc.exists()) {
-                console.log("Doc exists")
                 if (checkUserDocumentComplete(userDoc)) {
                     setUserData(userDoc.data())
                     navigation.navigate('Home')
@@ -45,7 +43,6 @@ export const UserDataProvider = ({ children }) => {
                     navigation.navigate('Modal')
                 }
             } else {
-                console.log("No Doc making a new one")
 
                 const userData = {
                     email: user.email,
@@ -55,10 +52,8 @@ export const UserDataProvider = ({ children }) => {
                 };
                 try {
                     await setDoc(doc(database, 'users', user.uid), userData)
-                    console.log("Set doc complete")
                     const docRef = doc(database, 'users', user.uid);
                     const docSnap = await getDoc(docRef);
-                    console.log('User document created successfully!');
                     setUserData(docSnap.data())
                     navigation.navigate('Modal')
                 } catch (err) {
@@ -75,12 +70,9 @@ export const UserDataProvider = ({ children }) => {
 
         const unsubscribe = onSnapshot(userRef, (userSnapshot) => {
             if (userSnapshot.exists()) {
-                console.log("User data updated")
                 const userInfo = userSnapshot.data();
                 // Handle the user data
                 setUserData(userInfo)
-                console.log("User data is")
-                console.log(userInfo);
             }
         });
         return () => {

@@ -88,7 +88,10 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
             });
             if (!result.canceled) {
                 const uid = user.uid;
-                const filename = `chat_pic${"_" + uid}`;
+                var date = new Date();
+
+                var unixTimestamp = Math.floor(date.getTime() / 1000);
+                const filename = `chat_pic${"_" + uid + "_" + unixTimestamp}`;
                 const response = await fetch(result.uri);
 
                 const blob = await response.blob();
