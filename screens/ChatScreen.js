@@ -10,7 +10,7 @@ import { SIZES, TEXT_STYLES } from '../style'
 import { Menu, Portal, Modal, Button } from 'react-native-paper'
 import { deleteConversation } from '../services/ConversationQueries'
 import { addChatMessage } from '../services/ConversationQueries'
-
+import { storeInput } from '../services/LocalStorage'
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const storeInput = async (input) => {
+export const storeInput = async (input) => {
     try {
         // Get the existing inputs from AsyncStorage
         const existingInputs = await AsyncStorage.getItem('inputs');

@@ -78,42 +78,6 @@ const PictureSignup = ({ setPage, images, setImages }) => {
         }
     }
 
-    const uploadImageToBucket = async () => {
-        try {
-            const uid = user.uid;
-            const filename = `profile_picture_${uid}`;
-            const response = await fetch(imageUri);
-            const blob = await response.blob();
-            const storageRef = ref(storage, filename);
-            await uploadBytesResumable(storageRef, blob);
-            const downloadURL = await getDownloadURL(storageRef);
-            setImageBucketUrl(downloadURL)
-            console.log(downloadURL)
-
-        } catch (e) {
-            console.log(e)
-            alert(e)
-        }
-    }
-    const updateUserProfile = async () => {
-        try {
-            setUpdatingProfile(true)
-            await uploadImageToBucket()
-            const userRef = doc(database, 'users', user.uid);
-            await updateDoc(userRef, {
-                profilePicture: imageBucketUrl,
-                age: age,
-                job: job
-            });
-            setUpdatingProfile(false)
-            alert('updated profile successfully')
-            navigation.navigate("Home")
-        } catch (e) {
-            setUpdatingProfile(false)
-            console.log(e)
-            alert(e)
-        }
-    }
     return (
         <View style={styles.pictureSelection}>
             <Text style={TEXT_STYLES.header}>Add photos! (min 2)</Text>
