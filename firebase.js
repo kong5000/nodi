@@ -33,6 +33,6 @@ const auth = getAuth()
 const database = getFirestore(app)
 const storage = getStorage()
 const functions = getFunctions(app, 'us-central1')
-const sayHello = httpsCallable(functions, 'sayHello');
+const getMessagesFunction = httpsCallable(functions, 'getMessages');
 
-export { auth, analytics, database, storage, sayHello }
+export { auth, analytics, database, storage, getMessagesFunction }

@@ -27,11 +27,12 @@ export const getConversations = async (uid) => {
 export const getMessages = async (convId, uid) => {
     const messagesRef = collection(database, 'conversations', convId, 'messages');
     const q = query(messagesRef,
-        limit(15),
+        limit(20),
         orderBy('createdAt', 'desc'),
     )
     const querySnapshot = await getDocs(q);
     let count = 1
+    console.log(querySnapshot.metadata.fromCache )
     let messages = querySnapshot.docs.map((doc) => {
         const data = doc.data()
         data.createdAt = data.createdAt.toDate()
@@ -66,21 +67,22 @@ export const deleteConversation = async (documentId) => {
 }
 
 export const addChatMessage = async (text, conversationId, authorId) => {
-    await addDoc(collection(database, 'conversations', conversationId, 'messages'), {
+    const docRef = await addDoc(collection(database, 'conversations', conversationId, 'messages'), {
         conversationId: conversationId,
         text,
         author: authorId,
         createdAt: new Date()
     })
-
-    await updateConversationLastMessage(conversationId, authorId, text)
+    const messsageId = docRef.id
+    await updateConversationLastMessage(conversationId, authorId, text, messsageId)
 }
 
-export const updateConversationLastMessage = async (conversationId, authorId, lastMessage) => {
+export const updateConversationLastMessage = async (conversationId, authorId, lastMessage,messsageId) => {
     const documentRef = doc(database, 'conversations', conversationId);
     await updateDoc(documentRef, {
         lastMessage,
         lastAuthor: authorId,
         lastActive: new Date(),
+        lastMessageId : messsageId
     })
 }

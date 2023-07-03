@@ -18,7 +18,6 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
         loadConversations()
     }, [])
 
-
     useLayoutEffect(() => {
         const conversationRef = collection(database, 'conversations')
         const q = query(conversationRef,

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
-import { addDoc, collection, onSnapshot, query, doc, updateDoc } from 'firebase/firestore'
+import { where, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
@@ -25,8 +25,9 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
     const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
         const initializeMessages = async () => {
+            // let latest = await getMessages(activeConversation.id, user.uid)
             let latest = await getMessages(activeConversation.id, user.uid)
-            if (latest.length > 10) {
+            if (latest.length > 15) {
                 setEnableLoadEarlier(true)
             }
             setMessages(latest)
@@ -36,7 +37,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     useLayoutEffect(() => {
         const messagesRef = collection(database, 'conversations', activeConversation.id, 'messages')
-        const q = query(messagesRef)
+        const q = query(messagesRef, where("createdAt", ">", new Date(), orderBy('lastActive', 'desc')))
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             querySnapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
@@ -63,7 +64,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         const { text } = messages[0]
         await addChatMessage(text, activeConversation.id, user.uid)
     }, [])
-    
+
     const unMatch = async () => {
         await deleteConversation(activeConversation.id)
         console.log("UNMATCHEd")
