@@ -4,6 +4,8 @@ import ChatRow from './ChatRow'
 import { getConversations } from '../services/ConversationQueries'
 import useAuth from '../hooks/useAuth'
 import Footer from './Footer'
+import { collection, query, orderBy, where , onSnapshot, limit} from 'firebase/firestore'
+import { database } from '../firebase'
 const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
     const [conversations, setConversations] = useState([]);
@@ -15,6 +17,33 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
         }
         loadConversations()
     }, [])
+
+
+    useLayoutEffect(() => {
+        const conversationRef = collection(database, 'conversations')
+        const q = query(conversationRef,
+            where('members', 'array-contains', user.uid),
+            orderBy('lastActive', 'desc'),
+            limit(20))
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            querySnapshot.docChanges().forEach((change) => {
+                if (change.type === 'modified') {
+                    const conversationData = change.doc.data()
+                    setConversations(prev => prev.map(conv => {
+                        if(conv.id == change.doc.id){
+                            conv.lastMessage = conversationData.lastMessage
+                            conv.lastAuthor = conversationData.lastAuthor
+                            conv.lastActive = conversationData.lastActive
+                        }
+                        return conv
+                    }))
+                }
+            });
+        });
+        return unsubscribe;
+    }, [])
+
     const onChatRowPressed = async (conversationDetails) => {
         setActiveConversation(conversationDetails)
     }
