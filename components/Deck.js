@@ -22,22 +22,20 @@ const Deck = ({ cards, handleMatch }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Swiper
-                cardHorizontalMargin={2}
-                onSwipedLeft={swipeLeft}
-                onSwipedRight={swipeRight}
-                animateCardOpacity={false}
-                stackSize={2}
-                cardIndex={0}
-                verticalSwipe={false}
-                containerStyle={{ backgroundColor: 'transparent' }}
-                cards={cards}
-                renderCard={(card) =>
-                    <Card card={card} />
-                }
-            />
-        </View>
+        <Swiper
+            cardHorizontalMargin={2}
+            onSwipedLeft={swipeLeft}
+            onSwipedRight={swipeRight}
+            animateCardOpacity={false}
+            stackSize={2}
+            cardIndex={0}
+            verticalSwipe={false}
+            containerStyle={{ backgroundColor: 'transparent' }}
+            cards={cards}
+            renderCard={(card) =>
+                <Card card={card} />
+            }
+        />
     )
 }
 
@@ -45,8 +43,7 @@ export default Deck
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'red',
-        borderColor: 'black'
+        padding: 100
     },
 
     text: {

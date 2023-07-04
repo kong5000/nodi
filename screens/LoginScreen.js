@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
 import { COLORS } from '../style'
+import { Asset, useAssets } from 'expo-asset';
 
 const LoginScreen = () => {
+    const [assets, error] = useAssets([require('../assets/gradient.png')]);
     const [email, setEmail] = useState('')
     const [creatingAccount, setCreatingAccount] = useState(false)
     const [loggingIn, setloggingIn] = useState(false)
@@ -14,6 +16,10 @@ const LoginScreen = () => {
     const { userData } = getUserData()
     const navigation = useNavigation()
 
+    const testLogin = () => {
+        setEmail('a@a.com')
+        setPassword('password')
+    }
     useEffect(() => {
         if (userData) {
             setCreatingAccount(false)
@@ -52,46 +58,56 @@ const LoginScreen = () => {
             style={styles.container}
             behavior="padding"
         >
-            <View style={styles.inputContainer}>
-                {creatingAccount && <Text>Creating Your Account</Text>}
-                {loggingIn && <Text>Logging in </Text>}
-                <ActivityIndicator animating={creatingAccount} size="large" color="#ff0000" />
-                <ActivityIndicator animating={loggingIn} size="large" color="#00ff00" />
-                <TextInput
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={text => {
-                        setEmail(text)
-                    }}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Password"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={text => {
-                        setPassword(text)
-                    }}
-                    style={styles.input}
-                />
-            </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    onPress={handleLogin}
-                    style={[styles.button]}
-                >
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
+            <ImageBackground source={{ uri: Asset.fromModule(require("../assets/gradient.png")).uri }} resizeMode="cover" style={styles.image}>
 
-                <TouchableOpacity
-                    onPress={handleSignUp}
-                    style={[styles.button, styles.buttonOutline]}
-                >
-                    <Text style={styles.buttonOutlineText}>Register</Text>
-                </TouchableOpacity>
+                <View style={styles.inputContainer}>
+                    {creatingAccount && <Text>Creating Your Account</Text>}
+                    {loggingIn && <Text>Logging in </Text>}
+                    <ActivityIndicator animating={creatingAccount} size="large" color="#ff0000" />
+                    <ActivityIndicator animating={loggingIn} size="large" color="#00ff00" />
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={text => {
+                            setEmail(text)
+                        }}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder="Password"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={text => {
+                            setPassword(text)
+                        }}
+                        style={styles.input}
+                    />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={handleLogin}
+                        style={[styles.button]}
+                    >
+                        <Text style={styles.buttonText}>Login</Text>
+                    </TouchableOpacity>
 
-            </View>
-        </KeyboardAvoidingView>
+                    <TouchableOpacity
+                        onPress={handleSignUp}
+                        style={[styles.button, styles.buttonOutline]}
+                    >
+                        <Text style={styles.buttonOutlineText}>Register</Text>
+                    </TouchableOpacity>
+
+                </View>
+                <TouchableOpacity onPress={() => {
+                    testLogin()
+                    // handleLogin()
+                }}>
+                    <Text>DEBUG LOGIN</Text>
+                </TouchableOpacity>
+            </ImageBackground>
+
+        </KeyboardAvoidingView >
     )
 }
 
@@ -142,5 +158,12 @@ const styles = StyleSheet.create({
         color: '#0782F9',
         fontWeight: '700',
         fontSize: 16,
+    },
+    image: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+        width: "100%",
+        alignItems: 'center'
     },
 })

@@ -17,68 +17,74 @@ const Card = ({ card }) => {
     }
 
     return (
-        <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
-            <TouchableOpacity activeOpacity={1}>
-                <View style={styles.card}>
-                    <View style={styles.cardImageContainer} >
-                        <Image
-                            style={styles.cardImage}
-                            source={{ uri: card.userInfo.pictures[0] }}
-                        />
-                        <View style={styles.pictureOverlay} >
-                            <View style={styles.matchDaysBubble}>
-                                <Text style={{ fontSize: 15, padding: 10 }}>
-                                    {card.daysMatching} days
-                                </Text>
-                            </View>
-                            <View style={{ display: 'flex', alignItems: 'center' }}>
-                                <Text style={{
-                                    fontSize: 35,
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                    marginTop: 10
-                                }}>{card.userInfo.name}, {calculateAge(card.userInfo.birthDate)}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.userDetailsContainer}>
-                        <View style={styles.userDetail}>
-                            <Ionicons
-                                style={styles.detailIcon}
-                                name="briefcase-outline" size={32} />
-                        </View>
-                    </View>
-                    <View style={styles.travelMatches}>
-                        <Text style={styles.text}>See You In</Text>
-                        <View style={styles.cityMatches}>
-                            {card.seeYouIn && card.seeYouIn.map((cityDate) =>
-                                <View key={cityDate.city} style={styles.city}>
-                                    <Text style={styles.cityText}>{cityDate.city}</Text>
-                                    {cityDate.matchDays && cityDate.matchDays.map(date => <Text>{date}</Text>)}
+            <ScrollView key={card.userInfo.id} style={styles.scroll} showsVerticalScrollIndicator={false}>
+                <TouchableOpacity activeOpacity={1}>
+                    <View style={styles.card}>
+                        <View style={styles.cardImageContainer} >
+                            <Image
+                                style={styles.cardImage}
+                                source={{ uri: card.userInfo.pictures[0] }}
+                            />
+                            <View style={styles.pictureOverlay} >
+                                <View style={styles.matchDaysBubble}>
+                                    <Text style={{ fontSize: 15, padding: 10 }}>
+                                        {card.daysMatching} days
+                                    </Text>
                                 </View>
-                            )}
-                        </View>
-                    </View>
-                    <View style={styles.travelMatches}>
-                        <Text style={styles.text}>Missed You In</Text>
-                        <View style={styles.cityMatches}>
-                            {card.missedYouIn && card.missedYouIn.map((city) =>
-                                <View key={city} style={styles.city}>
-                                    <Text style={styles.cityText}>{city}</Text>
+                                <View style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Text style={{
+                                        fontSize: 35,
+                                        fontWeight: 'bold',
+                                        color: 'white',
+                                        marginTop: 10
+                                    }}>{card.userInfo.name}, {calculateAge(card.userInfo.birthDate)}
+                                    </Text>
                                 </View>
-                            )}
+                            </View>
+                        </View>
+                        <View style={styles.userDetailsContainer}>
+                            <View style={styles.userDetail}>
+                                <Ionicons
+                                    style={styles.detailIcon}
+                                    name="briefcase-outline" size={32} />
+                            </View>
+                        </View>
+                        <View style={styles.travelMatches}>
+                            <Text style={styles.text}>See You In</Text>
+                            <View style={styles.cityMatches}>
+                                {card.seeYouIn && card.seeYouIn.map((cityDate) =>
+                                    <View key={cityDate.city} style={styles.city}>
+                                        <Text style={styles.cityText}>{cityDate.city}</Text>
+                                        {cityDate.matchDays && cityDate.matchDays.map(date => <Text>{date}</Text>)}
+                                    </View>
+                                )}
+                            </View>
+                        </View>
+                        <View style={styles.travelMatches}>
+                            <Text style={styles.text}>Missed You In</Text>
+                            <View style={styles.cityMatches}>
+                                {card.missedYouIn && card.missedYouIn.map((city) =>
+                                    <View key={city} style={styles.city}>
+                                        <Text style={styles.cityText}>{city}</Text>
+                                    </View>
+                                )}
+                            </View>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>
-        </ScrollView>
+                </TouchableOpacity>
+            </ScrollView>
     )
 }
 
 export default Card
 
 const styles = StyleSheet.create({
+    cardContainer: {
+        // borderRadius: 50,
+        // backgroundColor: 'red',
+        // display: 'flex'
+        // // margin: 200
+    },  
     matchDaysBubble: {
         minWidth: 100,
         borderRadius: 20,
@@ -146,7 +152,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     scroll: {
-        height: 1000,
+        // height: 200,
+        marginBottom: 40
     },
     button: {
         backgroundColor: '#0782F9',
