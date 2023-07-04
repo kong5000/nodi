@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import NextButton from '../components/NextButton';
-import { TEXT_STYLES } from '../style';
+import { COLORS, TEXT_STYLES } from '../style';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
@@ -31,6 +31,7 @@ const NameSignup = ({ name, setName, setPage, setBirthDate, birthDate }) => {
                 <Text style={TEXT_STYLES.header}>What's your name?</Text>
                 <TextInput
                     style={styles.textInput}
+                    placeholderTextColor={COLORS.brightContrast}
                     placeholder='Add your first name'
                     onChangeText={(text) => setName(text)}
                 />
@@ -96,15 +97,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     textInput: {
-        backgroundColor: 'white',
-        borderRadius: 7,
-        height: 40,
-        padding: 10
+        backgroundColor: COLORS.mainTheme,
+        color: "white",
+        borderRadius: 30,
+        borderColor: COLORS.brightContrast,
+        borderWidth: 2,
+        padding: 12,
+        paddingLeft: 25,
+        fontSize: 23,
     },
     namePage: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: COLORS.mainTheme
     },
     updateButton: {
 

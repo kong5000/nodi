@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { TEXT_STYLES } from '../style'
+import { COLORS, TEXT_STYLES } from '../style'
 import NextButton from '../components/NextButton';
 
 const thingsToDo = [
@@ -78,26 +78,35 @@ export default Interests
 
 const styles = StyleSheet.create({
     activityText: {
-        fontSize: 17
-
+        color: COLORS.darkContrast,
+        fontSize: 17,
+        ...TEXT_STYLES.standard
     },
     interestsContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     activity: {
-        backgroundColor: 'white',
-        borderRadius: 20,
+        backgroundColor: COLORS.mainTheme,
+        borderColor: COLORS.brightContrast,
+        borderWidth: 2,
+        borderRadius: 30,
         margin: 10,
-        padding: 8,
+        padding: 15,
+        fontSize: 18,
+        fontWeight: "400",
+        color: "white",
+ 
     },
     activityDisabled: {
-        backgroundColor: 'green',
-        borderRadius: 20,
+        backgroundColor: "white",
+        borderWidth: 2,
+        borderRadius: 30,
         margin: 10,
-        padding: 8
+        padding: 15,
+        borderColor: "white"
     },
     updateButton: {
 

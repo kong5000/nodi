@@ -4,6 +4,7 @@ import { auth } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
+import { COLORS } from '../style'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -98,6 +99,7 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: COLORS.mainTheme,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

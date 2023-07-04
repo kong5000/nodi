@@ -8,7 +8,7 @@ import TravelWithGenderSignup from './TravelWithGenderSignup'
 import NameSignup from './NameSignup';
 import Interests from './Interests'
 import { ProgressBar } from 'react-native-paper'
-import { TEXT_STYLES } from '../style';
+import { COLORS, TEXT_STYLES } from '../style';
 import getUserData from '../hooks/userData';
 import { getUserDoc, updateUserDoc } from '../services/UserQueries';
 import { addTripDoc } from '../services/TripCollectionQueries'
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        backgroundColor: 'gold'
+        backgroundColor: COLORS.mainTheme
     },
     modalHeader: {
         fontWeight: 'bold',

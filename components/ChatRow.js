@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: COLORS.chatBackground,
+        backgroundColor: "white",
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 5,

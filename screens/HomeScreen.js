@@ -10,6 +10,8 @@ import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
 import * as Location from 'expo-location';
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { COLORS } from '../style'
 
 const DEBUG = false
 
@@ -58,7 +60,7 @@ const HomeScreen = () => {
         queryData()
     }, [])
     return (
-        <View style={styles.screen}>
+        <SafeAreaView style={styles.screen}>
             {DEBUG && <>
                 <TouchableOpacity onPress={getCards}>
                     <Text>Get Matches</Text>
@@ -84,7 +86,7 @@ const HomeScreen = () => {
                 <Deck cards={cards} handleMatch={handleMatch} />
             }
             <Footer />
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
     },
     screen: {
         flex: 1,
+        backgroundColor: COLORS.mainTheme
     },
     container: {
         flex: 1,

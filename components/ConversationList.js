@@ -1,11 +1,12 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, SafeAreaView } from 'react-native'
 import React, { useState, useLayoutEffect } from 'react'
 import ChatRow from './ChatRow'
 import { getConversations } from '../services/ConversationQueries'
 import useAuth from '../hooks/useAuth'
 import Footer from './Footer'
-import { collection, query, orderBy, where , onSnapshot, limit} from 'firebase/firestore'
+import { collection, query, orderBy, where, onSnapshot, limit } from 'firebase/firestore'
 import { database } from '../firebase'
+
 const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
     const [conversations, setConversations] = useState([]);
@@ -30,7 +31,7 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                 if (change.type === 'modified') {
                     const conversationData = change.doc.data()
                     setConversations(prev => prev.map(conv => {
-                        if(conv.id == change.doc.id){
+                        if (conv.id == change.doc.id) {
                             conv.lastMessage = conversationData.lastMessage
                             conv.lastAuthor = conversationData.lastAuthor
                             conv.lastActive = conversationData.lastActive
@@ -40,7 +41,7 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                 }
                 if (change.type === 'removed') {
                     setConversations(prev => prev.filter(conv => {
-                        if(conv.id == change.doc.id){
+                        if (conv.id == change.doc.id) {
                             return false
                         }
                         return true
@@ -66,6 +67,7 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                     <Text>You have no conversations at the moment</Text>
                 </View>
             }
+            <Text>{conversations.length}</Text>
             <Footer />
         </>
     )

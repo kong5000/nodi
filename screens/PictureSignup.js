@@ -3,9 +3,9 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react'
 import PictureButton from '../components/PictureButton';
 import NextButton from '../components/NextButton';
-import { TEXT_STYLES } from '../style'
+import { COLORS, TEXT_STYLES } from '../style'
 import { auth, storage, database } from '../firebase';
-import { collection, onSnapshot, updateDoc, doc } from 'firebase/firestore';
+import { updateDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const PictureSignup = ({ setPage, images, setImages }) => {
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     pictureSelection: {
         height: "100%",
         width: "100%",
+        backgroundColor: COLORS.mainTheme
     },
     mainPictureContainer: {
         display: 'flex',
