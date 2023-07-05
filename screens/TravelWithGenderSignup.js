@@ -3,7 +3,7 @@ import { Checkbox } from 'react-native-paper';
 import { Switch } from 'react-native-paper';
 import React, { useState } from 'react'
 import NextButton from '../components/NextButton';
-import { TEXT_STYLES } from '../style';
+import { COLORS, TEXT_STYLES, THEMES } from '../style';
 const TravelWithGenderSignup = (
     {
         setTravelWithMen,
@@ -39,11 +39,13 @@ const TravelWithGenderSignup = (
         <View style={styles.radioContainer}>
             <Text style={TEXT_STYLES.header}>Who would you prefer to travel with?</Text>
             <View style={styles.switchRow}>
-                <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
+                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} color={COLORS.brightContrast}
+                style={{marginLeft:10}}
+                ></Switch>
                 <Text style={TEXT_STYLES.radioLabel}>Everyone</Text>
             </View>
             <View >
-                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => {
                     setTravelWithMen(!travelWithMen)
                     setIsSwitchOn(false)
                 }}>
@@ -55,9 +57,11 @@ const TravelWithGenderSignup = (
                             setTravelWithMen(!travelWithMen)
                             setIsSwitchOn(false)
                         }}
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => {
                     setTravelWithWomen(!travelWithWomen)
                     setIsSwitchOn(false)
                 }}>
@@ -69,9 +73,11 @@ const TravelWithGenderSignup = (
                             setTravelWithWomen(!travelWithWomen)
                             setIsSwitchOn(false)
                         }}
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => {
                     setTravelWithNonbinary(!travelWithNonBinary)
                     setIsSwitchOn(false)
                 }}>
@@ -83,9 +89,11 @@ const TravelWithGenderSignup = (
                             setTravelWithNonbinary(!travelWithNonBinary)
                             setIsSwitchOn(false)
                         }}
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => {
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => {
                     setTravelWithOther(!travelWithOther)
                     setIsSwitchOn(false)
                 }}>
@@ -97,6 +105,8 @@ const TravelWithGenderSignup = (
                             setTravelWithOther(!travelWithOther)
                             setIsSwitchOn(false)
                         }}
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                     />
                 </TouchableOpacity>
             </View>
@@ -143,14 +153,12 @@ const styles = StyleSheet.create({
         color: 'gray'
     },
     switchRow: {
+        ...THEMES.displayTheme,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white',
         justifyContent: 'space-between',
-        margin: 5,
         padding: 5,
-        borderRadius: 8
     },
 
 });

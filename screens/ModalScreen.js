@@ -67,7 +67,7 @@ const ModalScreen = () => {
             <View style={styles.progressBar}>
                 <ProgressBar progress={page / 5} color='black' />
             </View>
-            {page == 0 && <NameSignup
+            {page == 110 && <NameSignup
                 birthDate={birthDate}
                 setBirthDate={setBirthDate}
                 setName={setName}
@@ -95,7 +95,7 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 4 && <TravelSignup setTrips={setTrips} trips={trips} setPage={setPage} />}
+            {page == 0 && <TravelSignup setTrips={setTrips} trips={trips} setPage={setPage} />}
             {page == 5 && <Interests interests={interests} setInterests={setInterests} setPage={setPage} />}
             {(page == 6 && updatingProfile) &&
                 <>

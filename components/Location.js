@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React, { useRef, useEffect } from 'react'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { PLACES_API_KEY } from "@env"
+import { COLORS, TEXT_STYLES, THEMES } from '../style';
 
 const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, location, setLocation, updateLocation }) => {
     const ref = useRef()
@@ -23,10 +24,10 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
 
                     }}>
                     <View style={styles.dummySearch}>
-                        <Text style={styles.dummyText}>
+                        {location && <Text style={styles.dummyText}>
                             {location}
-                        </Text>
-                        {!location && <Text style={styles.dummySearchText}>
+                        </Text>}
+                        {!location && <Text style={TEXT_STYLES.searchBarText}>
                             Search for a city
                         </Text>}
 
@@ -36,10 +37,30 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                 <View style={searchVisible ? {} : { display: 'none' }}
                 >
                     <GooglePlacesAutocomplete
+                        styles={{
+                            textInput: {
+                                ...TEXT_STYLES.searchBarInput
+                            },
+                            listView: {
+                                borderRadius: 20,
+                                borderWidth: 2,
+                                borderColor: COLORS.brightContrast,
+                                backgroundColor: COLORS.mainTheme
+                            },
+                            row: {
+                                backgroundColor: COLORS.mainTheme,
+                                borderColor: COLORS.brightContrast,
+                                // ...TEXT_STYLES.searchBarText
+
+                            },
+                            description: {
+                                ...TEXT_STYLES.searchBarText
+                            }
+                        }}
                         ref={ref}
                         height={200}
                         listViewDisplayed={false}
-                        placeholder='Search for a city'
+                        placeholder=''
                         onPress={(data, details = null) => {
                             setHideDates(false)
                             setLocation(data.description)
@@ -74,27 +95,26 @@ const styles = StyleSheet.create({
         flex: 0.5
     },
     dummySearch: {
-        display: 'flex',
-        backgroundColor: 'white',
-        borderRadius: 6,
-        width: "100%",
+        ...TEXT_STYLES.searchBarInput,
         // marginLeft: "10%",
         // marginRight: "10%",
-        justifyContent: 'center',
-        height: 47
-    },
-    dummySearchText: {
-        color: 'grey',
-        opacity: 0.5,
-        fontSize: 15,
-        paddingBottom: 16,
-        paddingLeft: 10
+        // height: 47,
+        // paddingBottom: 5
     },
     dummyText: {
-        color: 'black',
-        fontSize: 15,
+        color: 'white',
+        fontFamily: 'Montserrat_400Regular',
         // paddingBottom: 16,
+        fontSize: 20,
         paddingLeft: 10
+    },
+    dummySearchText: {
+        ...TEXT_STYLES.standard
+        // color: 'red',
+        // fontFamily: 'Montserrat_400Regular',
+        // fontSize: 20,
+        // paddingLeft: 10,
+        // paddingBottom: 15
     },
     dateSelectorRow: {
         display: 'flex',

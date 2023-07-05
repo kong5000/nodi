@@ -1,12 +1,13 @@
 import { StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react'
+import { COLORS } from '../style';
 
 const PictureButton = ({ onPress, images, size, index, loading }) => {
     return (
         <TouchableOpacity onPress={() => onPress(index)} style={size == "large" ? styles.imageContainer : styles.imageContainerSmall}>
             {loading ?
-                <ActivityIndicator animating={true} size="large" color="#ff0000" />
+                <ActivityIndicator animating={true} size="large" color={COLORS.darkContrast} />
                 :
                 images[index] ?
                     <Image
@@ -14,7 +15,7 @@ const PictureButton = ({ onPress, images, size, index, loading }) => {
                         source={{ uri: images[index] }}
                     />
                     :
-                    <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} />
+                    <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} style={{color: COLORS.brightContrast}} />
             }
         </TouchableOpacity>
     )
@@ -36,16 +37,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '45%',
         borderRadius: 20,
-        backgroundColor: 'white',
-        borderColor: 'black'
+        borderColor: COLORS.brightContrast,
+        borderWidth: 3
+
     },
     imageContainerSmall: {
         aspectRatio: 1, // Maintain a 1:1 aspect ratio for the container
         justifyContent: 'center',
         alignItems: 'center',
-        width: '27%',
+        width: '30%',
         borderRadius: 20,
-        backgroundColor: 'white',
+        borderColor: COLORS.brightContrast,
+        borderWidth: 3
+
     },
     modalHeader: {
         fontWeight: 'bold',
@@ -63,7 +67,5 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         resizeMode: 'cover', // Resize the image to cover the container
         borderRadius: 20,
-        borderColor: "black",
-        borderWidth: 3
     },
 });

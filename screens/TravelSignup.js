@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-nati
 import React, { useState, useEffect } from 'react'
 import Destination from '../components/Destination';
 import NextButton from '../components/NextButton';
-import { TEXT_STYLES } from '../style'
+import { TEXT_STYLES, THEMES } from '../style'
 
 const TravelSignup = ({ setPage, setTrips, trips }) => {
     const [destinations, setDestinations] = useState([])
@@ -133,7 +133,6 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
 export default TravelSignup
 
 const styles = StyleSheet.create({
-
     destinationContainer: {
         marginLeft: "7%",
         marginRight: "7%",
@@ -159,13 +158,12 @@ const styles = StyleSheet.create({
         borderColor: 'black'
     },
     addContainer: {
+        ...THEMES.displayTheme,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: 15,
         marginLeft: "15%",
         marginRight: "15%"
     },

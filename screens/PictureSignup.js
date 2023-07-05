@@ -80,14 +80,16 @@ const PictureSignup = ({ setPage, images, setImages }) => {
     return (
         <View style={styles.pictureSelection}>
             <Text style={TEXT_STYLES.header}>Add photos! (min 2)</Text>
-            <View style={styles.mainPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loading={loading0} />
-                <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loading={loading1} />
-            </View>
-            <View style={styles.smallPictureContainer}>
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={2} loading={loading2} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={3} loading={loading3} />
-                <PictureButton images={images} onPress={pickImage} size={"small"} index={4} loading={loading4} />
+            <View style={styles.content}>
+                <View style={styles.mainPictureContainer}>
+                    <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loading={loading0} />
+                    <PictureButton images={images} onPress={pickImage} size={"large"} index={1} loading={loading1} />
+                </View>
+                <View style={styles.smallPictureContainer}>
+                    <PictureButton images={images} onPress={pickImage} size={"small"} index={2} loading={loading2} />
+                    <PictureButton images={images} onPress={pickImage} size={"small"} index={3} loading={loading3} />
+                    <PictureButton images={images} onPress={pickImage} size={"small"} index={4} loading={loading4} />
+                </View>
             </View>
             <NextButton
                 index={1}
@@ -100,17 +102,22 @@ const PictureSignup = ({ setPage, images, setImages }) => {
 
 export default PictureSignup
 const styles = StyleSheet.create({
+    content:{
+        width: "95%"
+    },
     pictureSelection: {
         height: "100%",
         width: "100%",
-        backgroundColor: COLORS.mainTheme
+        backgroundColor: COLORS.mainTheme,
+        display: "flex",
+        alignItems: "center"
     },
     mainPictureContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        margin: 20
+        marginBottom: 20
     },
     smallPictureContainer: {
         display: 'flex',

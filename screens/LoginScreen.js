@@ -4,7 +4,7 @@ import { auth } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
-import { COLORS } from '../style'
+import { COLORS, TEXT_STYLES } from '../style'
 import { Asset, useAssets } from 'expo-asset';
 
 const LoginScreen = () => {
@@ -71,7 +71,7 @@ const LoginScreen = () => {
                         onChangeText={text => {
                             setEmail(text)
                         }}
-                        style={styles.input}
+                        style={TEXT_STYLES.input}
                     />
                     <TextInput
                         placeholder="Password"
@@ -80,7 +80,7 @@ const LoginScreen = () => {
                         onChangeText={text => {
                             setPassword(text)
                         }}
-                        style={styles.input}
+                        style={TEXT_STYLES.input}
                     />
                 </View>
                 <View style={styles.buttonContainer}>
@@ -122,13 +122,6 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: '80%'
-    },
-    input: {
-        backgroundColor: 'white',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        borderRadius: 10,
-        marginTop: 5,
     },
     buttonContainer: {
         width: '60%',

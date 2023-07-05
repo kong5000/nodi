@@ -1,8 +1,8 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { RadioButton, Text } from 'react-native-paper';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { RadioButton } from 'react-native-paper';
 import NextButton from '../components/NextButton';
 import React, { useState } from 'react'
-import { TEXT_STYLES } from '../style';
+import { COLORS, TEXT_STYLES, THEMES } from '../style';
 
 const GenderSignup = ({ setGender, gender, setPage }) => {
     const formIncomplete = !gender
@@ -13,30 +13,38 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
                 onValueChange={value => { setGender(value) }}
                 value={gender}
             >
-                <TouchableOpacity style={styles.radioRow} onPress={() => setGender("female")} >
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("female")} >
                     <Text style={TEXT_STYLES.radioLabel}>Female</Text>
                     <RadioButton.Android
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                         value="female"
                         status={gender === 'female' ? 'checked' : 'unchecked'}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => setGender("male")}>
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("male")}>
                     <Text style={TEXT_STYLES.radioLabel}>Male</Text>
                     <RadioButton.Android
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                         value="male"
                         status={gender === 'male' ? 'checked' : 'unchecked'}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => setGender("nonbinary")}>
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("nonbinary")}>
                     <Text style={TEXT_STYLES.radioLabel}>Nonbinary</Text>
                     <RadioButton.Android
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                         value="nonbinary"
                         status={gender === 'nonbinary' ? 'checked' : 'unchecked'}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.radioRow} onPress={() => setGender("other")}>
+                <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("other")}>
                     <Text style={TEXT_STYLES.radioLabel}>Other</Text>
                     <RadioButton.Android
+                        uncheckedColor={COLORS.brightContrast}
+                        color={COLORS.brightContrast}
                         value="other"
                         status={gender === 'other' ? 'checked' : 'unchecked'}
                     />
@@ -63,18 +71,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'transparent'
     },
-    radioLabel: {
-        marginRight: "20%"
-    },
     radioRow: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white',
         justifyContent: 'space-between',
         margin: 10,
         padding: 5,
-        borderRadius: 8
+        borderRadius: 30,
+        borderColor: COLORS.brightContrast,
+        borderWidth: 3,
     },
     modalHeader: {
         fontWeight: 'bold',

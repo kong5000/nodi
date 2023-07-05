@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 const moment = require('moment');
 
 import React, { useState, useEffect } from 'react'
-import { TEXT_STYLES } from '../style';
+import { COLORS, TEXT_STYLES, THEMES } from '../style';
 import { DatePickerModal } from 'react-native-paper-dates';
 
 const DateSelectorRow = ({ enabled,
@@ -53,10 +53,10 @@ const DateSelectorRow = ({ enabled,
 
                     <View style={styles.dateContainer}>
                         {dayFrom ? <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
-                            <Text style={styles.dateText}>{moment(dayFrom).format('MMMM D')}</Text>
+                            <Text style={TEXT_STYLES.standard}>{moment(dayFrom).format('MMMM D')}</Text>
                         </TouchableOpacity> :
                             <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
-                                <Text style={styles.dateText}>Select Date</Text>
+                                <Text style={TEXT_STYLES.standard}>Select Date</Text>
                             </TouchableOpacity>
 
                         }
@@ -69,7 +69,7 @@ const DateSelectorRow = ({ enabled,
                         <View style={styles.dateContainer}>
 
                             <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)}>
-                                <Text style={styles.dateText}>{moment(dayTo).format('MMMM D')}</Text>
+                                <Text style={TEXT_STYLES.standard}>{moment(dayTo).format('MMMM D')}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     },
     dateLabel: {
         ...TEXT_STYLES.radioLabel,
-        fontSize: 26,
+        fontSize: 20,
         flex: 0.5,
     },
     dateContainer: {
@@ -108,14 +108,12 @@ const styles = StyleSheet.create({
 
     },
     dateBubble: {
+        ...THEMES.displayTheme,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
-        borderRadius: 15,
-        padding: 10,
+        marginRight: 15,
         margin: 15,
-        marginRight: 40
     },
     dateRow: {
         display: 'flex',
