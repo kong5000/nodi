@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Pagination from './Pagination';
 import { TEXT_STYLES } from '../style';
-
+import TripInfo from './TripInfo';
 const { width, height } = Dimensions.get('window');
 const ParallaxCarousel = ({ items }) => {
   const scrollRef = React.useRef();
@@ -84,16 +84,31 @@ const ParallaxCarousel = ({ items }) => {
                   ]}>
                   <Text style={styles.title}>{item.title}, {item.age}</Text>
                 </Animated.View>
-                <View>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                  <Text>HELLO WORLD</Text>
-                </View>
+                <Animated.View
+                  style={[
+                    {
+                      position: 'relative',
+                      bottom: 70,
+                      width: "80%",
+                      opacity: scrollAnimation.interpolate({
+                        inputRange,
+                        outputRange: [0, 1, 0],
+                      }),
+                      transform: [
+                        {
+                          translateX: scrollAnimation.interpolate({
+                            inputRange: inputRange,
+                            outputRange: [250, 0, -250],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}>
+                  <TripInfo city={item.city}/>
+                  <TripInfo city={item.city}/>
+                  <TripInfo city={item.city}/>
+                </Animated.View>
+
               </ScrollView>
             </View>
           );
@@ -130,12 +145,12 @@ const styles = StyleSheet.create({
   },
   image: {
     width,
-    height: height - 100,
+    height: height - 175,
     resizeMode: 'cover',
   },
   titleContainer: {
-    position: 'absolute',
-    bottom: 200,
+    position: 'relative',
+    bottom: 150,
     zIndex: 1,
   },
   title: {

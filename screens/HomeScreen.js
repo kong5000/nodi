@@ -75,7 +75,8 @@ const HomeScreen = () => {
                         id: match.userInfo.id,
                         image: match.userInfo.pictures[0],
                         title: match.userInfo.name,
-                        age: calculateAge(match.userInfo.birthDate)
+                        age: calculateAge(match.userInfo.birthDate),
+                        city: match.city
                     })
                 })
                 setItems(carouselItems)
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     },
     screen: {
         flex: 1,
-        backgroundColor: "#C3EEA0"
+        backgroundColor: "white"
     },
     container: {
         flex: 1,
