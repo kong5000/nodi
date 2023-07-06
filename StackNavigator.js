@@ -29,7 +29,8 @@ const StackNavigator = () => {
                 </>
             ) : (
                 <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
-                // <Stack.Screen name="Home" component={HomeScreen} />
+
+                // <Stack.Screen name="Home" component={Carousel} />
 
             )}
         </Stack.Navigator>

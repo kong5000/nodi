@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: 0,
-        height: 100,
+        height: 75,
         width: "100%",
         backgroundColor: 'white',
         borderTopColor: '#D3D3D3',

@@ -78,9 +78,9 @@ export default Interests
 
 const styles = StyleSheet.create({
     activityText: {
+        ...TEXT_STYLES.standard,
         color: COLORS.darkContrast,
         fontSize: 17,
-        ...TEXT_STYLES.standard
     },
     interestsContainer: {
         display: 'flex',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 30,
         margin: 10,
-        padding: 15,
+        padding: 10,
         fontSize: 18,
         fontWeight: "400",
         color: "white",
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 30,
         margin: 10,
-        padding: 15,
+        padding: 10,
         borderColor: "white"
     },
     updateButton: {

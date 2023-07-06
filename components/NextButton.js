@@ -2,8 +2,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '../style';
-
+import { useNavigation } from '@react-navigation/native';
+const LAST_PAGE = 5
 const NextButton = ({ index, setPage, formIncomplete, incompleteMessage, onPressAsync }) => {
+    const navigation = useNavigation()
     return (
         <TouchableOpacity
             style={styles.nextButton}
@@ -13,6 +15,7 @@ const NextButton = ({ index, setPage, formIncomplete, incompleteMessage, onPress
                     if (formIncomplete) {
                         alert(incompleteMessage)
                     } else {
+
                         setPage(index + 1)
                     }
                 } catch (err) {

@@ -1,4 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native'
+import {
+    StyleSheet, Text, TouchableOpacity, View, Animated,
+    Dimensions,
+    StatusBar,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
@@ -10,8 +14,8 @@ import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
 import * as Location from 'expo-location';
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS } from '../style'
+import ParallaxCarousel from '../components/ParallaxCarousel'
 
 const DEBUG = false
 
@@ -21,6 +25,9 @@ const HomeScreen = () => {
     const [cards, setCards] = useState(DUMMY_DATA)
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+    const { width, height } = Dimensions.get('window');
+    const [items, setItems] = useState({})
+
 
     useEffect(() => {
         (async () => {
@@ -45,13 +52,34 @@ const HomeScreen = () => {
     const handleMatch = (matchedUserInfo) => {
         navigation.navigate('Match')
     }
+    const calculateAge = (dateOfBirth) => {
+        var today = new Date();
+        var birthDate = new Date(dateOfBirth);
 
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
     useEffect(() => {
         const queryData = async () => {
             try {
                 let potentialMatches = await getCards(user.uid)
                 // potentialMatches = DUMMY_DATA
                 setCards(potentialMatches)
+                let carouselItems = potentialMatches.map(match => {
+                    return ({
+                        id: match.userInfo.id,
+                        image: match.userInfo.pictures[0],
+                        title: match.userInfo.name,
+                        age: calculateAge(match.userInfo.birthDate)
+                    })
+                })
+                setItems(carouselItems)
+                console.log(potentialMatches)
             } catch (err) {
                 // alert(err)
                 console.log(err)
@@ -60,7 +88,7 @@ const HomeScreen = () => {
         queryData()
     }, [])
     return (
-        <SafeAreaView style={styles.screen}>
+        <View style={styles.screen}>
             {DEBUG && <>
                 <TouchableOpacity onPress={getCards}>
                     <Text>Get Matches</Text>
@@ -82,11 +110,12 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                 </View>
             </>}
-            {(cards && cards.length > 0) &&
+            <ParallaxCarousel items={items} />
+            {/* {(cards && cards.length > 0) &&
                 <Deck cards={cards} handleMatch={handleMatch} />
-            }
+            } */}
             <Footer />
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -124,7 +153,7 @@ const styles = StyleSheet.create({
     },
     screen: {
         flex: 1,
-        backgroundColor: COLORS.mainTheme
+        backgroundColor: "#C3EEA0"
     },
     container: {
         flex: 1,
