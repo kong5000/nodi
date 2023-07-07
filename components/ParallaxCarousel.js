@@ -1,4 +1,5 @@
 import React from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import {
   Animated,
@@ -7,12 +8,14 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import Pagination from './Pagination';
-import { TEXT_STYLES } from '../style';
+import { SIZES, TEXT_STYLES } from '../style';
 import TripInfo from './TripInfo';
 const { width, height } = Dimensions.get('window');
+import Profile from './Profile';
 const ParallaxCarousel = ({ items }) => {
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
@@ -40,6 +43,34 @@ const ParallaxCarousel = ({ items }) => {
           ];
           return (
             <View style={styles.item}>
+              <Animated.View
+                style={[
+                  styles.connectButton,
+                  {
+                    // position: 'relative',
+                    // bottom: 70,
+                    // width: "80%",
+                    opacity: scrollAnimation.interpolate({
+                      inputRange,
+                      outputRange: [0, 1, 0],
+                    }),
+                    transform: [
+                      {
+                        translateY: scrollAnimation.interpolate({
+                          inputRange: inputRange,
+                          outputRange: [10, 0, -25],
+                        }),
+                      },
+                    ],
+                  },
+                ]}>
+                {/* <TouchableOpacity style={styles.connectButtonContainer} >
+                <Ionicons
+                  color="white"
+                  name="chatbubble" size={40} />
+              </TouchableOpacity> */}
+              </Animated.View>
+
               <ScrollView
                 bounces={false}
                 contentContainerStyle={styles.scroll}
@@ -83,13 +114,27 @@ const ParallaxCarousel = ({ items }) => {
                     },
                   ]}>
                   <Text style={styles.title}>{item.title}, {item.age}</Text>
+                  <View style={styles.optionalInfoContainer}>
+                    <View style={styles.professionContainer}>
+                      <Ionicons
+                        color="white"
+                        name="briefcase" size={30} />
+                      <Text style={styles.professionText}> Accountant</Text>
+                    </View>
+                    <View style={styles.professionContainer}>
+                      <Ionicons
+                        color="white"
+                        name="book" size={30} />
+                      <Text style={styles.professionText}> University of British Columbia</Text>
+                    </View>
+                  </View>
                 </Animated.View>
                 <Animated.View
                   style={[
                     {
                       position: 'relative',
                       bottom: 70,
-                      width: "80%",
+                      width: "90%",
                       opacity: scrollAnimation.interpolate({
                         inputRange,
                         outputRange: [0, 1, 0],
@@ -104,9 +149,10 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
-                  <TripInfo city={item.city}/>
-                  <TripInfo city={item.city}/>
-                  <TripInfo city={item.city}/>
+                  <Profile />
+                  <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
+                  <TripInfo city={"Vancouver"} imageSource={require('../assets/vancouver.jpg')} />
+                  <TripInfo city={"Tomorrowland"} imageSource={require('../assets/tomorrowland.jpg')} />
                 </Animated.View>
 
               </ScrollView>
@@ -124,6 +170,37 @@ const ParallaxCarousel = ({ items }) => {
 };
 
 const styles = StyleSheet.create({
+  optionalInfoContainer: {
+    position: 'relative',
+    bottom: 20,
+    // backgroundColor: 'red',
+    // alignItems: 'flex-start',
+
+  },
+  professionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  professionText: {
+    color: "white",
+    fontSize: 22,
+    fontWeight: '600',
+    shadowOffset: {
+      // width: 10,
+      height: 4,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 3,
+  },
+  connectButton: {
+    bottom: 105,
+    right: 30,
+    zIndex: 12,
+    position: 'absolute'
+  },
   screen: {
     flex: 1,
   },
@@ -134,6 +211,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width,
     height,
+    // backgroundColor: 'red'
   },
   scroll: {
     // position: 'relative',
@@ -145,19 +223,43 @@ const styles = StyleSheet.create({
   },
   image: {
     width,
-    height: height - 175,
+    height: height - SIZES.footerHeight,
     resizeMode: 'cover',
   },
   titleContainer: {
+    display: 'flex',
     position: 'relative',
-    bottom: 150,
+    bottom: 160,
     zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    // backgroundColor: 'red',
+    width: "100%",
+    marginLeft:30
   },
   title: {
-    ...TEXT_STYLES.header,
     fontSize: 35,
+    fontWeight: 'bold',
+    color: "white",
+    marginBottom: 25,
+    shadowOffset: {
+      width: 2,
+      height: 4,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
     // color: '#fff',
+
   },
+  connectButtonContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "orange",
+    width: 60,
+    height: 60,
+    borderRadius: 100
+  }
 });
 
 export default ParallaxCarousel;

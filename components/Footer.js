@@ -2,6 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/core'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { SIZES } from '../style'
 
 const Footer = () => {
     const navigation = useNavigation()
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: 0,
-        height: 75,
+        height: SIZES.footerHeight,
         width: "100%",
         backgroundColor: 'white',
         borderTopColor: '#D3D3D3',
