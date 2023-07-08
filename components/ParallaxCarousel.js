@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import Pagination from './Pagination';
+import Connect from './Connect';
 import { SIZES, TEXT_STYLES } from '../style';
 import TripInfo from './TripInfo';
 const { width, height } = Dimensions.get('window');
@@ -24,6 +25,7 @@ const ParallaxCarousel = ({ items }) => {
   return (
     <View style={styles.screen}>
       <StatusBar hidden />
+      <Connect/>
       <Animated.FlatList
         ref={scrollRef}
         data={items}
@@ -65,11 +67,6 @@ const ParallaxCarousel = ({ items }) => {
                     ],
                   },
                 ]}>
-                <TouchableOpacity style={styles.connectButtonContainer} >
-                  <Ionicons
-                    color="white"
-                    name="chatbubble" size={40} />
-                </TouchableOpacity>
               </Animated.View>
               <ScrollView
                 bounces={false}
@@ -124,7 +121,7 @@ const ParallaxCarousel = ({ items }) => {
                     <View style={styles.professionContainer}>
                       <Ionicons
                         color="white"
-                        name="book" size={30} />
+                        name="school" size={30} />
                       <Text style={styles.professionText}> University of British Columbia</Text>
                     </View>
                   </View>
@@ -150,12 +147,9 @@ const ParallaxCarousel = ({ items }) => {
                     },
                   ]}>
                   <Profile />
-                  <Interests/>
+                  <Interests />
                   <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
-                  <TripInfo city={"Vancouver"} imageSource={require('../assets/vancouver.jpg')} />
-                  <TripInfo city={"Tomorrowland"} imageSource={require('../assets/tomorrowland.jpg')} />
                 </Animated.View>
-
               </ScrollView>
             </View>
           );
@@ -230,7 +224,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     display: 'flex',
     position: 'relative',
-    bottom: 160,
+    bottom: 185,
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -253,13 +247,15 @@ const styles = StyleSheet.create({
 
   },
   connectButtonContainer: {
+    position: 'absolute',
+    bottom: SIZES.footerHeight,
+    zIndex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "orange",
-    width: 60,
-    height: 60,
-    borderRadius: 100
+    width: "100%",
+    height: 55,
   }
 });
 
