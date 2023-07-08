@@ -16,6 +16,7 @@ import { SIZES, TEXT_STYLES } from '../style';
 import TripInfo from './TripInfo';
 const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
+import Interests from './Interests';
 const ParallaxCarousel = ({ items }) => {
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
@@ -64,13 +65,12 @@ const ParallaxCarousel = ({ items }) => {
                     ],
                   },
                 ]}>
-                {/* <TouchableOpacity style={styles.connectButtonContainer} >
-                <Ionicons
-                  color="white"
-                  name="chatbubble" size={40} />
-              </TouchableOpacity> */}
+                <TouchableOpacity style={styles.connectButtonContainer} >
+                  <Ionicons
+                    color="white"
+                    name="chatbubble" size={40} />
+                </TouchableOpacity>
               </Animated.View>
-
               <ScrollView
                 bounces={false}
                 contentContainerStyle={styles.scroll}
@@ -150,6 +150,7 @@ const ParallaxCarousel = ({ items }) => {
                     },
                   ]}>
                   <Profile />
+                  <Interests/>
                   <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
                   <TripInfo city={"Vancouver"} imageSource={require('../assets/vancouver.jpg')} />
                   <TripInfo city={"Tomorrowland"} imageSource={require('../assets/tomorrowland.jpg')} />
@@ -186,13 +187,13 @@ const styles = StyleSheet.create({
   },
   professionText: {
     color: "white",
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '600',
     shadowOffset: {
       // width: 10,
       height: 4,
     },
-    shadowOpacity: 0.9,
+    shadowOpacity: 0.5,
     shadowRadius: 3,
   },
   connectButton: {
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     // backgroundColor: 'red',
     width: "100%",
-    marginLeft:30
+    marginLeft: 30
   },
   title: {
     fontSize: 35,

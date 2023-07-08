@@ -12,6 +12,15 @@ const COLORS = {
 };
 
 export const THEMES = {
+    shadow: {
+        shadowOffset: {
+            // width: 10,
+            // height: 4,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+        // padding: 20
+    },
     disabled: {
         color: COLORS.brightContrast
     },
