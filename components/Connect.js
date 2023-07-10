@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         backgroundColor: "white",
         width: "100%",
-        height: 55,
+        height: 50,
         ...THEMES.shadow
     },
     connectButton: {

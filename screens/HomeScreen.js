@@ -16,7 +16,7 @@ import Footer from '../components/Footer'
 import * as Location from 'expo-location';
 import { COLORS } from '../style'
 import ParallaxCarousel from '../components/ParallaxCarousel'
-
+import Search from '../components/Search'
 const DEBUG = false
 
 const HomeScreen = () => {
@@ -111,6 +111,7 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                 </View>
             </>}
+            <Search/>
             <ParallaxCarousel items={items} />
             {/* {(cards && cards.length > 0) &&
                 <Deck cards={cards} handleMatch={handleMatch} />

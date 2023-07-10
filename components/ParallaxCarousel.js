@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width,
-    height: height - SIZES.footerHeight,
+    height: height - SIZES.footerHeight - SIZES.headerHeight,
     resizeMode: 'cover',
   },
   titleContainer: {
