@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import {
@@ -20,20 +20,39 @@ import Profile from './Profile';
 import Interests from './Interests';
 import Chart from './Chart'
 const ParallaxCarousel = ({ items }) => {
+  const scrollViewRef = useRef();
+
+  const refsArray = useRef([]);
+
   const [paginationOpacity, setPaginationOpacity] = useState()
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
+
+  const handleScrollToTop = () => {
+    if(refsArray.current){
+      refsArray.current.forEach(ref =>
+        ref.scrollTo({
+          y: 0,
+          animated: true,
+        })
+      )
+    }
+  };
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
     const currentPosition = contentOffset.y;
-    console.log(currentPosition)
-    setPaginationOpacity(1 - 2 * currentPosition/100)
+    setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
   };
   return (
     <View style={styles.screen}>
       <StatusBar hidden />
       <Connect />
       <Animated.FlatList
+        onMomentumScrollEnd={() => {
+          console.log("next page")
+          handleScrollToTop()
+
+        }}
         ref={scrollRef}
         data={items}
         bounces={false}
@@ -57,9 +76,6 @@ const ParallaxCarousel = ({ items }) => {
                 style={[
                   styles.connectButton,
                   {
-                    // position: 'relative',
-                    // bottom: 70,
-                    // width: "80%",
                     opacity: scrollAnimation.interpolate({
                       inputRange,
                       outputRange: [0, 1, 0],
@@ -76,8 +92,10 @@ const ParallaxCarousel = ({ items }) => {
                 ]}>
               </Animated.View>
               <ScrollView
+                ref={(element) => refsArray.current.push(element)}
+
                 onScroll={handleScroll}
-                scrollEventThrottle={16}
+                scrollEventThrottle={15}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
                 contentContainerStyle={styles.scroll}
