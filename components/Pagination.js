@@ -1,35 +1,38 @@
 import React from 'react';
-import {Animated, Dimensions, View, StyleSheet, Pressable} from 'react-native';
+import { Animated, Dimensions, View, StyleSheet, Pressable } from 'react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const itemSize = 20;
+const itemSize = 15;
 const activeItemSize = itemSize + 6;
 const itemSpacing = 8;
-const Pagination = ({items, scrollAnimation, scrollRef}) => {
-  return (
-    <View style={styles.pagination}>
-      <View style={styles.paginationInner}>
-        <Animated.View
-          style={[
-            styles.activeItem,
-            {
-              transform: [
-                {
-                  translateX: scrollAnimation.interpolate({
-                    inputRange: items.map((_, i) => width * i),
-                    outputRange: items.map(
-                      (_, i) => i * (itemSize + itemSpacing),
-                    ),
-                  }),
-                },
-              ],
-            },
-          ]}
-        />
-        {items.map(({id}, index) => (
-          <Pressable
-            key={id}
+const Pagination = ({ opacity, items, scrollAnimation, scrollRef }) => {
+  if (items && items.length) {
+    return (
+      <View style={styles.pagination}>
+        <View style={[styles.paginationInner, { opacity },
+        ]}>
+          <Animated.View
+            style={[
+              { opacity },
+              styles.activeItem,
+              {
+                transform: [
+                  {
+                    translateX: scrollAnimation.interpolate({
+                      inputRange: items.map((_, i) => width * i),
+                      outputRange: items.map(
+                        (_, i) => i * (itemSize + itemSpacing),
+                      ),
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+          {items.map(({ id }, index) => (
+            <Pressable
+              key={id}
             // onPress={() => {
             //   scrollRef.current.scrollToOffset({
             //     animated: true,
@@ -37,17 +40,21 @@ const Pagination = ({items, scrollAnimation, scrollRef}) => {
             //   });
             // }}
             >
-            <View
-              style={[
-                styles.item,
-                index === items.length - 1 ? styles.lastItem : null,
-              ]}
-            />
-          </Pressable>
-        ))}
+              <View
+                style={[
+                  styles.item,
+                  index === items.length - 1 ? styles.lastItem : null,
+                ]}
+              />
+            </Pressable>
+          ))}
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  else {
+    return <></>
+  }
 };
 
 const styles = StyleSheet.create({
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width,
     height: itemSize,
-    bottom: 60,
+    bottom: 80,
   },
   paginationInner: {
     flexDirection: 'row',

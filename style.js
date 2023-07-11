@@ -99,7 +99,7 @@ const TEXT_STYLES = {
 const SIZES = {
     profilePicture: 50,
     iconButton: 35,
-    footerHeight: 50,
+    footerHeight: 60,
     headerHeight: 100
 }
 

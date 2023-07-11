@@ -10,6 +10,7 @@ const Search = () => {
     const [findLocals, setFindLocals] = useState(false)
     const [findTravellers, setFindTravellers] = useState(false)
     const [findEveryone, setFindEveryone] = useState(true)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
@@ -19,23 +20,33 @@ const Search = () => {
     const handleComponentClick = (index) => {
         setSelectedComponent(index);
     };
+
+
+
+
     const components = ["Vancouver", "Toronto", "New York", "Montreal", "Paris"];
     return (
         <SafeAreaView style={styles.view}>
+            <Portal>
+                <Modal visible={showDeleteModal} onDismiss={() => setShowDeleteModal(false)}
+                    contentContainerStyle={styles.containerStyle}>
+                        <Text>Confirm Delete?</Text>
+                </Modal>
+            </Portal>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal style={styles.scroll}
                 contentContainerStyle={styles.container}
             >
-                <SearchModal 
-                visible={visible} 
-                hideModal={hideModal}
-                findEveryone={findEveryone}
-                setFindEveryone={setFindEveryone}
-                findLocals={findLocals}
-                setFindLocals={setFindLocals}
-                findTravellers={findTravellers}
-                setFindTravellers={setFindTravellers}
+                <SearchModal
+                    visible={visible}
+                    hideModal={hideModal}
+                    findEveryone={findEveryone}
+                    setFindEveryone={setFindEveryone}
+                    findLocals={findLocals}
+                    setFindLocals={setFindLocals}
+                    findTravellers={findTravellers}
+                    setFindTravellers={setFindTravellers}
                 />
                 <TouchableOpacity onPress={showModal}>
                     <Ionicons
@@ -50,6 +61,7 @@ const Search = () => {
                             selectedComponent === index && styles.selectedComponent,
                         ]}
                         onPress={() => handleComponentClick(index)}
+                        onLongPress={() => { setShowDeleteModal(true) }}
                     >
                         <Text style={[
                             styles.componentText,
@@ -66,6 +78,14 @@ const Search = () => {
 export default Search
 
 const styles = StyleSheet.create({
+    containerStyle:{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: "center",
+        backgroundColor: "white",
+        height: "50%",
+        width: "100%"
+    },
     city: {
         width: 100,
         height: 30

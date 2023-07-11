@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import {
@@ -18,14 +18,21 @@ import TripInfo from './TripInfo';
 const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
 import Interests from './Interests';
+import Chart from './Chart'
 const ParallaxCarousel = ({ items }) => {
+  const [paginationOpacity, setPaginationOpacity] = useState()
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
-
+  const handleScroll = (event) => {
+    const { contentOffset } = event.nativeEvent;
+    const currentPosition = contentOffset.y;
+    console.log(currentPosition)
+    setPaginationOpacity(1 - 2 * currentPosition/100)
+  };
   return (
     <View style={styles.screen}>
       <StatusBar hidden />
-      <Connect/>
+      <Connect />
       <Animated.FlatList
         ref={scrollRef}
         data={items}
@@ -69,6 +76,9 @@ const ParallaxCarousel = ({ items }) => {
                 ]}>
               </Animated.View>
               <ScrollView
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+                showsVerticalScrollIndicator={false}
                 bounces={false}
                 contentContainerStyle={styles.scroll}
               >
@@ -110,6 +120,12 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
+                  <TouchableOpacity style={styles.trustButton}>
+                    <Ionicons
+                      color="blue"
+                      name="shield-outline" size={50} />
+                    <Text style={styles.trustText}>10</Text>
+                  </TouchableOpacity>
                   <Text style={styles.title}>{item.title}, {item.age}</Text>
                   <View style={styles.optionalInfoContainer}>
                     <View style={styles.professionContainer}>
@@ -148,6 +164,7 @@ const ParallaxCarousel = ({ items }) => {
                   ]}>
                   <Profile />
                   <Interests />
+                  <Chart />
                   <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
                 </Animated.View>
               </ScrollView>
@@ -155,16 +172,45 @@ const ParallaxCarousel = ({ items }) => {
           );
         }}
       />
-      {/* <Pagination
+      <Pagination
+        opacity={paginationOpacity}
         items={items}
         scrollAnimation={scrollAnimation}
         scrollRef={scrollRef}
-      /> */}
+      />
     </View >
   );
 };
 
 const styles = StyleSheet.create({
+  trustButton: {
+    position: 'absolute',
+    // left: 0,
+    bottom: height - 290,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderColor: 'blue',
+    borderWidth: 3,
+    borderRadius: 50,
+    height: 75,
+    width: 75,
+    shadowOffset: {
+      // width: 10,
+      height: 3,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+  },
+  trustText: {
+    position: 'absolute',
+    fontSize: 20,
+    marginLeft: 5,
+    zIndex: 1,
+    fontWeight: "bold"
+  },
   optionalInfoContainer: {
     position: 'relative',
     bottom: 20,
@@ -220,6 +266,7 @@ const styles = StyleSheet.create({
     width,
     height: height - SIZES.footerHeight - SIZES.headerHeight,
     resizeMode: 'cover',
+    // borderTopLeftRadius: 50
   },
   titleContainer: {
     display: 'flex',
