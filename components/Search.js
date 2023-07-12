@@ -19,16 +19,13 @@ const Search = () => {
         setSelectedComponent(index);
     };
 
-
-
-
     const components = ["Vancouver", "Toronto", "New York", "Montreal", "Paris"];
     return (
         <SafeAreaView style={styles.view}>
             <Portal>
                 <Modal visible={showDeleteModal} onDismiss={() => setShowDeleteModal(false)}
                     contentContainerStyle={styles.containerStyle}>
-                        <Text>Confirm Delete?</Text>
+                    <Text>Confirm Delete?</Text>
                 </Modal>
             </Portal>
             <ScrollView
@@ -72,32 +69,33 @@ const Search = () => {
 export default Search
 
 const styles = StyleSheet.create({
-    containerStyle:{
+    containerStyle: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: "center",
         backgroundColor: "white",
         height: "50%",
-        width: "100%"
+        width: "100%",
     },
     city: {
         width: 100,
         height: 30
     },
     scroll: {
+   
         // width: "100%",
         // borderWidth: 1,
     },
     add: {
         marginLeft: 2,
-        color: '#581845',
+        color: 'black',
         borderWidth: 2,
         borderRadius: 100,
         borderColor: 'red'
     },
     view: {
         height: SIZES.headerHeight,
-        marginBottom: 10
+        borderBottomWidth: 2
     },
     container: {
         // width: "100%",

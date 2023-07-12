@@ -17,9 +17,11 @@ const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter }) => {
                 contentContainerStyle={styles.containerStyle}>
                 <View style={styles.section}>
                     <Text style={styles.sectionLabel}>Where</Text>
-
                     <TouchableOpacity style={styles.checkBoxContainer}>
                         <Text style={styles.checkBoxLabel}>Add New Trip</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.checkBoxContainer}>
+                        <Text style={styles.checkBoxLabel}>Edit Trips</Text>
                     </TouchableOpacity>
                 </View>
                 {/* <View style={styles.borderLine} /> */}
