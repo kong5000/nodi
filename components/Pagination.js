@@ -3,7 +3,7 @@ import { Animated, Dimensions, View, StyleSheet, Pressable } from 'react-native'
 
 const { width } = Dimensions.get('window');
 
-const itemSize = 15;
+const itemSize = 10;
 const activeItemSize = itemSize + 6;
 const itemSpacing = 8;
 const Pagination = ({ opacity, items, scrollAnimation, scrollRef }) => {

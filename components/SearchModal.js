@@ -1,15 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Modal, Portal } from 'react-native-paper';
-import { Switch, Checkbox } from 'react-native-paper';
+import { Switch, Checkbox, ToggleButton } from 'react-native-paper';
 import { THEMES, TEXT_STYLES, COLORS } from '../style';
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { useNavigation } from '@react-navigation/core'
 
-const SearchModal = ({ visible, hideModal, findEveryone, setFindEveryone,
-
-    findTravellers, setFindTravellers, findLocals, setFindLocals }) => {
+const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter }) => {
     const [isSwitchOn, setIsSwitchOn] = React.useState(false);
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+    const navigation = useNavigation()
 
     return (
         <Portal>
@@ -22,45 +22,67 @@ const SearchModal = ({ visible, hideModal, findEveryone, setFindEveryone,
                         <Text style={styles.checkBoxLabel}>Add New Trip</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.borderLine} />
+                {/* <View style={styles.borderLine} /> */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionLabel}>Who</Text>
-                    <TouchableOpacity style={styles.checkBoxContainer} onPress={() => {
-                        setFindLocals(!findLocals)
-                        setIsSwitchOn(false)
-                    }}>
-                        <Text style={styles.checkBoxLabel}>Travellers</Text>
-                        <Checkbox.Android
-                            value="locals"
-                            status={findLocals == true ? "checked" : "unchecked"}
-                            onPress={() => {
-                                setFindLocals(!findLocals)
-                                setIsSwitchOn(false)
-                            }}
-                            uncheckedColor="black"
-                            color={"black"}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.checkBoxContainer} onPress={() => {
-                        setFindTravellers(!findTravellers)
-                        setIsSwitchOn(false)
-                    }}>
-                        <Text style={styles.checkBoxLabel}>Locals</Text>
-                        <Checkbox.Android
+                    <Text style={styles.sectionLabel}>Meet</Text>
+                    <ToggleButton.Row
+                        style={styles.toggleRow}
+                        onValueChange={value => setMatchFilter(value)}
+                        value={matchFilter}
+                    >
+                        <ToggleButton
+                            style={[
+                                styles.toggleButton,
+                                matchFilter == "travellers" ? { backgroundColor: "black" } : {},
+                                {
+                                    borderBottomLeftRadius: 20,
+                                    borderTopLeftRadius: 20
+                                }
+                            ]}
+                            icon={() =>
+                                <View>
+                                    <Text style={[styles.toggleText, matchFilter == "travellers" ? { color: "white" } : { color: "black" }]}>Travellers</Text>
+                                </View>
+                            }
                             value="travellers"
-                            status={findTravellers == true ? "checked" : "unchecked"}
-                            onPress={() => {
-                                setFindTravellers(!findTravellers)
-                                setIsSwitchOn(false)
-                            }}
-                            uncheckedColor="black"
-                            color={"black"} />
-                    </TouchableOpacity>
+                            color="red"
+                        >
+                        </ToggleButton>
+                        <ToggleButton
+                            style={[
+                                styles.toggleButton,
+                                matchFilter == "locals" ? { backgroundColor: "black" } : {},
+                            ]}
 
+                            icon={() => <View>
+                                <Text style={[styles.toggleText, matchFilter == "locals" ? { color: "white" } : { color: "black" }]}>Locals</Text>
+                            </View>
+                            }
+                            value="locals" >
+                        </ToggleButton>
+                        <ToggleButton
+                            style={[
+                                styles.toggleButton,
+                                matchFilter == "everyone" ? { backgroundColor: "black" } : {},
+                                {
+                                    borderBottomRightRadius: 20,
+                                    borderTopRightRadius: 20
+                                }
+                            ]}
+                            icon={() => <View>
+                                <Text style={[styles.toggleText, matchFilter == "everyone" ? { color: "white" } : { color: "black" }]}>Everyone</Text>
+                            </View>
+                            }
+                            value="everyone" >
+                        </ToggleButton>
+                    </ToggleButton.Row>
                 </View>
-                <View style={styles.borderLineLight} />
-                <TouchableOpacity style={styles.searchBox}>
-                    <Text style={styles.checkBoxLabel}>Specific User</Text>
+                {/* <View style={styles.borderLineLight} /> */}
+                <TouchableOpacity style={styles.searchBox} onPress={() => {
+                    hideModal()
+                    navigation.navigate("Users")
+                }}>
+                    <Text style={styles.checkBoxLabel}>Find User</Text>
                     <Ionicons
                         style={styles.detailIcon}
                         name="search-circle-outline" size={32} />
@@ -73,6 +95,16 @@ const SearchModal = ({ visible, hideModal, findEveryone, setFindEveryone,
 export default SearchModal
 
 const styles = StyleSheet.create({
+    toggleText: {
+        fontSize: 20
+    },
+    toggleButton: {
+        width: 100
+    },
+    toggleRow: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     section: {
         display: 'flex',
         justifyContent: 'center',
@@ -113,8 +145,8 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     sectionLabel: {
-        fontSize: 30,
-        marginBottom: 10,
+        fontSize: 25,
+        marginBottom: 5,
     },
     sectionLabelText: {
         fontSize: 16,

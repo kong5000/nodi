@@ -1,24 +1,21 @@
 import {
-    StyleSheet, Text, TouchableOpacity, View, Animated,
+    StyleSheet, Text, TouchableOpacity, View, 
     Dimensions,
-    StatusBar,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { auth } from '../firebase'
-import Deck from '../components/Deck'
 import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
 import * as Location from 'expo-location';
-import { COLORS } from '../style'
 import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
+import TrustGraph from '../components/TrustGraph'
 const DEBUG = false
-
 const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
@@ -90,6 +87,7 @@ const HomeScreen = () => {
     }, [])
     return (
         <View style={styles.screen}>
+            {/* <TrustGraph/> */}
             {DEBUG && <>
                 <TouchableOpacity onPress={getCards}>
                     <Text>Get Matches</Text>

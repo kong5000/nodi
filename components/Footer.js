@@ -12,22 +12,22 @@ const Footer = () => {
             <TouchableOpacity onPress={async() => {
                 navigation.navigate('Home')
             }}>
-                <Ionicons name="person-outline" size={33} color="black" />
+                <Ionicons name="person-outline" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Home')
             }}>
-                <Ionicons name="earth-outline" size={33} color="black" />
+                <Ionicons name="earth-outline" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Conversations')
             }}>
-                <Ionicons name="chatbubbles-sharp" size={33} color="black" />
+                <Ionicons name="chatbubbles-sharp" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Home')
             }}>
-                <Ionicons name="options-outline" size={33} color="black" />
+                <Ionicons name="options-outline" size={33} color="white" />
             </TouchableOpacity>
         </View>
     )
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: SIZES.footerHeight,
         width: "100%",
-        backgroundColor: 'white',
+        backgroundColor: 'black',
         borderTopColor: '#D3D3D3',
         borderTopWidth: 2
     },

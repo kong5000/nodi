@@ -7,9 +7,7 @@ import SearchModal from './SearchModal';
 
 const Search = () => {
     const [visible, setVisible] = useState(false);
-    const [findLocals, setFindLocals] = useState(false)
-    const [findTravellers, setFindTravellers] = useState(false)
-    const [findEveryone, setFindEveryone] = useState(true)
+    const [matchFilter, setMatchFilter] = useState("everyone")
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const showModal = () => setVisible(true);
@@ -41,12 +39,8 @@ const Search = () => {
                 <SearchModal
                     visible={visible}
                     hideModal={hideModal}
-                    findEveryone={findEveryone}
-                    setFindEveryone={setFindEveryone}
-                    findLocals={findLocals}
-                    setFindLocals={setFindLocals}
-                    findTravellers={findTravellers}
-                    setFindTravellers={setFindTravellers}
+                    matchFilter={matchFilter}
+                    setMatchFilter={setMatchFilter}
                 />
                 <TouchableOpacity onPress={showModal}>
                     <Ionicons

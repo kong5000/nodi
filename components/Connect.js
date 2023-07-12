@@ -7,12 +7,16 @@ import Icon from './Icon'
 const Connect = () => {
     return (
         <View style={styles.container} >
-            <TouchableOpacity style={styles.connectButton}>
+            {/* <TouchableOpacity style={styles.connectButton}>
                 <Icon/>
-                {/* <Icon/> */}
-                {/* <Ionicons
-                    color="#FFAB91"
-                    name="thumbs-up-outline" size={50} /> */}
+            </TouchableOpacity> */}
+            <TouchableOpacity style={styles.connectRow}>
+                <Ionicons
+                    style={styles.detailIcon}
+                    name="paper-plane-outline" size={30}
+                    color="white"
+                    />
+                <Text style={styles.connectText} >Connect</Text>
             </TouchableOpacity>
         </View>
     )
@@ -21,6 +25,24 @@ const Connect = () => {
 export default Connect
 
 const styles = StyleSheet.create({
+    connectText: {
+        fontSize: 22,
+        fontWeight: "600",
+        marginLeft: 2,
+        color: "white"
+    },
+    connectRow: {
+        // width: "100%",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        backgroundColor: 'black',
+        borderRadius: 50,
+        padding: 10,
+        borderWidth: 2,
+        borderColor: "white"
+    },
     trustButton: {
         display: 'flex',
         flexDirection: 'row',
@@ -31,12 +53,12 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 50,
         height: 65,
-        width: 65
+        width: 65,
     },
     container: {
         position: 'absolute',
-        bottom: SIZES.footerHeight + 30,
-        left: 140,
+        bottom: SIZES.footerHeight + 10,
+        left: 117,
         zIndex: 1,
         display: 'flex',
         flexDirection: 'row',
@@ -44,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         // backgroundColor: "white",
         width: "100%",
-        height: 50,
+        // height: 50,
         ...THEMES.shadow
     },
     connectButton: {
@@ -57,15 +79,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 100,
         borderWidth: 4,
-        borderColor: "#FFAB91",
+        borderColor: "white",
         height: 70,
         width: 70,
         padding: 5,
         shadowOffset: {
             // width: 10,
-            height: 3,
+            height: 1,
         },
-        shadowOpacity: 0.7,
+        shadowOpacity: 0.4,
         shadowRadius: 2,
         // padding: 20
         // borderWidth: 2,

@@ -6,11 +6,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const TripInfo = ({ city, to, from, month, imageSource }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.connectButtonContainer} >
-        <Ionicons
-          color="white"
-          name="chatbubble" size={30} />
-      </TouchableOpacity>
       <Image style={styles.image} source={imageSource} />
       <Text style={styles.header}>{city}</Text>
       <View
@@ -32,15 +27,16 @@ export default TripInfo
 
 const styles = StyleSheet.create({
   image: {
-    height: "60%",
+    height: "50%",
     width: "100%",
     borderRadius: 20,
-    marginBottom: 10
+    // marginBottom: 10
   },
   header: {
     ...TEXT_STYLES.standard,
+    fontSize: 18,
     color: "black",
-    marginTop: 12
+    // marginTop: 12
   },
   dates: {
     display: 'flex',
@@ -50,7 +46,8 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   container: {
-    height: 300,
+    width: "40%",
+    height: 180,
     borderRadius: 20,
     backgroundColor: "white",
     // justifyContent: "center",

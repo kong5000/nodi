@@ -20,11 +20,8 @@ import Profile from './Profile';
 import Interests from './Interests';
 import Chart from './Chart'
 const ParallaxCarousel = ({ items }) => {
-  const scrollViewRef = useRef();
-
-  const refsArray = useRef([]);
-
   const [paginationOpacity, setPaginationOpacity] = useState()
+  const refsArray = useRef([]);
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
 
@@ -38,20 +35,20 @@ const ParallaxCarousel = ({ items }) => {
       )
     }
   };
+
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
   };
+  
   return (
     <View style={styles.screen}>
       <StatusBar hidden />
       <Connect />
       <Animated.FlatList
         onMomentumScrollEnd={() => {
-          console.log("next page")
           handleScrollToTop()
-
         }}
         ref={scrollRef}
         data={items}
@@ -140,7 +137,7 @@ const ParallaxCarousel = ({ items }) => {
                   ]}>
                   <TouchableOpacity style={styles.trustButton}>
                     <Ionicons
-                      color="blue"
+                      color="black"
                       name="shield-outline" size={50} />
                     <Text style={styles.trustText}>10</Text>
                   </TouchableOpacity>
@@ -182,8 +179,9 @@ const ParallaxCarousel = ({ items }) => {
                   ]}>
                   <Profile />
                   <Interests />
-                  <Chart />
                   <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
+
+                  <Chart />
                 </Animated.View>
               </ScrollView>
             </View>
@@ -210,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderColor: 'blue',
+    borderColor: 'black',
     borderWidth: 3,
     borderRadius: 50,
     height: 75,
@@ -289,7 +287,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     display: 'flex',
     position: 'relative',
-    bottom: 185,
+    bottom: 195,
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
