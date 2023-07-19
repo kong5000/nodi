@@ -15,6 +15,7 @@ import * as Location from 'expo-location';
 import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
 import TrustGraph from '../components/TrustGraph'
+import Deck from '../components/Deck'
 const DEBUG = false
 const HomeScreen = () => {
     const { user } = useAuth()

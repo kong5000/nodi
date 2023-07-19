@@ -5,7 +5,7 @@ const Profile = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.profileText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac auctor nibh. Sed malesuada dolor eget nulla posuere suscipit. Ut id velit id nunc pretium ultricies.  Quisque ac auctor nibh.           </Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac auctor nibh. Ut id velit id nunc pretium ultricies.  Quisque ac auctor nibh.           </Text>
         </View >
     )
 }
@@ -14,8 +14,8 @@ export default Profile
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
-        bottom: 50,
+        // position: 'relative',
+        // bottom: 50,
         flexDirection: "row",
         borderRadius: 20,
         backgroundColor: "white",
@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        padding: 20
+        padding: 30,
+        paddingTop: 35,
+        marginHorizontal: 10
     },
     profileText: {
         fontSize: 20,

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { WebView } from 'react-native-webview';
 
 import {
   Animated,
@@ -19,6 +20,7 @@ const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
 import Interests from './Interests';
 import Chart from './Chart'
+import DestinationScroller from './DestinationScroller';
 const ParallaxCarousel = ({ items }) => {
   const [paginationOpacity, setPaginationOpacity] = useState()
   const refsArray = useRef([]);
@@ -26,7 +28,7 @@ const ParallaxCarousel = ({ items }) => {
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
 
   const handleScrollToTop = () => {
-    if(refsArray.current){
+    if (refsArray.current) {
       refsArray.current.forEach(ref =>
         ref.scrollTo({
           y: 0,
@@ -35,13 +37,62 @@ const ParallaxCarousel = ({ items }) => {
       )
     }
   };
+  const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
+
+  const handleWebViewNavigation = async (event) => {
+    const { url } = event;
+    if (url.includes('code=')) {
+      const parsed = queryString.parseUrl(url);
+      console.log(parsed.query.code)
+      try {
+        let formData = new FormData()
+        const cliendId = "2254471901397577"
+        const client_secret = "7751441530536c99bc699c666c2666ee"
+        const grant_type = 'authorization_code'
+        const redirect_uri = "https://github.com/kong5000"
+        const code = parsed.query.code
+
+        formData.append('client_id', cliendId);
+        formData.append('client_secret', client_secret);
+        formData.append('grant_type', grant_type);
+        formData.append('redirect_uri', redirect_uri);
+        formData.append('code', code);
+
+        const response = await axios.post('https://api.instagram.com/oauth/access_token', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data);
+        let accessToken = response.data.access_token
+        let userId = response.data.user_id
+        console.log("await permanent access")
+
+        // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
+        const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
+        // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}`, {
+        //     params: {
+        //       fields: 'id,username',
+        //       access_token: accessToken,
+        //     },
+        //   });
+        console.log(graphResponse.data)
+        // Handle the response data here
+      } catch (error) {
+        console.log(error);
+        // Handle any errors that occurred during the request
+      }
+      // maybe close this view?
+      setEnabled(true)
+    }
+  };
 
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
   };
-  
+
   return (
     <View style={styles.screen}>
       <StatusBar hidden />
@@ -135,12 +186,6 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
-                  <TouchableOpacity style={styles.trustButton}>
-                    <Ionicons
-                      color="black"
-                      name="shield-outline" size={50} />
-                    <Text style={styles.trustText}>10</Text>
-                  </TouchableOpacity>
                   <Text style={styles.title}>{item.title}, {item.age}</Text>
                   <View style={styles.optionalInfoContainer}>
                     <View style={styles.professionContainer}>
@@ -161,8 +206,8 @@ const ParallaxCarousel = ({ items }) => {
                   style={[
                     {
                       position: 'relative',
-                      bottom: 70,
-                      width: "90%",
+                      bottom: 120,
+                      width: "100%",
                       opacity: scrollAnimation.interpolate({
                         inputRange,
                         outputRange: [0, 1, 0],
@@ -178,10 +223,17 @@ const ParallaxCarousel = ({ items }) => {
                     },
                   ]}>
                   <Profile />
+                  <DestinationScroller label={"Going To"}/>
+                  <DestinationScroller label={"Been To"}/>
                   <Interests />
-                  <TripInfo city={"Rio De Janeiro"} imageSource={require('../assets/rio.jpg')} />
-
-                  <Chart />
+                  {/* <WebView source={{ uri: 'https://vasturiano.github.io/react-force-graph/example/img-nodes/' }} style={{ height: 500}} /> */}
+                  <WebView
+                    source={{
+                      uri: `https://api.instagram.com/oauth/authorize?client_id=2254471901397577&redirect_uri=https://github.com/kong5000&scope=user_profile,user_media,instagram_graph_user_profile&response_type=code`,
+                    }}
+                    onNavigationStateChange={handleWebViewNavigation}
+                    style={{ height: 800 }}
+                  />
                 </Animated.View>
               </ScrollView>
             </View>
@@ -199,34 +251,6 @@ const ParallaxCarousel = ({ items }) => {
 };
 
 const styles = StyleSheet.create({
-  trustButton: {
-    position: 'absolute',
-    // left: 0,
-    bottom: height - 290,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 3,
-    borderRadius: 50,
-    height: 75,
-    width: 75,
-    shadowOffset: {
-      // width: 10,
-      height: 3,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 2,
-  },
-  trustText: {
-    position: 'absolute',
-    fontSize: 20,
-    marginLeft: 5,
-    zIndex: 1,
-    fontWeight: "bold"
-  },
   optionalInfoContainer: {
     position: 'relative',
     bottom: 20,
@@ -239,7 +263,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+
   },
   professionText: {
     color: "white",
@@ -280,12 +305,14 @@ const styles = StyleSheet.create({
   },
   image: {
     width,
-    height: height - SIZES.footerHeight - SIZES.headerHeight,
+    height: 500,
     resizeMode: 'cover',
+    borderRadius: 20,
+    marginTop: 20,
     // borderTopLeftRadius: 50
   },
   titleContainer: {
-    display: 'flex',
+    // display: 'flex',
     position: 'relative',
     bottom: 195,
     zIndex: 1,
@@ -293,7 +320,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     // backgroundColor: 'red',
     width: "100%",
-    marginLeft: 30
+    marginLeft: 30,
   },
   title: {
     fontSize: 35,

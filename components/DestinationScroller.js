@@ -2,31 +2,25 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { THEMES } from '../style'
 
-const Interests = () => {
+const DestinationScroller = ({label}) => {
     return (
         <View style={styles.top}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
                     <View style={styles.textContainer}>
-                        <Text style={styles.header}>Likes</Text>
+                        <Text style={styles.header}>{label}</Text>
                     </View>
                     <View style={styles.interest}>
-                        <Text style={styles.text}>⛰️ Hiking</Text>
+                        <Text style={styles.text}>Vancouver</Text>
                     </View>
                     <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
+                        <Text style={styles.text}>Accra</Text>
                     </View>
                     <View style={styles.interest}>
-                        <Text style={styles.text}>⛰️ Hiking</Text>
+                        <Text style={styles.text}>Durban</Text>
                     </View>
                     <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
+                        <Text style={styles.text}>Rio De Janeiro</Text>
                     </View>
                 </ScrollView>
             </View>
@@ -35,7 +29,7 @@ const Interests = () => {
     )
 }
 
-export default Interests
+export default DestinationScroller
 
 const styles = StyleSheet.create({
     textContainer: {

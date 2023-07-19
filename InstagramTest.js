@@ -8,7 +8,7 @@ const App = () => {
     const [comments, setComments] = useState([])
     const [data, setData] = useState(null)
     const [loaded, setLoaded] = useState(false)
-    const access_token = "IGQVJXMUtFbVNBZAF9ZAZA3RGUDFlSVNEcUpxUXBFdFF3OFl0MkZA4bWdPMGRrSXpKNDlrNWFyRDFpdEJWOGp4anFuU3Q2RGpkY2d2WkNfS01rMDZAqYmFvUURMdmhZALTZA6cEUxTWs3ZAnVZAV2o5SC1mbXFEcgZDZD"
+    const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
                           
     const fetchFeed = async () => {
         try {
@@ -56,7 +56,7 @@ const App = () => {
                 console.log("await permanent access")
                 
                 // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
-                const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`)
+                const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
                 // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}`, {
                 //     params: {
                 //       fields: 'id,username',
