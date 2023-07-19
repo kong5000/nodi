@@ -1,27 +1,21 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
-import { THEMES } from '../style'
+import { COMPONENTS, THEMES } from '../style'
 
-const DestinationScroller = ({label}) => {
+const DestinationScroller = ({ label, items, matches, style }) => {
     return (
-        <View style={styles.top}>
+        <View style={[styles.top, style && style]}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
                     <View style={styles.textContainer}>
                         <Text style={styles.header}>{label}</Text>
                     </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>Vancouver</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>Accra</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>Durban</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>Rio De Janeiro</Text>
-                    </View>
+                    {matches && matches.map((item) => <View style={[styles.component, styles.selectedComponent]}>
+                        <Text style={styles.componentTextActive}>{item}</Text>
+                    </View>)}
+                    {items && items.map((item) => <View style={styles.component}>
+                        <Text style={styles.componentText}>{item}</Text>
+                    </View>)}
                 </ScrollView>
             </View>
         </View>
@@ -32,55 +26,96 @@ const DestinationScroller = ({label}) => {
 export default DestinationScroller
 
 const styles = StyleSheet.create({
-    textContainer: {
-        display:'flex',
+    item: {
+        display: 'flex',
         justifyContent: 'center',
         borderBottomWidth: 0,
         borderWidth: 1,
+        borderRadius: 20,
+        padding: 5,
+        borderColor: 'grey',
+        height: "100%",
+        margin: 5
+    },
+    itemText: {
+        fontSize: 20,
+    },
+    match: {
+        display: 'flex',
+        justifyContent: 'center',
+        borderBottomWidth: 0,
+        // borderWidth: 1,
         borderRadius: 10,
-        // width: 80,
         padding: 10,
         borderColor: 'grey',
         backgroundColor: 'black',
         height: "100%"
     },
+    matchText: {
+        fontSize: 20,
+        // width: 90,
+        // borderColor: 'black',
+        // marginLeft: 10,
+        color: "white",
+    },
+    textContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        borderBottomWidth: 0,
+        // width: 80,
+        padding: 10,
+        borderColor: 'grey',
+        // backgroundColor: 'black',
+        height: "100%"
+    },
     top: {
-        marginVertical: 15,
-        marginHorizontal: 10
+        marginVertical: 10,
+        marginHorizontal: 10,
+        ...THEMES.shadow,
     },
     header: {
         fontSize: 20,
         // width: 90,
         borderColor: 'black',
         // marginLeft: 10,
-        color: "white",
+        // color: "white",
 
     },
     view: {
-        ...THEMES.shadow,
+        // ...THEMES.shadow,
         borderRadius: 8,
         // borderWidth: 2,
         backgroundColor: "white",
 
     },
     container: {
-        height: 50,
+        height: 55,
         // width: "100%",
         // // backgroundColor: 'red',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderWidth: 1,
-        // borderRadius: 20,
+
     },
-    interest: {
-        borderRightWidth: 0.5,
-        borderColor: "grey"
-    },
+
     text: {
         padding: 10,
         margin: 5,
         fontSize: 18
-    }
+    },
+    component: {
+        ...COMPONENTS.component
+    },
+    selectedComponent: {
+        ...COMPONENTS.selectedComponent
+
+    },
+    componentText: {
+        ...COMPONENTS.componentText
+
+    },
+    componentTextActive: {
+        ...COMPONENTS.componentTextActive
+    },
 })

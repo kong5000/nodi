@@ -42,12 +42,11 @@ const styles = StyleSheet.create({
         display:'flex',
         justifyContent: 'center',
         borderBottomWidth: 0,
-        borderWidth: 1,
-        borderRadius: 10,
+        borderRightWidth: 1,
         // width: 80,
         padding: 10,
         borderColor: 'grey',
-        backgroundColor: 'black',
+        // backgroundColor: 'black',
         height: "100%"
     },
     top: {
@@ -57,9 +56,9 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 20,
         // width: 90,
-        borderColor: 'black',
+        // borderColor: 'black',
         // marginLeft: 10,
-        color: "white",
+        // color: "white",
 
     },
     view: {

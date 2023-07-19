@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Profile = () => {
+const Profile = ({style}) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style && style]}>
             <Text style={styles.profileText}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac auctor nibh. Ut id velit id nunc pretium ultricies.  Quisque ac auctor nibh.           </Text>
         </View >

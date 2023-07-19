@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { COLORS, SIZES, THEMES } from '../style'
+import { COLORS, COMPONENTS, SIZES, THEMES } from '../style'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Modal, Portal } from 'react-native-paper';
 import SearchModal from './SearchModal';
@@ -143,22 +143,17 @@ const styles = StyleSheet.create({
         borderColor: "white"
     },
     component: {
-        padding: 10,
-        backgroundColor: 'white',
-        marginBottom: 5,
-        borderWidth: 2,
-        borderRadius: 40,
-        margin: 5
+        ...COMPONENTS.component
     },
     selectedComponent: {
-        backgroundColor: 'black',
+        ...COMPONENTS.selectedComponent
+
     },
     componentText: {
-        color: 'black',
-        fontSize: 16
+        ...COMPONENTS.componentText
+
     },
     componentTextActive: {
-        color: 'white',
-        fontSize: 16
+        ...COMPONENTS.componentTextActive
     },
 })

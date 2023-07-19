@@ -67,8 +67,8 @@ const TEXT_STYLES = {
         fontFamily: 'Montserrat_400Regular',
         margin: 10,
     },
-    searchBarInput:{
-      ...THEMES.displayTheme,
+    searchBarInput: {
+        ...THEMES.displayTheme,
         backgroundColor: COLORS.mainTheme,
         color: "white",
         padding: 12,
@@ -77,7 +77,7 @@ const TEXT_STYLES = {
         fontFamily: 'Montserrat_400Regular',
         margin: 10,
     },
-    searchBarText:{
+    searchBarText: {
         color: "white",
         paddingLeft: 10,
         fontSize: 20,
@@ -103,5 +103,27 @@ const SIZES = {
     headerHeight: 105
 }
 
+const COMPONENTS = {
+    component: {
+        padding: 10,
+        backgroundColor: 'white',
+        marginBottom: 5,
+        borderWidth: 2,
+        borderRadius: 40,
+        margin: 5
+    },
+    selectedComponent: {
+        backgroundColor: 'black',
+    },
+    componentText: {
+        color: 'black',
+        fontSize: 18,
+    },
+    componentTextActive: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+}
 
-export { COLORS, SIZES, TEXT_STYLES }
+export { COLORS, SIZES, TEXT_STYLES, COMPONENTS }

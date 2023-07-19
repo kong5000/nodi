@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
+import queryString from 'query-string';
+import axios from 'axios';
 
 import {
   Animated,
   Dimensions,
+  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -23,6 +26,8 @@ import Chart from './Chart'
 import DestinationScroller from './DestinationScroller';
 const ParallaxCarousel = ({ items }) => {
   const [paginationOpacity, setPaginationOpacity] = useState()
+  const [instagramImages, setInstagramImages] = useState([])
+  const [showWebView, setShowWebView] = useState(true)
   const refsArray = useRef([]);
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
@@ -76,14 +81,16 @@ const ParallaxCarousel = ({ items }) => {
         //       access_token: accessToken,
         //     },
         //   });
-        console.log(graphResponse.data)
+        console.log(graphResponse.data.data)
         // Handle the response data here
+        setShowWebView(false)
+        setInstagramImages(graphResponse.data.data.slice(0,4))
       } catch (error) {
         console.log(error);
         // Handle any errors that occurred during the request
       }
       // maybe close this view?
-      setEnabled(true)
+      // setEnabled(true)
     }
   };
 
@@ -152,20 +159,20 @@ const ParallaxCarousel = ({ items }) => {
                   source={{ uri: item.image }}
                   style={[
                     styles.image,
-                    {
-                      transform: [
-                        {
-                          translateX: scrollAnimation.interpolate({
-                            inputRange: [
-                              width * (index - 1),
-                              width * index,
-                              width * (index + 1),
-                            ],
-                            outputRange: [-width * 0.5, 0, width * 0.5],
-                          }),
-                        },
-                      ],
-                    },
+                    // {
+                    //   transform: [
+                    //     {
+                    //       translateX: scrollAnimation.interpolate({
+                    //         inputRange: [
+                    //           width * (index - 1),
+                    //           width * index,
+                    //           width * (index + 1),
+                    //         ],
+                    //         outputRange: [-width * 0.5, 0, width * 0.5],
+                    //       }),
+                    //     },
+                    //   ],
+                    // },
                   ]}
                 />
                 <Animated.View
@@ -200,8 +207,10 @@ const ParallaxCarousel = ({ items }) => {
                         name="school" size={30} />
                       <Text style={styles.professionText}> University of British Columbia</Text>
                     </View>
+
                   </View>
                 </Animated.View>
+
                 <Animated.View
                   style={[
                     {
@@ -222,18 +231,46 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
-                  <Profile />
-                  <DestinationScroller label={"Going To"}/>
-                  <DestinationScroller label={"Been To"}/>
+                  <DestinationScroller label={"Going To"} items={["Montreal", "Paris", "Vienna", "Tomorrowland"]} matches={["Osaka"]}
+                    style={{ position: 'relative', bottom: 25 }}
+                  />
+                  <Profile style={{ position: 'relative', bottom: 15 }} />
+                  <Image style={styles.secondImage} source={require('../assets/rio.jpg')} />
+                  <DestinationScroller label={"Been To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
                   <Interests />
                   {/* <WebView source={{ uri: 'https://vasturiano.github.io/react-force-graph/example/img-nodes/' }} style={{ height: 500}} /> */}
-                  <WebView
+                  {showWebView && <WebView
                     source={{
                       uri: `https://api.instagram.com/oauth/authorize?client_id=2254471901397577&redirect_uri=https://github.com/kong5000&scope=user_profile,user_media,instagram_graph_user_profile&response_type=code`,
                     }}
                     onNavigationStateChange={handleWebViewNavigation}
                     style={{ height: 800 }}
-                  />
+                  />}
+                  {instagramImages && instagramImages.map((item) =>
+                    <Animated.Image
+                      source={{ uri: item.media_url }}
+                      style={[
+                        styles.secondImage,
+                        // {
+                        //   transform: [
+                        //     {
+                        //       translateX: scrollAnimation.interpolate({
+                        //         inputRange: [
+                        //           width * (index - 1),
+                        //           width * index,
+                        //           width * (index + 1),
+                        //         ],
+                        //         outputRange: [-width * 0.5, 0, width * 0.5],
+                        //       }),
+                        //     },
+                        //   ],
+                        // },
+                      ]}
+                    />
+
+
+                  )}
+
                 </Animated.View>
               </ScrollView>
             </View>
@@ -304,12 +341,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   image: {
-    width,
+    width: width - 15,
     height: 500,
     resizeMode: 'cover',
     borderRadius: 20,
     marginTop: 20,
     // borderTopLeftRadius: 50
+  },
+  secondImage: {
+    marginLeft: 7,
+    width: width - 15,
+    height: 400,
+    resizeMode: 'cover',
+    borderRadius: 20,
+    marginTop: 20,
   },
   titleContainer: {
     // display: 'flex',
