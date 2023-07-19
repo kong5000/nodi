@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 import queryString from 'query-string';
 import axios from 'axios';
-
+import InstagramPhotos from './InstagramPhotos';
 import {
   Animated,
   Dimensions,
@@ -28,6 +28,7 @@ const ParallaxCarousel = ({ items }) => {
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
   const [showWebView, setShowWebView] = useState(true)
+  const [instagramHandle, setInstagramHandle] = useState('')
   const refsArray = useRef([]);
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
@@ -84,7 +85,13 @@ const ParallaxCarousel = ({ items }) => {
         console.log(graphResponse.data.data)
         // Handle the response data here
         setShowWebView(false)
-        setInstagramImages(graphResponse.data.data.slice(0,4))
+        let tempPictures = []
+        graphResponse.data.data.forEach(mediaObject => {
+          if (mediaObject.media_type != "VIDEO") {
+            tempPictures.push(mediaObject)
+          }
+        })
+        setInstagramImages(tempPictures.slice(0, 6))
       } catch (error) {
         console.log(error);
         // Handle any errors that occurred during the request
@@ -93,6 +100,32 @@ const ParallaxCarousel = ({ items }) => {
       // setEnabled(true)
     }
   };
+
+  useEffect(() => {
+    const getInstagramMedia = async () => {
+      const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
+      // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}`, {
+      //     params: {
+      //       fields: 'id,username',
+      //       access_token: accessToken,
+      //     },
+      //   });
+      console.log("THE GRAM")
+      console.log(graphResponse.data.data)
+      // Handle the response data here
+      setInstagramHandle(graphResponse.data.data[0].username)
+      setShowWebView(false)
+      let tempPictures = []
+      console.log(graphResponse.data)
+      graphResponse.data.data.forEach(mediaObject => {
+        if (mediaObject.media_type != "VIDEO") {
+          tempPictures.push(mediaObject)
+        }
+      })
+      setInstagramImages(tempPictures.slice(0, 6))
+    }
+    getInstagramMedia()
+  }, [])
 
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
@@ -235,41 +268,11 @@ const ParallaxCarousel = ({ items }) => {
                     style={{ position: 'relative', bottom: 25 }}
                   />
                   <Profile style={{ position: 'relative', bottom: 15 }} />
-                  <Image style={styles.secondImage} source={require('../assets/rio.jpg')} />
-                  <DestinationScroller label={"Been To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
                   <Interests />
-                  {/* <WebView source={{ uri: 'https://vasturiano.github.io/react-force-graph/example/img-nodes/' }} style={{ height: 500}} /> */}
-                  {showWebView && <WebView
-                    source={{
-                      uri: `https://api.instagram.com/oauth/authorize?client_id=2254471901397577&redirect_uri=https://github.com/kong5000&scope=user_profile,user_media,instagram_graph_user_profile&response_type=code`,
-                    }}
-                    onNavigationStateChange={handleWebViewNavigation}
-                    style={{ height: 800 }}
-                  />}
-                  {instagramImages && instagramImages.map((item) =>
-                    <Animated.Image
-                      source={{ uri: item.media_url }}
-                      style={[
-                        styles.secondImage,
-                        // {
-                        //   transform: [
-                        //     {
-                        //       translateX: scrollAnimation.interpolate({
-                        //         inputRange: [
-                        //           width * (index - 1),
-                        //           width * index,
-                        //           width * (index + 1),
-                        //         ],
-                        //         outputRange: [-width * 0.5, 0, width * 0.5],
-                        //       }),
-                        //     },
-                        //   ],
-                        // },
-                      ]}
-                    />
+                  <DestinationScroller label={"Been To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
+                  <InstagramPhotos images={instagramImages} handle={instagramHandle} />
 
-
-                  )}
+                  {/* <Image style={styles.secondImage} source={require('../assets/rio.jpg')} /> */}
 
                 </Animated.View>
               </ScrollView>
@@ -336,6 +339,7 @@ const styles = StyleSheet.create({
     // position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 120,
   },
   itemOverlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',

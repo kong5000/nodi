@@ -7,8 +7,6 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
-                console.log("USER AUTHED AS")
-                console.log(user)
                 setUser(user)
             } else {
                 console.log("NO USER")
