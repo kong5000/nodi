@@ -231,13 +231,31 @@ const ParallaxCarousel = ({ items }) => {
                     <View style={styles.professionContainer}>
                       <Ionicons
                         color="white"
-                        name="briefcase" size={30} />
+                        name="briefcase" size={30}
+                        style={{
+                          shadowOffset: {
+                            width: 2,
+                            height: 4,
+                          },
+                          shadowOpacity: 0.8,
+                          shadowRadius: 3,
+                        }}
+                      />
                       <Text style={styles.professionText}> Accountant</Text>
                     </View>
                     <View style={styles.professionContainer}>
                       <Ionicons
                         color="white"
-                        name="school" size={30} />
+                        name="school" size={30}
+                        style={{
+                          shadowOffset: {
+                            width: 2,
+                            height: 4,
+                          },
+                          shadowOpacity: 0.8,
+                          shadowRadius: 3,
+                        }}
+                      />
                       <Text style={styles.professionText}> University of British Columbia</Text>
                     </View>
 
@@ -267,9 +285,11 @@ const ParallaxCarousel = ({ items }) => {
                   <DestinationScroller label={"Going To"} items={["Montreal", "Paris", "Vienna", "Tomorrowland"]} matches={["Osaka"]}
                     style={{ position: 'relative', bottom: 25 }}
                   />
+                  <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
+                    style={{ position: 'relative', bottom: 25 }}
+                  />
                   <Profile style={{ position: 'relative', bottom: 15 }} />
                   <Interests />
-                  <DestinationScroller label={"Been To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />
 
                   {/* <Image style={styles.secondImage} source={require('../assets/rio.jpg')} /> */}
@@ -293,7 +313,7 @@ const ParallaxCarousel = ({ items }) => {
 const styles = StyleSheet.create({
   optionalInfoContainer: {
     position: 'relative',
-    bottom: 20,
+    // bottom: 20,
     // backgroundColor: 'red',
     // alignItems: 'flex-start',
 
@@ -314,7 +334,7 @@ const styles = StyleSheet.create({
       // width: 10,
       height: 4,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.8,
     shadowRadius: 3,
   },
   connectButton: {
@@ -363,7 +383,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     // display: 'flex',
     position: 'relative',
-    bottom: 195,
+    bottom: 155,
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',

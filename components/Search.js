@@ -95,11 +95,12 @@ const styles = StyleSheet.create({
     },
     view: {
         height: SIZES.headerHeight,
-        borderBottomWidth: 2
+        borderBottomWidth: 1,
+        borderColor : 'grey'
     },
     container: {
         // width: "100%",
-        borderColor: 'black',
+        // borderColor: 'black',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
