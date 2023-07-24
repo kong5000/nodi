@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Destination from '../components/Destination';
 import NextButton from '../components/NextButton';
 import { TEXT_STYLES, THEMES } from '../style'
-import Footer from '../components/Footer';
+
 const TravelSignup = ({ setPage, setTrips, trips }) => {
     const [destinations, setDestinations] = useState([])
     const [formIncomplete, setFormIncomplete] = useState(true)
@@ -73,7 +73,7 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
     const updateDestination = (index, newDestination) => {
         const newDestinations = destinations.map(a => { return { ...a } })
         newDestinations[index] = newDestination
-        setDestinations(newDestinations.reverse());
+        setDestinations(newDestinations);
         checkForm()
     }
 
@@ -81,23 +81,10 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
         checkForm()
     }, [destinations])
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView keyboardShouldPersistTaps={'handled'}>
-
                 <Text style={TEXT_STYLES.header}>Where are you planning to go?</Text>
-                {((!formIncomplete || destinations.length == 0) && allDestinationsComplete) &&
-                    <TouchableOpacity style={styles.addContainer} onPress={() => {
-                        setDestinations([...destinations, { ...emptyDestination }])
-                    }} >
-                        <View>
-                            {destinations.length == 0 ? <Text style={TEXT_STYLES.radioLabel}>Add Destination</Text>
-                                : <Text style={TEXT_STYLES.radioLabel}>Add Another Destination</Text>
-                            }
 
-                        </View>
-                        {/* <Ionicons name="add-circle-outline" size={50} color="black" /> */}
-                    </TouchableOpacity>
-                }
                 {destinations.map((location, index) => (
                     <View key={index} style={styles.destinationContainer}>
                         <Destination
@@ -111,6 +98,19 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
 
                     </View>
                 ))}
+                {((!formIncomplete || destinations.length == 0) && allDestinationsComplete) &&
+                    <TouchableOpacity style={styles.addContainer} onPress={() => {
+                        setDestinations([...destinations, { ...emptyDestination }])
+                    }} >
+                        <View>
+                            {destinations.length == 0 ? <Text style={TEXT_STYLES.radioLabel}>Add Destination</Text>
+                                : <Text style={TEXT_STYLES.radioLabel}>Add Another Destination</Text>
+                            }
+
+                        </View>
+                        {/* <Ionicons name="add-circle-outline" size={50} color="black" /> */}
+                    </TouchableOpacity>
+                }
                 <NextButton
                     onPressAsync={
                         () => {
@@ -125,8 +125,8 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
                     formIncomplete={formIncomplete}
                     incompleteMessage="Complete at least one trip, and please use the autocomplete when entering a city!" />
             </ScrollView>
-            <Footer />
-        </View>
+
+        </SafeAreaView>
     )
 }
 

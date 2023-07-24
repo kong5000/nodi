@@ -4,16 +4,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { PLACES_API_KEY } from "@env"
 import { COLORS, TEXT_STYLES, THEMES } from '../style';
 
-const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, location, setLocation, updateLocation }) => {
+const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, location, setLocation }) => {
     const ref = useRef()
-    useEffect(() => {
-        if (searchVisible) {
-            ref.current.setAddressText(location)
-        }
-    }, [searchVisible])
+    // useEffect(() => {
+    //     if (searchVisible) {
+    //         ref.current.setAddressText(location)
+    //     }
+    // }, [searchVisible])
 
     return (
-        <View style={enabled ? styles.enable : styles.disabled}>
+        <View style={styles.container}>
             <ScrollView keyboardShouldPersistTaps={'handled'} >
                 {!searchVisible && <TouchableOpacity
                     disabled={!enabled}
@@ -37,6 +37,8 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                 <View style={searchVisible ? {} : { display: 'none' }}
                 >
                     <GooglePlacesAutocomplete
+                        enablePoweredByContainer={false}
+                        // autoFillOnNotFound={true}
                         styles={{
                             textInput: {
                                 ...TEXT_STYLES.searchBarInput
@@ -55,16 +57,19 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                             },
                             description: {
                                 ...TEXT_STYLES.searchBarText
-                            }
+                            },
                         }}
+                        listEmptyComponent={<TouchableOpacity>
+                            <Text style={TEXT_STYLES.searchBarText}>Couldn't find it?</Text>
+                        </TouchableOpacity>}
                         ref={ref}
                         height={200}
                         listViewDisplayed={false}
                         placeholder=''
                         onPress={(data, details = null) => {
+                            console.log(data.description)
                             setHideDates(false)
                             setLocation(data.description)
-                            updateLocation(data.description)
                             setSearchVisible(false)
                             ref.current.setAddressText(data.description)
                         }}
@@ -74,7 +79,7 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                             types: '(cities)'
                         }}
                         onFail={error => console.error(error)}
-                        debounce={200}
+                        debounce={100}
                         fetchDetails={false}
                     />
                 </View>
@@ -86,6 +91,9 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
 export default Location
 
 const styles = StyleSheet.create({
+    container: {
+
+    },
     enabled: {
     },
     disabled: {
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
         // paddingBottom: 5
     },
     dummyText: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'Montserrat_400Regular',
         // paddingBottom: 16,
         fontSize: 20,

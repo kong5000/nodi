@@ -5,34 +5,19 @@ import Location from './Location';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import moment from 'moment';
 
-const Destination = ({ checkForm, destination, index, removeDestination, updateDestination }) => {
+const Destination = ({ destination, setDestination }) => {
     const [searchVisible, setSearchVisible] = useState(false)
     const [hideDates, setHideDates] = useState(false)
     const [edit, setEdit] = useState(true)
     const [localValid, setLocalValid] = useState(false)
-    const [location, setLocation] = useState(destination.city)
+    const [location, setLocation] = useState('')
 
-    const [dayTo, setDayTo] = useState(destination.dayTo);
-    const [dayFrom, setDayFrom] = useState(destination.dayFrom);
-    const [monthFrom, setMonthFrom] = useState(destination.monthFrom);
-    const [monthTo, setMonthTo] = useState(destination.monthTo);
+    const [dayTo, setDayTo] = useState('');
+    const [dayFrom, setDayFrom] = useState('');
+    const [monthFrom, setMonthFrom] = useState('');
+    const [monthTo, setMonthTo] = useState('');
 
-    const save = () => {
-        console.log("ssave")
-        if (!isValid()) {
-            checkForm()
-            alert("Please complete")
-        } else {
-            checkForm()
-            setSearchVisible(false)
-            updateDestination(index, { city: location, dayFrom, monthFrom, dayTo, monthTo })
-            setEdit(false)
-            setLocalValid(true)
-        }
-    }
-    const updateLocation = (newLocation) => {
-        updateDestination(index, { city: newLocation, dayFrom, dayTo })
-    }
+
     useEffect(() => {
         function getDates(startDate, stopDate) {
             var dateArray = [];
@@ -45,8 +30,8 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
             return dateArray;
         }
         let dates = getDates(dayFrom, dayTo)
-        console.log(dates)
-        updateDestination(index, { city: location, dayFrom, dayTo, dates})
+
+        setDestination({ city: location, dayFrom, dayTo, dates })
     }, [dayTo, dayFrom, monthTo, monthFrom])
 
     useEffect(() => {
@@ -63,19 +48,29 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
     }
     return (
         <View style={styles.container}>
-            <Location setHideDates={setHideDates} searchVisible={searchVisible} setSearchVisible={setSearchVisible} enabled={edit} updateLocation={updateLocation} setLocation={setLocation} location={destination.city} />
-            <DateSelectorRow
-                hide={hideDates}
+            <Location
+                setHideDates={setHideDates}
+                searchVisible={searchVisible}
+                setSearchVisible={setSearchVisible}
                 enabled={edit}
-                dayTo={destination.dayTo}
-                setDayTo={setDayTo}
-                dayFrom={destination.dayFrom}
-                setDayFrom={setDayFrom}
-                monthTo={destination.monthTo}
-                setMonthTo={setMonthTo}
-                monthFrom={destination.monthFrom}
-                setMonthFrom={setMonthFrom}
-            />
+                setLocation={setLocation}
+                location={location} />
+            {location &&
+                <DateSelectorRow
+                    hide={hideDates}
+                    enabled={edit}
+                    dayTo={dayTo}
+                    setDayTo={setDayTo}
+                    dayFrom={dayFrom}
+                    setDayFrom={setDayFrom}
+                    monthTo={monthTo}
+                    setMonthTo={setMonthTo}
+                    monthFrom={monthFrom}
+                    setMonthFrom={setMonthFrom}
+                />
+            }
+
+
             {(!edit) &&
                 <View style={styles.editRow}>
                     <TouchableOpacity onPress={() => {
@@ -86,17 +81,6 @@ const Destination = ({ checkForm, destination, index, removeDestination, updateD
                     </TouchableOpacity>
                 </View>
             }
-            {/* {edit &&
-                <View style={styles.editRow}>
-                    <TouchableOpacity onPress={() => { save() }}>
-                        <Ionicons name="checkmark-circle-outline" size={40} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => removeDestination(index)}>
-                        <Ionicons name="trash" size={40} />
-                    </TouchableOpacity>
-                </View>
-            } */}
-
         </View>
     )
 }

@@ -24,7 +24,7 @@ const DateSelectorRow = ({ enabled,
             } else {
                 if (moment(endDate).diff(moment(startDate), 'days') > 180) {
                     alert("Trips must be less than 6 months")
-                }else{
+                } else {
                     setDayFrom(moment(startDate).format('YYYY-MM-DD'))
                     setDayTo(moment(endDate).format('YYYY-MM-DD'))
                     setOpen(false);
@@ -37,7 +37,7 @@ const DateSelectorRow = ({ enabled,
 
     return (
         <View style={hide ? styles.hiddenContainer : styles.container}>
-            <View style={[styles.dateSelectorRow, styles.dateSelectorFrom]}>
+            <View style={styles.dateSelectorRow}>
                 <DatePickerModal
                     locale="en"
                     mode="range"
@@ -48,37 +48,28 @@ const DateSelectorRow = ({ enabled,
                     onConfirm={onConfirm}
                 />
                 <View style={styles.dateRow}>
-                    {!dayFrom && <Text style={styles.dateLabel}>When?</Text>}
-                    {dayFrom && <Text style={styles.dateLabel}>From</Text>}
 
                     <View style={styles.dateContainer}>
-                        {dayFrom ? <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
-                            <Text style={TEXT_STYLES.standard}>{moment(dayFrom).format('MMMM D')}</Text>
-                        </TouchableOpacity> :
-                            <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
+                        {!dayFrom &&
+                            <TouchableOpacity style={[styles.dateBubble, {width:"50%"}]} onPress={() => setOpen(true)} >
                                 <Text style={TEXT_STYLES.standard}>Select Date</Text>
                             </TouchableOpacity>
 
                         }
                     </View>
                 </View>
-
-                {dayTo &&
-                    <View style={styles.dateRow}>
-                        <Text style={styles.dateLabel}>To</Text>
-                        <View style={styles.dateContainer}>
-
-                            <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)}>
-                                <Text style={TEXT_STYLES.standard}>{moment(dayTo).format('MMMM D')}</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
+          
+                {(dayTo && dayFrom) && <View style={styles.datesContainerHorizontal}>
+                    <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)} >
+                        <Text style={TEXT_STYLES.standard}>{moment(dayFrom).format('MMMM D')}</Text>
+                    </TouchableOpacity>
+                    <Text style={TEXT_STYLES.standard}>to</Text>
+                    <TouchableOpacity style={styles.dateBubble} onPress={() => setOpen(true)}>
+                        <Text style={TEXT_STYLES.standard}>{moment(dayTo).format('MMMM D')}</Text>
+                    </TouchableOpacity>
+                </View>
                 }
-                {dayTo && <View style={styles.line}></View>}
-
             </View>
-
         </View>
     )
 }
@@ -86,6 +77,12 @@ const DateSelectorRow = ({ enabled,
 export default DateSelectorRow
 
 const styles = StyleSheet.create({
+    datesContainerHorizontal: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     line: {
         width: "100%",
         borderBottomColor: 'black', // Change the color as per your requirement
@@ -105,7 +102,9 @@ const styles = StyleSheet.create({
     },
     dateContainer: {
         flex: 1,
-
+        display:"flex",
+        justifyContent:'center',
+        alignItems: 'center',
     },
     dateBubble: {
         ...THEMES.displayTheme,
@@ -134,22 +133,21 @@ const styles = StyleSheet.create({
 
     },
     container: {
-        margin: 15,
+        marginTop: 50,
         width: '100%',
         height: '100%',
         position: 'absolute',
         top: 50,
     },
     hiddenContainer: {
-        margin: 15,
+        // margin: 15,
         width: '100%',
         height: '100%',
         position: 'absolute',
-        top: 50,
+        top: 100,
         zIndex: -1,
     },
-    dateSelectorFrom: {
-    },
+
     dateSelectorLabel: {
         ...TEXT_STYLES.radioLabel,
         flex: 0.5
