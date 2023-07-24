@@ -8,7 +8,7 @@ const COLORS = {
     mainTheme: "#5CC981",
     darkContrast: "#1A5465",
     // brightContrast: "#B8EDC2"
-    brightContrast: "#ccf5d4",
+    brightContrast: "black",
 };
 
 export const THEMES = {
@@ -51,7 +51,7 @@ const TEXT_STYLES = {
         fontSize: 20,
     },
     header: {
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         fontSize: 30,
         margin: 20,

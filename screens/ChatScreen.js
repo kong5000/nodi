@@ -10,7 +10,6 @@ import { SIZES, TEXT_STYLES } from '../style'
 import { Menu, Portal, Modal, Button } from 'react-native-paper'
 import { deleteConversation } from '../services/ConversationQueries'
 import { addChatMessage } from '../services/ConversationQueries'
-import { storeInput } from '../services/LocalStorage'
 import { storage } from '../firebase'
 import * as ImagePicker from 'expo-image-picker';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
