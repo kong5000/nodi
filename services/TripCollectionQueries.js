@@ -1,4 +1,4 @@
-import { collection, query, where, limit, getDocs, addDoc } from 'firebase/firestore'
+import { collection, query, where, limit, getDocs, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
 import { database } from '../firebase'
 const TRIP_QUERY_LIMIT = TRIP_QUERY_LIMIT
 const DATE_LIMIT = 7
@@ -42,11 +42,59 @@ export const getUserTrips = async (uid) => {
         limit(TRIP_QUERY_LIMIT)
     );
     const querySnapshot = await getDocs(q)
-    let documents = querySnapshot.docs.map((doc) => doc.data());
+    let documents = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return { id: doc.id, ...data };
+    });
     return documents
 }
 
 export const addTripDoc = async (tripData) => {
     const tripsCollectionRef = collection(database, "trips");
     await addDoc(tripsCollectionRef, tripData);
+}
+
+
+export const deleteTrip = async (documentId) => {
+    // Create a reference to the document
+    console.log(documentId)
+    console.log("Deleting")
+    const documentRef = doc(database, "trips", documentId);
+    console.log("Deleting")
+    try {
+        await deleteDoc(documentRef)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const subscribeToUserTrips = (uid, trips, setTrips) => {
+    console.log(uid)
+    console.log("your uid")
+    const tripsRef = collection(database, 'trips')
+    const q = query(tripsRef,
+        where('userInfo.id', '==', uid),
+        limit(TRIP_QUERY_LIMIT)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+            console.log(change.type)
+            if (change.type === 'removed') {
+                setTrips(prev => prev.filter(trip => {
+                    if (trip.id == change.doc.id) {
+                        return false
+                    }
+                    return true
+                }))
+            }
+            if (change.type === 'added') {
+                const data = change.doc.data()
+                const newTrip = { id: change.doc.id, ...data }
+
+                setTrips([newTrip, ...trips])
+            }
+        })
+    })
+    return unsubscribe
 }

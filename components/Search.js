@@ -4,8 +4,9 @@ import { COLORS, COMPONENTS, SIZES, THEMES } from '../style'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Modal, Portal } from 'react-native-paper';
 import SearchModal from './SearchModal';
+import { deleteTrip } from '../services/TripCollectionQueries';
 
-const Search = () => {
+const Search = ({ trips }) => {
     const [visible, setVisible] = useState(false);
     const [matchFilter, setMatchFilter] = useState("everyone")
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -13,11 +14,16 @@ const Search = () => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
     const containerStyle = { backgroundColor: 'white', padding: 20 };
-
+    const [indexToDelete, setIndexToDelete] = useState(null)
     const [selectedComponent, setSelectedComponent] = useState(null);
     const handleComponentClick = (index) => {
         setSelectedComponent(index);
     };
+
+    const enableDelete = (index) => {
+        setIndexToDelete(index)
+        setShowDeleteModal(true)
+    }
 
     const components = ["Vancouver", "Toronto", "New York", "Montreal", "Paris"];
     return (
@@ -25,7 +31,14 @@ const Search = () => {
             <Portal>
                 <Modal visible={showDeleteModal} onDismiss={() => setShowDeleteModal(false)}
                     contentContainerStyle={styles.containerStyle}>
-                    <Text>Confirm Delete?</Text>
+                    <TouchableOpacity
+                        onPress={async () => {
+                            await deleteTrip(trips[indexToDelete].id)
+                            setShowDeleteModal(false)
+                        }}
+                    >
+                        <Text>Confirm Delete?</Text>
+                    </TouchableOpacity>
                 </Modal>
             </Portal>
             <ScrollView
@@ -44,22 +57,26 @@ const Search = () => {
                         style={styles.add}
                         name="options-outline" size={42} />
                 </TouchableOpacity>
-                {components.map((component, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={[
-                            styles.component,
-                            selectedComponent === index && styles.selectedComponent,
-                        ]}
-                        onPress={() => handleComponentClick(index)}
-                        onLongPress={() => { setShowDeleteModal(true) }}
-                    >
-                        <Text style={[
-                            styles.componentText,
-                            selectedComponent === index && styles.componentTextActive,
-                        ]}>{component}</Text>
-                    </TouchableOpacity>
-                ))}
+                {
+                    trips.map((trip, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[
+                                styles.component,
+                                selectedComponent === index && styles.selectedComponent,
+                            ]}
+                            onPress={() => handleComponentClick(index)}
+                            onLongPress={() => {
+                                enableDelete(index)
+                            }}
+                        >
+                            <Text style={[
+                                styles.componentText,
+                                selectedComponent === index && styles.componentTextActive,
+                            ]}>{trip.city.split(',')[0]}</Text>
+                        </TouchableOpacity>
+                    ))
+                }
 
             </ScrollView>
         </SafeAreaView>
@@ -82,7 +99,7 @@ const styles = StyleSheet.create({
         height: 30
     },
     scroll: {
-   
+
         // width: "100%",
         // borderWidth: 1,
     },
@@ -96,7 +113,7 @@ const styles = StyleSheet.create({
     view: {
         height: SIZES.headerHeight,
         borderBottomWidth: 1,
-        borderColor : 'grey'
+        borderColor: 'grey'
     },
     container: {
         // width: "100%",

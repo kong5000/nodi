@@ -1,8 +1,8 @@
 import {
-    StyleSheet, Text, TouchableOpacity, View, 
+    StyleSheet, Text, TouchableOpacity, View,
     Dimensions,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
 import Ionicons from '@expo/vector-icons/Ionicons'
@@ -16,10 +16,14 @@ import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
 import TrustGraph from '../components/TrustGraph'
 import Deck from '../components/Deck'
+import { calculateAge } from '../services/Utils'
+import { getUserTrips, subscribeToUserTrips } from '../services/TripCollectionQueries'
+
 const DEBUG = false
 const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
+    const [trips, setTrips] = useState([])
     const [cards, setCards] = useState(DUMMY_DATA)
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -28,17 +32,12 @@ const HomeScreen = () => {
 
 
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
+        const initializeTrips = async () => {
+            let trips = await getUserTrips(user.uid)
 
-            let location = await Location.getCurrentPositionAsync({});
-            console.log(location)
-            setLocation(location);
-        })();
+            setTrips(trips)
+        }
+        initializeTrips()
     }, []);
 
     const handleSignOut = () => {
@@ -50,18 +49,11 @@ const HomeScreen = () => {
     const handleMatch = (matchedUserInfo) => {
         navigation.navigate('Match')
     }
-    const calculateAge = (dateOfBirth) => {
-        var today = new Date();
-        var birthDate = new Date(dateOfBirth);
+    useLayoutEffect(() => {
+        const unsubscribe = subscribeToUserTrips(user.uid, trips, setTrips)
+        return unsubscribe;
+    }, [])
 
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var monthDiff = today.getMonth() - birthDate.getMonth();
-
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
-    }
     useEffect(() => {
         const queryData = async () => {
             try {
@@ -88,33 +80,8 @@ const HomeScreen = () => {
     }, [])
     return (
         <View style={styles.screen}>
-            {/* <TrustGraph/> */}
-            {DEBUG && <>
-                <TouchableOpacity onPress={getCards}>
-                    <Text>Get Matches</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={getPassedUsers}>
-                    <Text>Get passes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={getUsersWhoLikedMe}>
-                    <Text>Get liked bys</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => getConversations(user.uid)}>
-                    <Text>Get Conversations</Text>
-                </TouchableOpacity>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('Conversations')
-                    }}>
-                        <Ionicons name="chatbubbles-sharp" size={32} color="orange" />
-                    </TouchableOpacity>
-                </View>
-            </>}
-            <Search/>
+            <Search trips={trips} />
             <ParallaxCarousel items={items} />
-            {/* {(cards && cards.length > 0) &&
-                <Deck cards={cards} handleMatch={handleMatch} />
-            } */}
             <Footer />
         </View>
     )
