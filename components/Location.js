@@ -6,11 +6,6 @@ import { COLORS, TEXT_STYLES, THEMES } from '../style';
 
 const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, location, setLocation }) => {
     const ref = useRef()
-    // useEffect(() => {
-    //     if (searchVisible) {
-    //         ref.current.setAddressText(location)
-    //     }
-    // }, [searchVisible])
 
     return (
         <View style={styles.container}>
@@ -59,9 +54,12 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                                 ...TEXT_STYLES.searchBarText
                             },
                         }}
-                        listEmptyComponent={<TouchableOpacity>
-                            <Text style={TEXT_STYLES.searchBarText}>Couldn't find it?</Text>
-                        </TouchableOpacity>}
+                        listEmptyComponent={
+                            <TouchableOpacity
+                                onPress={() => alert("Request location/event to be implemented")}
+                            >
+                                <Text style={TEXT_STYLES.searchBarText}>Couldn't find it?</Text>
+                            </TouchableOpacity>}
                         ref={ref}
                         height={200}
                         listViewDisplayed={false}
