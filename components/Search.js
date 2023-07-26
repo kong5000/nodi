@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS, COMPONENTS, SIZES, THEMES } from '../style'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Modal, Portal } from 'react-native-paper';
 import SearchModal from './SearchModal';
 import { deleteTrip } from '../services/TripCollectionQueries';
+import { getSetting, storeSetting } from '../services/LocalStorage';
+import { initial } from 'lodash';
 
 const Search = ({ trips }) => {
     const [visible, setVisible] = useState(false);
@@ -24,7 +26,15 @@ const Search = ({ trips }) => {
         setIndexToDelete(index)
         setShowDeleteModal(true)
     }
-
+    useEffect(() => {
+        const initialSettings = async () => {
+            let localMatchFilter = await getSetting('matchFilter')
+            if(localMatchFilter){
+                setMatchFilter(localMatchFilter)
+            }
+        }
+        initialSettings()
+    }, [])
     const components = ["Vancouver", "Toronto", "New York", "Montreal", "Paris"];
     return (
         <SafeAreaView style={styles.view}>

@@ -34,3 +34,22 @@ export const storeTrip = async (trip) => {
         console.log(error);
     }
 };
+
+
+export const storeSetting = async (setting, value) => {
+    try {
+        await AsyncStorage.setItem(setting, value);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getSetting = async (setting) => {
+    try {
+        let item = await AsyncStorage.getItem(setting);
+        console.log(item)
+        return item
+    } catch (error) {
+        console.log(error);
+    }
+};

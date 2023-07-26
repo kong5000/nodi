@@ -1,57 +1,27 @@
 import {
-    StyleSheet, Text, TouchableOpacity, View,
+    StyleSheet, View,
     Dimensions,
 } from 'react-native'
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { auth } from '../firebase'
-import { getConversations } from '../services/ConversationQueries'
 import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
-import * as Location from 'expo-location';
 import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
-import TrustGraph from '../components/TrustGraph'
-import Deck from '../components/Deck'
 import { calculateAge } from '../services/Utils'
-import { getUserTrips, subscribeToUserTrips } from '../services/TripCollectionQueries'
 import getUserData from '../hooks/userData'
 
-const DEBUG = false
 const HomeScreen = () => {
     const { user } = useAuth()
-    const navigation = useNavigation()
     // const [trips, setTrips] = useState([])
     const [cards, setCards] = useState(DUMMY_DATA)
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const { width, height } = Dimensions.get('window');
+
     const [items, setItems] = useState({})
 
-    const { trips, setTrips } = getUserData()
-
-    // useEffect(() => {
-    //     const initializeTrips = async () => {
-    //         let trips = await getUserTrips(user.uid)
-
-    //         setTrips(trips)
-    //     }
-    //     initializeTrips()
-    // }, []);
-
-    const handleSignOut = () => {
-        auth.signOut()
-            .then(() => {
-                navigation.replace("Login")
-            })
-    }
-    const handleMatch = (matchedUserInfo) => {
-        navigation.navigate('Match')
-    }
-
+    const { trips } = getUserData()
 
     useEffect(() => {
         const queryData = async () => {

@@ -5,6 +5,7 @@ import { Switch, Checkbox, ToggleButton } from 'react-native-paper';
 import { THEMES, TEXT_STYLES, COLORS } from '../style';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
+import { storeSetting } from '../services/LocalStorage';
 
 const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter }) => {
     const [isSwitchOn, setIsSwitchOn] = React.useState(false);
@@ -30,12 +31,14 @@ const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter }) => {
                         <Text style={styles.checkBoxLabel}>Edit Trips</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={styles.borderLine} /> */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionLabel}>Meet</Text>
+                    <Text style={styles.sectionLabel}>Meet, {matchFilter}</Text>
                     <ToggleButton.Row
                         style={styles.toggleRow}
-                        onValueChange={value => setMatchFilter(value)}
+                        onValueChange={value => {
+                            setMatchFilter(value)
+                            storeSetting('matchFilter', value)
+                        }}
                         value={matchFilter}
                     >
                         <ToggleButton

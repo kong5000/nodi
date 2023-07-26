@@ -10,7 +10,7 @@ import getUserData from '../hooks/userData'
 
 const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
-    const {conversations, setConversations} = getUserData()
+    const { conversations, setConversations } = getUserData()
     // const [conversations, setConversations] = useState([]);
 
     const onChatRowPressed = async (conversationDetails) => {
@@ -23,7 +23,13 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                 <FlatList
                     data={conversations}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => <ChatRow onChatRowPressed={onChatRowPressed} setActiveConversation={setActiveConversation} conversationDetails={item} setActivePartner={setActivePartner} />}
+                    renderItem={({ item }) =>
+                        <ChatRow
+                            onChatRowPressed={onChatRowPressed}
+                            setActiveConversation={setActiveConversation}
+                            conversationDetails={item}
+                            setActivePartner={setActivePartner}
+                        />}
                 /> : <View>
                     <Text>You have no conversations at the moment</Text>
                 </View>
