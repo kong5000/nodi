@@ -13,7 +13,7 @@ import getUserData from '../hooks/userData';
 import { getUserDoc, updateUserDoc } from '../services/UserQueries';
 import { addTripDoc } from '../services/TripCollectionQueries'
 import moment from 'moment';
-const LAST_PAGE = 6
+const LAST_PAGE = 5
 
 const ModalScreen = () => {
     const { setUserData } = getUserData()
@@ -32,7 +32,6 @@ const ModalScreen = () => {
     const [trips, setTrips] = useState([])
     useEffect(() => {
         const updateUser = async () => {
-            console.log("UPDATING USER")
             setUpdatingProfile(true)
 
             const travelsWith = [];
@@ -95,9 +94,9 @@ const ModalScreen = () => {
                 travelWithOther={travelWithOther}
                 setPage={setPage}
             />}
-            {page == 4 && <TravelSignup setTrips={setTrips} trips={trips} setPage={setPage} />}
-            {page == 5 && <Interests interests={interests} setInterests={setInterests} setPage={setPage} />}
-            {(page == 6 && updatingProfile) &&
+            {/* {page == 4 && <TravelSignup setTrips={setTrips} trips={trips} setPage={setPage} />} */}
+            {page == 4 && <Interests interests={interests} setInterests={setInterests} setPage={setPage} />}
+            {(page == 5 && updatingProfile) &&
                 <>
                     <Text style={TEXT_STYLES.header}>Updating Your Profile</Text>
                     <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />

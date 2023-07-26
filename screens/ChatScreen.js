@@ -72,7 +72,6 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     const unMatch = async () => {
         await deleteConversation(activeConversation.id)
-        console.log("UNMATCHEd")
         setActivePartner(null)
     }
 
@@ -99,7 +98,6 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                 await uploadBytes(storageRef, blob);
 
                 const downloadURL = await getDownloadURL(storageRef);
-                console.log(downloadURL)
                 await addChatMessage('', downloadURL, activeConversation.id, user.uid)
 
                 return downloadURL

@@ -49,7 +49,6 @@ const ParallaxCarousel = ({ items }) => {
     const { url } = event;
     if (url.includes('code=')) {
       const parsed = queryString.parseUrl(url);
-      console.log(parsed.query.code)
       try {
         let formData = new FormData()
         const cliendId = "2254471901397577"
@@ -69,10 +68,8 @@ const ParallaxCarousel = ({ items }) => {
             'Content-Type': 'multipart/form-data',
           },
         });
-        console.log(response.data);
         let accessToken = response.data.access_token
         let userId = response.data.user_id
-        console.log("await permanent access")
 
         // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
         const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
@@ -82,7 +79,6 @@ const ParallaxCarousel = ({ items }) => {
         //       access_token: accessToken,
         //     },
         //   });
-        console.log(graphResponse.data.data)
         // Handle the response data here
         setShowWebView(false)
         let tempPictures = []
@@ -110,13 +106,10 @@ const ParallaxCarousel = ({ items }) => {
       //       access_token: accessToken,
       //     },
       //   });
-      console.log("THE GRAM")
-      console.log(graphResponse.data.data)
       // Handle the response data here
       setInstagramHandle(graphResponse.data.data[0].username)
       setShowWebView(false)
       let tempPictures = []
-      console.log(graphResponse.data)
       graphResponse.data.data.forEach(mediaObject => {
         if (mediaObject.media_type != "VIDEO") {
           tempPictures.push(mediaObject)
@@ -300,12 +293,12 @@ const ParallaxCarousel = ({ items }) => {
           );
         }}
       />
-      <Pagination
+      {/* <Pagination
         opacity={paginationOpacity}
         items={items}
         scrollAnimation={scrollAnimation}
         scrollRef={scrollRef}
-      />
+      /> */}
     </View >
   );
 };

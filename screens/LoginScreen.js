@@ -44,7 +44,6 @@ const LoginScreen = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
                 const user = userCredentials.user
-                console.log(`Logged in with ${user.email}`)
                 setloggingIn(false)
             })
             .catch(error => {

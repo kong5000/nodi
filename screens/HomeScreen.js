@@ -18,27 +18,29 @@ import TrustGraph from '../components/TrustGraph'
 import Deck from '../components/Deck'
 import { calculateAge } from '../services/Utils'
 import { getUserTrips, subscribeToUserTrips } from '../services/TripCollectionQueries'
+import getUserData from '../hooks/userData'
 
 const DEBUG = false
 const HomeScreen = () => {
     const { user } = useAuth()
     const navigation = useNavigation()
-    const [trips, setTrips] = useState([])
+    // const [trips, setTrips] = useState([])
     const [cards, setCards] = useState(DUMMY_DATA)
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const { width, height } = Dimensions.get('window');
     const [items, setItems] = useState({})
 
+    const { trips, setTrips } = getUserData()
 
-    useEffect(() => {
-        const initializeTrips = async () => {
-            let trips = await getUserTrips(user.uid)
+    // useEffect(() => {
+    //     const initializeTrips = async () => {
+    //         let trips = await getUserTrips(user.uid)
 
-            setTrips(trips)
-        }
-        initializeTrips()
-    }, []);
+    //         setTrips(trips)
+    //     }
+    //     initializeTrips()
+    // }, []);
 
     const handleSignOut = () => {
         auth.signOut()
@@ -49,10 +51,7 @@ const HomeScreen = () => {
     const handleMatch = (matchedUserInfo) => {
         navigation.navigate('Match')
     }
-    useLayoutEffect(() => {
-        const unsubscribe = subscribeToUserTrips(user.uid, trips, setTrips)
-        return unsubscribe;
-    }, [])
+
 
     useEffect(() => {
         const queryData = async () => {
@@ -70,7 +69,6 @@ const HomeScreen = () => {
                     })
                 })
                 setItems(carouselItems)
-                console.log(potentialMatches)
             } catch (err) {
                 // alert(err)
                 console.log(err)

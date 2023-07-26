@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
             if (user) {
                 setUser(user)
             } else {
-                console.log("NO USER")
                 setUser(null)
             }
         })

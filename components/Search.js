@@ -58,7 +58,7 @@ const Search = ({ trips }) => {
                         name="options-outline" size={42} />
                 </TouchableOpacity>
                 {
-                    trips.map((trip, index) => (
+                    trips && trips.map((trip, index) => (
                         <TouchableOpacity
                             key={index}
                             style={[

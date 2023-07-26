@@ -25,7 +25,6 @@ export const addPass = async (uid, passedCard) => {
 }
 export const addLike = async (userData, likedCard) => {
     const uid = userData.id
-    console.log("ADDING LIKE")
     const likeDocRef = doc(database, 'users', uid, 'likes', likedCard.userInfo.id);
     // setDoc(likeDocRef, { ...likedCard.userInfo, likedOn: new Date(), likedBy: uid })
     setDoc(likeDocRef, { id: likedCard.userInfo.id, likedOn: new Date(), likedBy: uid })
@@ -106,6 +105,5 @@ const likedBy = async (uid, likedById) => {
         limit(1)
     )
     const querySnapshot = await getDocs(q)
-    console.log(querySnapshot.docs.length)
     return querySnapshot.docs.length
 }

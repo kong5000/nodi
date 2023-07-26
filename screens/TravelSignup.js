@@ -37,8 +37,6 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
     }
 
     const submitDestinations = async () => {
-        console.log("DESTINATIONS")
-        console.log(destinations)
         let tempTrips = []
         for (const destination of destinations) {
             if (destinationValid(destination)) {
@@ -61,12 +59,8 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
     }, [destinations])
 
     const removeDestination = (index) => {
-        console.log(index)
-        console.log(destinations)
         const newDestinations = destinations.map(a => { return { ...a } })
-        console.log(newDestinations)
         newDestinations.splice(index, 1);
-        console.log(newDestinations)
         setDestinations(newDestinations);
         checkForm()
     };
@@ -115,7 +109,6 @@ const TravelSignup = ({ setPage, setTrips, trips }) => {
                     onPressAsync={
                         () => {
                             if (checkOneDestinationValid()) {
-                                console.log("onpress async")
                                 submitDestinations()
                             }
                         }

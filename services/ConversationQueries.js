@@ -1,4 +1,17 @@
-import { doc, updateDoc, setDoc, deleteDoc, query, getDocs, where, limit, orderBy, collection, addDoc } from 'firebase/firestore'
+import {
+    onSnapshot,
+    doc,
+    updateDoc,
+    setDoc,
+    deleteDoc,
+    query,
+    getDocs,
+    where,
+    limit,
+    orderBy,
+    collection,
+    addDoc
+} from 'firebase/firestore'
 import { database } from '../firebase'
 
 export const addNewConversation = async (data, userIds) => {
@@ -20,7 +33,6 @@ export const getConversations = async (uid) => {
         data.id = doc.id;
         return data;
     });
-    console.log(conversations)
     return conversations
 }
 
@@ -32,7 +44,6 @@ export const getMessages = async (convId, uid) => {
     )
     const querySnapshot = await getDocs(q);
     let count = 1
-    console.log(querySnapshot.metadata.fromCache )
     let messages = querySnapshot.docs.map((doc) => {
         const data = doc.data()
         data.createdAt = data.createdAt.toDate()
@@ -78,12 +89,51 @@ export const addChatMessage = async (text, image, conversationId, authorId) => {
     await updateConversationLastMessage(conversationId, authorId, text, messsageId)
 }
 
-export const updateConversationLastMessage = async (conversationId, authorId, lastMessage,messsageId) => {
+export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messsageId) => {
     const documentRef = doc(database, 'conversations', conversationId);
     await updateDoc(documentRef, {
         lastMessage,
         lastAuthor: authorId,
         lastActive: new Date(),
-        lastMessageId : messsageId
+        lastMessageId: messsageId
     })
+}
+
+export const subscribeToConversations = (uid, setConversations) => {
+    console.log("Subscribing To Conversations")
+    const conversationRef = collection(database, 'conversations')
+    const q = query(conversationRef,
+        where('members', 'array-contains', uid),
+        orderBy('lastActive', 'desc'),
+        limit(20))
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+            if (change.type === 'modified') {
+                const conversationData = change.doc.data()
+                setConversations(prev => prev.map(conv => {
+                    if (conv.id == change.doc.id) {
+                        conv.lastMessage = conversationData.lastMessage
+                        conv.lastAuthor = conversationData.lastAuthor
+                        conv.lastActive = conversationData.lastActive
+                    }
+                    return conv
+                }))
+            }
+            if (change.type === 'removed') {
+                setConversations(prev => prev.filter(conv => {
+                    if (conv.id == change.doc.id) {
+                        return false
+                    }
+                    return true
+                }))
+            }
+            if (change.type === 'added') {
+                const data = change.doc.data()
+                const newConversation = { id: change.doc.id, ...data }
+                setConversations(prev => [newConversation, ...prev])
+            }
+        });
+    });
+    return unsubscribe;
 }

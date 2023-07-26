@@ -22,8 +22,6 @@ const filterDocuments = (potentialCards, passes, uid) => {
 const addUserDetails = async (potentialCards, userTrips) => {
     let detailedCards = []
     potentialCards.map(async (potentialCard) => {
-        console.log(potentialCard)
-        console.log(`Getting details for ${potentialCard.userInfo.name}`)
         let missedYouIn = []
         let seeYouIn = []
         let headedTo = []
@@ -83,7 +81,6 @@ export const getCards = async (uid) => {
             matchMap[match.userInfo.id].daysMatching += match.daysMatching
         }
     })
-    console.log(matchMap, "matchmap")
     potentialMatches = Object.values(matchMap)
     // potentialMatches = potentialMatches.map(match => {
     //     let daysMatched = 0
@@ -98,9 +95,6 @@ export const getCards = async (uid) => {
     //         }
     //     })
     // })
-    console.log("POTENTIAL MATCHES")
-    console.log(potentialMatches)
-    console.log("USER TRIPS", userTrips)
 
     return potentialMatches
 }

@@ -25,7 +25,6 @@ const TravelAdderScreen = ({ setPage, setTrips, trips }) => {
         }
     }
     useEffect(() => {
-        console.log(destination)
         if (destination && destination.dayFrom && destination.dayTo && destination.city) {
             setValid(true)
         } else {

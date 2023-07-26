@@ -65,7 +65,6 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                         listViewDisplayed={false}
                         placeholder=''
                         onPress={(data, details = null) => {
-                            console.log(data.description)
                             setHideDates(false)
                             setLocation(data.description)
                             setSearchVisible(false)

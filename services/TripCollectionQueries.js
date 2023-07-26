@@ -57,10 +57,7 @@ export const addTripDoc = async (tripData) => {
 
 export const deleteTrip = async (documentId) => {
     // Create a reference to the document
-    console.log(documentId)
-    console.log("Deleting")
     const documentRef = doc(database, "trips", documentId);
-    console.log("Deleting")
     try {
         await deleteDoc(documentRef)
     } catch (err) {
@@ -69,8 +66,6 @@ export const deleteTrip = async (documentId) => {
 }
 
 export const subscribeToUserTrips = (uid, trips, setTrips) => {
-    console.log(uid)
-    console.log("your uid")
     const tripsRef = collection(database, 'trips')
     const q = query(tripsRef,
         where('userInfo.id', '==', uid),
@@ -79,7 +74,6 @@ export const subscribeToUserTrips = (uid, trips, setTrips) => {
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
-            console.log(change.type)
             if (change.type === 'removed') {
                 setTrips(prev => prev.filter(trip => {
                     if (trip.id == change.doc.id) {
@@ -91,8 +85,7 @@ export const subscribeToUserTrips = (uid, trips, setTrips) => {
             if (change.type === 'added') {
                 const data = change.doc.data()
                 const newTrip = { id: change.doc.id, ...data }
-
-                setTrips([newTrip, ...trips])
+                setTrips(prev => [newTrip, ...prev])
             }
         })
     })

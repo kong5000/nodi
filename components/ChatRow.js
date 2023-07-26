@@ -34,7 +34,6 @@ const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) =>
             }
         }
         setDate(formatDate(conversationDetails.lastActive.toDate()))
-        console.log(conversationDetails)
     }, [conversationDetails])
 
     const onPress = async () => {

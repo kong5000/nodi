@@ -4,17 +4,26 @@ import useAuth from './useAuth';
 import { collection, onSnapshot, getDoc, doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
+import { subscribeToUserTrips } from '../services/TripCollectionQueries';
+import { subscribeToConversations } from '../services/ConversationQueries';
+import { set } from 'lodash';
 
 export const UserDataContext = createContext({
     userData: null,
-    setUserData: () => {}
+    setUserData: () => { },
+    trips: [],
+    setTrips: () => { },
+    conversations: [],
+    setConversations: () => { }
 });
 
 export const UserDataProvider = ({ children }) => {
     const navigation = useNavigation()
-    
+
     const { user } = useAuth()
     const [userData, setUserData] = useState(null);
+    const [trips, setTrips] = useState([])
+    const [conversations, setConversations] = useState([])
     const value = { userData, setUserData };
 
     const setData = (data) => {
@@ -78,10 +87,30 @@ export const UserDataProvider = ({ children }) => {
         return () => {
             unsubscribe();
         };
-    },
-        [user])
+    }, [user])
 
-    return <UserDataContext.Provider value={{ userData, setUserData }}>{children}</UserDataContext.Provider>;
+    useEffect(() => {
+        if (!user) return;
+        const unsubscribe = subscribeToUserTrips(user.uid, trips, setTrips)
+        return unsubscribe;
+    }, [user])
+
+    useEffect(() => {
+        if (!user) return;
+        const unsubscribe = subscribeToConversations(user.uid, setConversations)
+        return unsubscribe;
+    }, [user])
+
+    return <UserDataContext.Provider value={{
+        userData,
+        setUserData,
+        trips,
+        setTrips,
+        conversations,
+        setConversations
+    }}>
+        {children}
+    </UserDataContext.Provider>;
 }
 
 export default function getUserData() {

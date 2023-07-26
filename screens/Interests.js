@@ -65,7 +65,7 @@ const Interests = ({setPage, interests, setInterests}) => {
                     </View>
                 </TouchableOpacity>)}
             <NextButton
-                index={5}
+                index={4}
                 setPage={setPage}
                 formIncomplete={formIncomplete}
                 incompleteMessage="Please pick at least two interests" />

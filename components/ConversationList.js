@@ -6,51 +6,12 @@ import useAuth from '../hooks/useAuth'
 import Footer from './Footer'
 import { collection, query, orderBy, where, onSnapshot, limit } from 'firebase/firestore'
 import { database } from '../firebase'
+import getUserData from '../hooks/userData'
 
 const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
-    const [conversations, setConversations] = useState([]);
-
-    useLayoutEffect(() => {
-        const loadConversations = async () => {
-            let convos = await getConversations(user.uid)
-            setConversations(convos)
-        }
-        loadConversations()
-    }, [])
-
-    useLayoutEffect(() => {
-        const conversationRef = collection(database, 'conversations')
-        const q = query(conversationRef,
-            where('members', 'array-contains', user.uid),
-            orderBy('lastActive', 'desc'),
-            limit(20))
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            querySnapshot.docChanges().forEach((change) => {
-                if (change.type === 'modified') {
-                    const conversationData = change.doc.data()
-                    setConversations(prev => prev.map(conv => {
-                        if (conv.id == change.doc.id) {
-                            conv.lastMessage = conversationData.lastMessage
-                            conv.lastAuthor = conversationData.lastAuthor
-                            conv.lastActive = conversationData.lastActive
-                        }
-                        return conv
-                    }))
-                }
-                if (change.type === 'removed') {
-                    setConversations(prev => prev.filter(conv => {
-                        if (conv.id == change.doc.id) {
-                            return false
-                        }
-                        return true
-                    }))
-                }
-            });
-        });
-        return unsubscribe;
-    }, [])
+    const {conversations, setConversations} = getUserData()
+    // const [conversations, setConversations] = useState([]);
 
     const onChatRowPressed = async (conversationDetails) => {
         setActiveConversation(conversationDetails)

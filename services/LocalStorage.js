@@ -5,7 +5,6 @@ export const storeInput = async (input) => {
         // Get the existing inputs from AsyncStorage
         const existingInputs = await AsyncStorage.getItem('inputs');
         let inputs = existingInputs ? JSON.parse(existingInputs) : [];
-        console.log("existing inputs", inputs)
         // Add the new input to the beginning of the array
         inputs.unshift(input);
 
@@ -15,6 +14,22 @@ export const storeInput = async (input) => {
         }
         // Store the updated inputs array in AsyncStorage
         await AsyncStorage.setItem('inputs', JSON.stringify(inputs));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const storeTrip = async (trip) => {
+    try {
+        // Get the existing inputs from AsyncStorage
+        const existingTrips = await AsyncStorage.getItem('trips');
+        let trips = existingTrips ? JSON.parse(existingTrips) : [];
+
+        // Add the new input to the beginning of the array
+        trips.unshift(trip);
+
+        // Store the updated trips array in AsyncStorage
+        await AsyncStorage.setItem('trips', JSON.stringify(trips));
     } catch (error) {
         console.log(error);
     }

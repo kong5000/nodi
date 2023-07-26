@@ -12,17 +12,13 @@ const App = () => {
                           
     const fetchFeed = async () => {
         try {
-            console.log("FEED")
             const user_id = "keef5000"
             const response = await axios.get(
                 `https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`
                 // `https://graph.instagram.com/me?fields=id,username&access_token=${access_token}`
             );
 
-            console.log("AAAA")
-            console.log(response.data);
         } catch (err) {
-            console.log(err)
         }
 
     }
@@ -30,7 +26,6 @@ const App = () => {
         const { url } = event;
         if (url.includes('code=')) {
             const parsed = queryString.parseUrl(url);
-            console.log(parsed.query.code)
             try {
                 let formData = new FormData()
                 const cliendId = "2254471901397577"
@@ -50,10 +45,8 @@ const App = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                console.log(response.data);
                 let accessToken = response.data.access_token
                 let userId = response.data.user_id
-                console.log("await permanent access")
                 
                 // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
                 const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
@@ -63,7 +56,6 @@ const App = () => {
                 //       access_token: accessToken,
                 //     },
                 //   });
-                  console.log(graphResponse.data)
                 // Handle the response data here
             } catch (error) {
                 console.log(error);
