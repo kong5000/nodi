@@ -35,7 +35,8 @@ const HomeScreen = () => {
                         image: match.userInfo.pictures[0],
                         title: match.userInfo.name,
                         age: calculateAge(match.userInfo.birthDate),
-                        city: match.city
+                        city: match.city,
+                        goingTo : match.userInfo.goingTo
                     })
                 })
                 setItems(carouselItems)

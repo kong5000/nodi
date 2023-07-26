@@ -1,29 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { WebView } from 'react-native-webview';
 import queryString from 'query-string';
 import axios from 'axios';
 import InstagramPhotos from './InstagramPhotos';
 import {
   Animated,
   Dimensions,
-  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import Pagination from './Pagination';
 import Connect from './Connect';
-import { SIZES, TEXT_STYLES } from '../style';
-import TripInfo from './TripInfo';
+import { SIZES } from '../style';
 const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
 import Interests from './Interests';
-import Chart from './Chart'
 import DestinationScroller from './DestinationScroller';
+
 const ParallaxCarousel = ({ items }) => {
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
@@ -68,8 +63,6 @@ const ParallaxCarousel = ({ items }) => {
             'Content-Type': 'multipart/form-data',
           },
         });
-        let accessToken = response.data.access_token
-        let userId = response.data.user_id
 
         // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
         const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
@@ -275,9 +268,11 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
-                  <DestinationScroller label={"Going To"} items={["Montreal", "Paris", "Vienna", "Tomorrowland"]} matches={["Osaka"]}
+                  {item.goingTo && <DestinationScroller label={"Going To"} items={item.goingTo.map(location => {
+                    return location.split(',')[0]
+                  })}
                     style={{ position: 'relative', bottom: 25 }}
-                  />
+                  />}
                   <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
                     style={{ position: 'relative', bottom: 25 }}
                   />

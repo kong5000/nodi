@@ -14,7 +14,7 @@ const InstagramPhotos = ({ images, handle }) => {
             </View>
             <View style={styles.smallPictureContainer}>
                 {images && images.map(image =>
-                    <View style={styles.imageContainerSmall}>
+                    <View key={image.media_url} style={styles.imageContainerSmall}>
                         <Image
                             style={styles.image}
                             source={{ uri: image.media_url }}

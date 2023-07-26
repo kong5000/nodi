@@ -1,4 +1,11 @@
-import { doc, updateDoc, getDoc, setDoc, query, getDocs, where, limit, orderBy, collection, collectionGroup } from 'firebase/firestore'
+import {
+    doc, updateDoc, getDoc, setDoc, query, getDocs, where,
+    limit,
+    orderBy,
+    collection,
+    collectionGroup,
+    arrayUnion
+} from 'firebase/firestore'
 import { database } from '../firebase'
 import { addNewConversation } from './ConversationQueries';
 
@@ -106,4 +113,22 @@ const likedBy = async (uid, likedById) => {
     )
     const querySnapshot = await getDocs(q)
     return querySnapshot.docs.length
+}
+
+export const addTripInfo = async (uid, location) => {
+    const userDocRef = doc(database, "users", uid);
+
+    // Update the array with the new element using arrayUnion
+    const updateData = {
+        goingTo: arrayUnion(location)
+    };
+
+    // Update the document
+    updateDoc(userDocRef, updateData)
+        .then(() => {
+            console.log("Document updated successfully!");
+        })
+        .catch((error) => {
+            console.error("Error updating document: ", error);
+        });
 }

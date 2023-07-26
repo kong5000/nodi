@@ -1,5 +1,6 @@
 import { collection, query, where, limit, getDocs, addDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore'
 import { database } from '../firebase'
+import { addTripInfo } from './UserQueries'
 const TRIP_QUERY_LIMIT = TRIP_QUERY_LIMIT
 const DATE_LIMIT = 7
 
@@ -52,6 +53,7 @@ export const getUserTrips = async (uid) => {
 export const addTripDoc = async (tripData) => {
     const tripsCollectionRef = collection(database, "trips");
     await addDoc(tripsCollectionRef, tripData);
+    await addTripInfo(tripData.userInfo.id, tripData.city)
 }
 
 

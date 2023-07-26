@@ -7,13 +7,17 @@ const DestinationScroller = ({ label, items, matches, style }) => {
         <View style={[styles.top, style && style]}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
-                    <View style={styles.textContainer}>
+                    <View key={"header"} style={styles.textContainer}>
                         <Text style={styles.header}>{label}</Text>
                     </View>
-                    {matches && matches.map((item) => <View style={[styles.component, styles.selectedComponent]}>
+                    {matches && matches.map((item) => <View
+                        key={item}
+                        style={[styles.component, styles.selectedComponent]}>
                         <Text style={styles.componentTextActive}>{item}</Text>
                     </View>)}
-                    {items && items.map((item) => <View style={styles.component}>
+                    {items && items.map((item) => <View
+                        key={item}
+                        style={styles.component}>
                         <Text style={styles.componentText}>{item}</Text>
                     </View>)}
                 </ScrollView>
