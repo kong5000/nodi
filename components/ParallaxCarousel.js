@@ -208,60 +208,6 @@ const ParallaxCarousel = ({ items }) => {
                     // },
                   ]}
                 />
-                {/* <Animated.View
-                  style={[
-                    styles.titleContainer,
-                    {
-                      opacity: scrollAnimation.interpolate({
-                        inputRange,
-                        outputRange: [0, 1, 0],
-                      }),
-                      transform: [
-                        {
-                          translateX: scrollAnimation.interpolate({
-                            inputRange: inputRange,
-                            outputRange: [250, 0, -250],
-                          }),
-                        },
-                      ],
-                    },
-                  ]}>
-                  <Text style={styles.title}>{item.title}, {item.age}</Text>
-                  <View style={styles.optionalInfoContainer}>
-                    <View style={styles.professionContainer}>
-                      <Ionicons
-                        color="white"
-                        name="briefcase" size={30}
-                        style={{
-                          shadowOffset: {
-                            width: 2,
-                            height: 4,
-                          },
-                          shadowOpacity: 0.8,
-                          shadowRadius: 3,
-                        }}
-                      />
-                      <Text style={styles.professionText}> Accountant</Text>
-                    </View>
-                    <View style={styles.professionContainer}>
-                      <Ionicons
-                        color="white"
-                        name="school" size={30}
-                        style={{
-                          shadowOffset: {
-                            width: 2,
-                            height: 4,
-                          },
-                          shadowOpacity: 0.8,
-                          shadowRadius: 3,
-                        }}
-                      />
-                      <Text style={styles.professionText}> University of British Columbia</Text>
-                    </View>
-
-                  </View>
-                </Animated.View> */}
-
                 <Animated.View
                   style={[
                     {
@@ -285,7 +231,7 @@ const ParallaxCarousel = ({ items }) => {
                   })} />}
                   <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
                   <Profile />
-                  <Interests />
+                  <Interests interests={item.interests}/>
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />
                 </Animated.View>
               </ScrollView>

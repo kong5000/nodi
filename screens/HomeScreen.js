@@ -47,7 +47,8 @@ const HomeScreen = () => {
                         title: match.userInfo.name,
                         age: calculateAge(match.userInfo.birthDate),
                         city: match.city,
-                        goingTo: match.userInfo.goingTo
+                        goingTo: match.userInfo.goingTo,
+                        interests: match.userInfo.interests
                     })
                 })
                 setItems(carouselItems)

@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     },
     dummyText: {
         color: 'black',
-        fontFamily: 'Montserrat_400Regular',
         // paddingBottom: 16,
         fontSize: 20,
         paddingLeft: 10
@@ -116,7 +115,6 @@ const styles = StyleSheet.create({
     dummySearchText: {
         ...TEXT_STYLES.standard
         // color: 'red',
-        // fontFamily: 'Montserrat_400Regular',
         // fontSize: 20,
         // paddingLeft: 10,
         // paddingBottom: 15

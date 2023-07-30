@@ -2,32 +2,16 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { THEMES } from '../style'
 
-const Interests = () => {
+const Interests = ({ interests }) => {
     return (
         <View style={styles.top}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.header}>Likes</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>⛰️ Hiking</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>⛰️ Hiking</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
-                    <View style={styles.interest}>
-                        <Text style={styles.text}>🍻 Pubs and Bars</Text>
-                    </View>
+                    {interests && interests.map(interest =>
+                        <View style={styles.interest}>
+                            <Text style={styles.text}>{interest}</Text>
+                        </View>
+                    )}
                 </ScrollView>
             </View>
         </View>
@@ -39,7 +23,7 @@ export default Interests
 
 const styles = StyleSheet.create({
     textContainer: {
-        display:'flex',
+        display: 'flex',
         justifyContent: 'center',
         borderBottomWidth: 0,
         borderRightWidth: 1,

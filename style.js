@@ -64,7 +64,7 @@ const TEXT_STYLES = {
         padding: 12,
         paddingLeft: 25,
         fontSize: 23,
-        fontFamily: 'Montserrat_400Regular',
+        // fontFamily: 'Montserrat_400Regular',
         margin: 10,
     },
     searchBarInput: {

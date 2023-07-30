@@ -28,11 +28,11 @@ if (getApps().length == 0) {
 } else {
     app = getApp()
 }
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 const auth = getAuth()
 const database = getFirestore(app)
 const storage = getStorage()
 const functions = getFunctions(app, 'us-central1')
 const getMessagesFunction = httpsCallable(functions, 'getMessages');
 
-export { auth, analytics, database, storage, getMessagesFunction }
+export { auth, database, storage, getMessagesFunction }
