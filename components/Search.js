@@ -6,9 +6,8 @@ import { Modal, Portal } from 'react-native-paper';
 import SearchModal from './SearchModal';
 import { deleteTrip } from '../services/TripCollectionQueries';
 import { getSetting, storeSetting } from '../services/LocalStorage';
-import { initial } from 'lodash';
 
-const Search = ({ trips }) => {
+const Search = ({ trips, setSelectedTripIndex }) => {
     const [visible, setVisible] = useState(false);
     const [matchFilter, setMatchFilter] = useState("everyone")
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -17,8 +16,9 @@ const Search = ({ trips }) => {
     const hideModal = () => setVisible(false);
     const containerStyle = { backgroundColor: 'white', padding: 20 };
     const [indexToDelete, setIndexToDelete] = useState(null)
-    const [selectedComponent, setSelectedComponent] = useState(null);
+    const [selectedComponent, setSelectedComponent] = useState(0);
     const handleComponentClick = (index) => {
+        setSelectedTripIndex(index)
         setSelectedComponent(index);
     };
 

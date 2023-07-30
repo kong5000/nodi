@@ -17,7 +17,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
-    const [enableLoadEarlier, setEnableLoadEarlier] = useState([])
+    const [enableLoadEarlier, setEnableLoadEarlier] = useState(false)
     const [menuVisible, setMenuVisible] = useState(false)
     const [visible, setVisible] = useState(false);
     const showModal = () => setVisible(true);

@@ -7,9 +7,6 @@ import Icon from './Icon'
 const Connect = () => {
     return (
         <View style={styles.container} >
-            {/* <TouchableOpacity style={styles.connectButton}>
-                <Icon/>
-            </TouchableOpacity> */}
             <TouchableOpacity style={styles.connectRow}>
                 <Ionicons
                     style={styles.detailIcon}

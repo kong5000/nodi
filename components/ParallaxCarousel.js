@@ -20,6 +20,7 @@ import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 
 const ParallaxCarousel = ({ items }) => {
+
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
   const [showWebView, setShowWebView] = useState(true)
@@ -121,8 +122,20 @@ const ParallaxCarousel = ({ items }) => {
 
   return (
     <View style={styles.screen}>
+      {!items.length &&
+        <View style={{
+          height: "90%",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Text style={{ fontSize: 20 }}>
+            No matches for this trip yet.
+          </Text>
+        </View>}
+      {items.length > 0 && <Connect />}
+
       <StatusBar hidden />
-      <Connect />
       <Animated.FlatList
         onMomentumScrollEnd={() => {
           handleScrollToTop()
@@ -174,6 +187,7 @@ const ParallaxCarousel = ({ items }) => {
                 bounces={false}
                 contentContainerStyle={styles.scroll}
               >
+                <Text style={styles.title}>{item.title}</Text>
                 <Animated.Image
                   source={{ uri: item.image }}
                   style={[
@@ -194,7 +208,7 @@ const ParallaxCarousel = ({ items }) => {
                     // },
                   ]}
                 />
-                <Animated.View
+                {/* <Animated.View
                   style={[
                     styles.titleContainer,
                     {
@@ -246,13 +260,11 @@ const ParallaxCarousel = ({ items }) => {
                     </View>
 
                   </View>
-                </Animated.View>
+                </Animated.View> */}
 
                 <Animated.View
                   style={[
                     {
-                      position: 'relative',
-                      bottom: 120,
                       width: "100%",
                       opacity: scrollAnimation.interpolate({
                         inputRange,
@@ -270,18 +282,11 @@ const ParallaxCarousel = ({ items }) => {
                   ]}>
                   {item.goingTo && <DestinationScroller label={"Going To"} items={item.goingTo.map(location => {
                     return location.split(',')[0]
-                  })}
-                    style={{ position: 'relative', bottom: 25 }}
-                  />}
-                  <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
-                    style={{ position: 'relative', bottom: 25 }}
-                  />
-                  <Profile style={{ position: 'relative', bottom: 15 }} />
+                  })} />}
+                  <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
+                  <Profile />
                   <Interests />
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />
-
-                  {/* <Image style={styles.secondImage} source={require('../assets/rio.jpg')} /> */}
-
                 </Animated.View>
               </ScrollView>
             </View>
@@ -335,7 +340,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -354,10 +358,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width - 15,
-    height: 500,
+    height: 400,
     resizeMode: 'cover',
     borderRadius: 20,
-    marginTop: 20,
     // borderTopLeftRadius: 50
   },
   secondImage: {
@@ -368,30 +371,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 20,
   },
-  titleContainer: {
-    // display: 'flex',
-    position: 'relative',
-    bottom: 155,
-    zIndex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    // backgroundColor: 'red',
-    width: "100%",
-    marginLeft: 30,
-  },
   title: {
-    fontSize: 35,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: "white",
-    marginBottom: 25,
-    shadowOffset: {
-      width: 2,
-      height: 4,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 2,
-    // color: '#fff',
-
+    color: "black",
   },
   connectButtonContainer: {
     position: 'absolute',

@@ -19,9 +19,20 @@ const HomeScreen = () => {
     // const [trips, setTrips] = useState([])
     const [cards, setCards] = useState(DUMMY_DATA)
 
-    const [items, setItems] = useState({})
+    const [items, setItems] = useState([])
+    const [filteredItems, setFilteredItems] = useState([])
+
+    const [selectedTripIndex, setSelectedTripIndex] = useState(0)
 
     const { trips } = getUserData()
+
+    // useEffect(()=> {
+    //     console.log(selectedTrip)
+    //     if(!selectedTrip){
+    //         setFilteredItems(items)
+    //     }
+
+    // },[selectedTripIndex])
 
     useEffect(() => {
         const queryData = async () => {
@@ -36,7 +47,7 @@ const HomeScreen = () => {
                         title: match.userInfo.name,
                         age: calculateAge(match.userInfo.birthDate),
                         city: match.city,
-                        goingTo : match.userInfo.goingTo
+                        goingTo: match.userInfo.goingTo
                     })
                 })
                 setItems(carouselItems)
@@ -47,10 +58,20 @@ const HomeScreen = () => {
         }
         queryData()
     }, [])
+
+    useEffect(() => {
+        const selectedTrip = trips[selectedTripIndex]
+        if (!selectedTrip) return
+        if (!items.length) return
+        if (!trips) return
+        const filtered = items.filter(item => item.city == selectedTrip.city)
+        setFilteredItems(filtered)
+    }, [items, trips, selectedTripIndex])
+
     return (
         <View style={styles.screen}>
-            <Search trips={trips} />
-            <ParallaxCarousel items={items} />
+            <Search trips={trips} setSelectedTripIndex={setSelectedTripIndex} />
+            <ParallaxCarousel items={filteredItems} />
             <Footer />
         </View>
     )
