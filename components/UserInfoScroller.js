@@ -2,35 +2,14 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { THEMES } from '../style'
 
-const emojiMap = {
-    "Festivals": "🎊",
-    "Walking Tours": "🚶",
-    "Road Trips": "🚗",
-    "Beaches": "🏖️",
-    "Markets": "🧺",
-    "Parks and Nature": "🌳",
-    "Architecture": "🏛️",
-    "Museums and Art": "🖼️",
-    "Hiking": "⛰️",
-    "Biking": "🚲",
-    "Sporting Events": "🏟️",
-    "Concerts": "🎤",
-    "Nightlife": "🍸",
-    "Performing Arts": "🎭",
-    "Vegan Food": "🥬",
-    "Street Food": "🥙",
-    "Fine Dining": "🍽️",
-    "Pubs and Bars": "🍺"
-}
-
-const Interests = ({ interests }) => {
+const UserInfoScroller = ({ interests }) => {
     return (
         <View style={styles.top}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
                     {interests && interests.map(interest =>
                         <View style={styles.interest}>
-                            <Text style={styles.text}>{emojiMap[interest] + " " +  interest}</Text>
+                            <Text style={styles.text}>{interest}</Text>
                         </View>
                     )}
                 </ScrollView>
@@ -40,7 +19,7 @@ const Interests = ({ interests }) => {
     )
 }
 
-export default Interests
+export default UserInfoScroller
 
 const styles = StyleSheet.create({
     textContainer: {
@@ -55,7 +34,7 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     top: {
-        // marginVertical: 15,
+        marginVertical: 10,
         marginHorizontal: 10
     },
     header: {
@@ -81,6 +60,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
+        // borderWidth: 1,
+        // borderRadius: 20,
     },
     interest: {
         borderRightWidth: 0.5,

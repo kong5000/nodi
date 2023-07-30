@@ -18,6 +18,7 @@ const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
 import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
+import UserInfoScroller from './UserInfoScroller';
 
 const ParallaxCarousel = ({ items }) => {
 
@@ -226,12 +227,16 @@ const ParallaxCarousel = ({ items }) => {
                       ],
                     },
                   ]}>
+                  <UserInfoScroller interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]} />
+                  <Interests interests={item.interests} />
+
+                  <Profile />
+
                   {item.goingTo && <DestinationScroller label={"Going To"} items={item.goingTo.map(location => {
                     return location.split(',')[0]
                   })} />}
                   <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
-                  <Profile />
-                  <Interests interests={item.interests}/>
+
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />
                 </Animated.View>
               </ScrollView>
@@ -297,7 +302,7 @@ const styles = StyleSheet.create({
     // position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 120,
+    paddingBottom: 175,
   },
   itemOverlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',

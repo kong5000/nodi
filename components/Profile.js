@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     container: {
         // position: 'relative',
         // bottom: 50,
+        marginVertical: 15,
         flexDirection: "row",
         borderRadius: 20,
         backgroundColor: "white",
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
             // height: 4,
         },
         shadowOpacity: 0.2,
-        shadowRadius: 3,
+        shadowRadius: 2,
         padding: 30,
         paddingTop: 35,
         marginHorizontal: 10
