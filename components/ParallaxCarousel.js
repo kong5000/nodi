@@ -32,11 +32,14 @@ const ParallaxCarousel = ({ items }) => {
 
   const handleScrollToTop = () => {
     if (refsArray.current) {
-      refsArray.current.forEach(ref =>
-        ref.scrollTo({
-          y: 0,
-          animated: true,
-        })
+      refsArray.current.forEach(ref => {
+        if (ref) {
+          ref.scrollTo({
+            y: 0,
+            animated: true,
+          })
+        }
+      }
       )
     }
   };
@@ -238,6 +241,8 @@ const ParallaxCarousel = ({ items }) => {
                   <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
 
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />
+
+
                 </Animated.View>
               </ScrollView>
             </View>
