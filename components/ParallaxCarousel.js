@@ -19,7 +19,7 @@ import Profile from './Profile';
 import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
-
+import { calculateAge } from '../services/Utils';
 const ParallaxCarousel = ({ items }) => {
 
   const [paginationOpacity, setPaginationOpacity] = useState()
@@ -191,7 +191,47 @@ const ParallaxCarousel = ({ items }) => {
                 bounces={false}
                 contentContainerStyle={styles.scroll}
               >
-                <Text style={styles.title}>{item.title}</Text>
+                <View style={{
+                  width,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginVertical: 15
+                }
+                }>
+                  <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginHorizontal:25
+                  }}>
+                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={{
+                      fontSize: 20
+                    }}> / {item.age}</Text>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginHorizontal:25
+                    }}
+                  >
+                    <Text
+                    style={{fontSize: 20}}
+                    >
+                      Brasilia
+                    </Text>
+                    <Ionicons
+                      style={styles.detailIcon}
+                      name="location-outline" size={32} />
+                  </View>
+                </View>
+
                 <Animated.Image
                   source={{ uri: item.image }}
                   style={[
