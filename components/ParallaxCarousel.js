@@ -20,7 +20,8 @@ import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
 import { calculateAge } from '../services/Utils';
-const ParallaxCarousel = ({ items }) => {
+import StyleText from './StyleText';
+const ParallaxCarousel = ({ items, selectedTrip }) => {
 
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
@@ -45,66 +46,11 @@ const ParallaxCarousel = ({ items }) => {
   };
   const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
 
-  const handleWebViewNavigation = async (event) => {
-    const { url } = event;
-    if (url.includes('code=')) {
-      const parsed = queryString.parseUrl(url);
-      try {
-        let formData = new FormData()
-        const cliendId = "2254471901397577"
-        const client_secret = "7751441530536c99bc699c666c2666ee"
-        const grant_type = 'authorization_code'
-        const redirect_uri = "https://github.com/kong5000"
-        const code = parsed.query.code
-
-        formData.append('client_id', cliendId);
-        formData.append('client_secret', client_secret);
-        formData.append('grant_type', grant_type);
-        formData.append('redirect_uri', redirect_uri);
-        formData.append('code', code);
-
-        const response = await axios.post('https://api.instagram.com/oauth/access_token', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}?fields=id,username&access_token=${accessToken}`)
-        const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
-        // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}`, {
-        //     params: {
-        //       fields: 'id,username',
-        //       access_token: accessToken,
-        //     },
-        //   });
-        // Handle the response data here
-        setShowWebView(false)
-        let tempPictures = []
-        graphResponse.data.data.forEach(mediaObject => {
-          if (mediaObject.media_type != "VIDEO") {
-            tempPictures.push(mediaObject)
-          }
-        })
-        setInstagramImages(tempPictures.slice(0, 6))
-      } catch (error) {
-        console.log(error);
-        // Handle any errors that occurred during the request
-      }
-      // maybe close this view?
-      // setEnabled(true)
-    }
-  };
 
   useEffect(() => {
     const getInstagramMedia = async () => {
       const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
-      // const graphResponse = await axios.get(`https://graph.instagram.com/${userId}`, {
-      //     params: {
-      //       fields: 'id,username',
-      //       access_token: accessToken,
-      //     },
-      //   });
-      // Handle the response data here
+
       setInstagramHandle(graphResponse.data.data[0].username)
       setShowWebView(false)
       let tempPictures = []
@@ -123,7 +69,9 @@ const ParallaxCarousel = ({ items }) => {
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
   };
-
+  useEffect(() => {
+    console.log(selectedTrip)
+  }, [selectedTrip])
   return (
     <View style={styles.screen}>
       {!items.length &&
@@ -205,12 +153,21 @@ const ParallaxCarousel = ({ items }) => {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginHorizontal:25
+                    marginHorizontal: 25
                   }}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={{
-                      fontSize: 20
-                    }}> / {item.age}</Text>
+                    <StyleText
+                      text={item.title}
+                      semiBold
+                      style={
+                        { fontSize: 30 }
+                      }
+                    />
+                    <StyleText
+                      text={" /" + item.age}
+                      style={
+                        { fontSize: 20 }
+                      }
+                    />
                   </View>
                   <View
                     style={{
@@ -218,14 +175,15 @@ const ParallaxCarousel = ({ items }) => {
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      marginHorizontal:25
+                      marginHorizontal: 25
                     }}
                   >
-                    <Text
-                    style={{fontSize: 20}}
-                    >
-                      Brasilia
-                    </Text>
+                    <StyleText
+                      text={"Brasilia"}
+                      style={
+                        { fontSize: 20 }
+                      }
+                    />
                     <Ionicons
                       style={styles.detailIcon}
                       name="location-outline" size={32} />
@@ -275,9 +233,12 @@ const ParallaxCarousel = ({ items }) => {
 
                   <Profile />
 
-                  {item.goingTo && <DestinationScroller label={"Going To"} items={item.goingTo.map(location => {
-                    return location.split(',')[0]
-                  })} />}
+                  {item.goingTo &&
+                    <DestinationScroller
+                      selectedTrip={selectedTrip}
+                      label={"Going To"}
+                      items={item.goingTo}
+                    />}
                   <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
 
                   <InstagramPhotos images={instagramImages} handle={instagramHandle} />

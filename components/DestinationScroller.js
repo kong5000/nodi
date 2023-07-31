@@ -1,22 +1,36 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { COMPONENTS, THEMES } from '../style'
+import StyleText from './StyleText'
 
-const DestinationScroller = ({ label, items, matches, style }) => {
+const DestinationScroller = ({ label, items, style, selectedTrip }) => {
+    const [locations, setLocations] = useState([])
+    useEffect(() => {
+        setLocations(
+            items.map((item) => {
+                if (selectedTrip && selectedTrip.city == item) {
+                    return <StyleText
+                        text={item}
+                        bold={true}
+                    />
+                }
+                return <StyleText text={item} />
+            })
+        )
+    }, [selectedTrip])
+
     return (
         <View style={[styles.top, style && style]}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
                     <View key={"header"} style={styles.textContainer}>
-                        <Text style={styles.header}>{label}</Text>
+                        <StyleText
+                            style={styles.header}
+                            text={label}
+                        />
                     </View>
-                    {matches && matches.map((item) => <View
-                        key={item}
-                        style={[styles.component, styles.selectedComponent]}>
-                        <Text style={styles.componentTextActive}>{item}</Text>
-                    </View>)}
-                    {items && items.map((item) => <View
-                        key={item}
+                    {locations && locations.map((item, index) => <View
+                        key={index}
                         style={styles.component}>
                         <Text style={styles.componentText}>{item}</Text>
                     </View>)}
@@ -30,6 +44,9 @@ const DestinationScroller = ({ label, items, matches, style }) => {
 export default DestinationScroller
 
 const styles = StyleSheet.create({
+    selectedText: {
+        fontWeight: 'bold',
+    },
     item: {
         display: 'flex',
         justifyContent: 'center',
@@ -79,6 +96,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 20,
+        fontWeight: 'bold',
+        marginRight: 30,
         // width: 90,
         borderColor: 'black',
         // marginLeft: 10,
@@ -109,7 +128,8 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     component: {
-        ...COMPONENTS.component
+        // ...COMPONENTS.component
+        marginRight: 20
     },
     selectedComponent: {
         ...COMPONENTS.selectedComponent

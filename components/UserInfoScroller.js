@@ -7,8 +7,10 @@ const UserInfoScroller = ({ interests }) => {
         <View style={styles.top}>
             <View style={styles.view}>
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
-                    {interests && interests.map(interest =>
-                        <View style={styles.interest}>
+                    {interests && interests.map((interest, index) =>
+                        <View
+                            key={index}
+                            style={styles.interest}>
                             <Text style={styles.text}>{interest}</Text>
                         </View>
                     )}

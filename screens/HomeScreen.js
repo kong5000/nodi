@@ -72,7 +72,8 @@ const HomeScreen = () => {
     return (
         <View style={styles.screen}>
             <Search trips={trips} setSelectedTripIndex={setSelectedTripIndex} />
-            <ParallaxCarousel items={filteredItems} />
+            <ParallaxCarousel items={filteredItems}
+                selectedTrip={trips[selectedTripIndex]} />
             <Footer />
         </View>
     )
