@@ -20,13 +20,19 @@ import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
 import StyleText from './StyleText';
+import ConnectModal from './ConnectModal';
 const ParallaxCarousel = ({ items, selectedTrip }) => {
-  const [loading, setLoading] = useState([])
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
   const [showWebView, setShowWebView] = useState(true)
   const [instagramHandle, setInstagramHandle] = useState('')
+  const [connectModalVisible, setConnectModalVisible] = useState(false)
+
+  const showConnectModal = () => setConnectModalVisible(true);
+  const hideConnectModal = () => setConnectModalVisible(false);
+  const [currentImage, setCurrentImage] = useState('')
+
   const refsArray = useRef([]);
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
@@ -75,6 +81,11 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
 
   return (
     <View style={styles.screen}>
+      <ConnectModal
+        visible={connectModalVisible}
+        hideModal={hideConnectModal}
+        imageUri={currentImage}
+      />
       {!items.length &&
         <View style={{
           height: "90%",
@@ -86,8 +97,6 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
             No matches for this trip yet.
           </Text>
         </View>}
-      {items.length > 0 && <Connect />}
-
       <StatusBar hidden />
       <Animated.FlatList
         onMomentumScrollEnd={() => {
@@ -131,6 +140,13 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                   },
                 ]}>
               </Animated.View>
+              <Connect
+                onPress={() => {
+                  setCurrentImage(item.image)
+                  showConnectModal()
+                }}
+              />
+
               <ScrollView
                 scrollEnabled={(imagesLoaded == items.length)}
                 ref={(element) => refsArray.current.push(element)}

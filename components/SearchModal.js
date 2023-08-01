@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Modal, Portal } from 'react-native-paper';
-import { Switch, Checkbox, ToggleButton } from 'react-native-paper';
-import { THEMES, TEXT_STYLES, COLORS } from '../style';
+import { ToggleButton } from 'react-native-paper';
+import { THEMES } from '../style';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
 import { storeSetting } from '../services/LocalStorage';

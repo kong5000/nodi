@@ -4,10 +4,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { SIZES, THEMES } from '../style';
 // import Like from '../assets/thumbs.svg';
 import StyleText from './StyleText';
-const Connect = () => {
+const Connect = ({ onPress }) => {
     return (
         <View style={styles.container} >
-            <TouchableOpacity style={styles.connectRow}>
+            <TouchableOpacity
+                style={styles.connectRow}
+                onPress={onPress}>
                 <Ionicons
                     style={styles.detailIcon}
                     name="paper-plane-outline" size={30}
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
     },
     container: {
         position: 'absolute',
-        bottom: SIZES.footerHeight + 10,
-        left: 117,
+        top: 615,
+        left: 115,
         zIndex: 1,
         display: 'flex',
         flexDirection: 'row',
