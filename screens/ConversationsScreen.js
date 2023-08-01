@@ -22,7 +22,6 @@ export default ConversationScreen
 
 const styles = StyleSheet.create({
     conversationScreen: {
-        backgroundColor: COLORS.mainTheme,
         flex: 1
     }
 })

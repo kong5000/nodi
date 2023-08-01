@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import queryString from 'query-string';
 import axios from 'axios';
 import InstagramPhotos from './InstagramPhotos';
 import {
@@ -194,7 +193,6 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                     </View>
                   </View>
                 }
-
                 {
                   (imagesLoaded !== items.length) &&
                   <View style={{
@@ -211,7 +209,6 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                     <ActivityIndicator style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} animating={true} size="large" />
                   </View>
                 }
-                <Text>{imagesLoaded}</Text>
                 <Animated.Image
                   // onLoadStart={() => console.log(true)}
                   onLoadEnd={() => {
@@ -225,7 +222,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                     })
                   ]}
                 />
-                {!(imagesLoaded !== items.length) &&
+                {(imagesLoaded == items.length) &&
                   <Animated.View
                     style={[
                       {

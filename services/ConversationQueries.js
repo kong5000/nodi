@@ -86,7 +86,11 @@ export const addChatMessage = async (text, image, conversationId, authorId) => {
         createdAt: new Date()
     })
     const messsageId = docRef.id
-    await updateConversationLastMessage(conversationId, authorId, text, messsageId)
+    let lastMessage = text
+    if(image){
+        lastMessage = 'sent an image'
+    }
+    await updateConversationLastMessage(conversationId, authorId, lastMessage, messsageId)
 }
 
 export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messsageId) => {
