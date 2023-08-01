@@ -3,7 +3,7 @@ import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SIZES, THEMES } from '../style';
 // import Like from '../assets/thumbs.svg';
-import Icon from './Icon'
+import StyleText from './StyleText';
 const Connect = () => {
     return (
         <View style={styles.container} >
@@ -12,8 +12,12 @@ const Connect = () => {
                     style={styles.detailIcon}
                     name="paper-plane-outline" size={30}
                     color="white"
-                    />
-                <Text style={styles.connectText} >Connect</Text>
+                />
+                <StyleText
+                    style={styles.connectText}
+                    semiBold
+                    text={"Connect"}
+                />
             </TouchableOpacity>
         </View>
     )
@@ -23,8 +27,7 @@ export default Connect
 
 const styles = StyleSheet.create({
     connectText: {
-        fontSize: 22,
-        fontWeight: "600",
+        fontSize: 23,
         marginLeft: 2,
         color: "white"
     },

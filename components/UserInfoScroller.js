@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { THEMES } from '../style'
-
+import StyleText from './StyleText'
 const UserInfoScroller = ({ interests }) => {
     return (
         <View style={styles.top}>
@@ -11,7 +11,10 @@ const UserInfoScroller = ({ interests }) => {
                         <View
                             key={index}
                             style={styles.interest}>
-                            <Text style={styles.text}>{interest}</Text>
+                            <StyleText
+                                style={styles.text}
+                                text={interest}
+                            />
                         </View>
                     )}
                 </ScrollView>

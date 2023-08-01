@@ -100,7 +100,6 @@ export const updateConversationLastMessage = async (conversationId, authorId, la
 }
 
 export const subscribeToConversations = (uid, setConversations) => {
-    console.log("Subscribing To Conversations")
     const conversationRef = collection(database, 'conversations')
     const q = query(conversationRef,
         where('members', 'array-contains', uid),

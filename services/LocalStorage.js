@@ -47,7 +47,6 @@ export const storeSetting = async (setting, value) => {
 export const getSetting = async (setting) => {
     try {
         let item = await AsyncStorage.getItem(setting);
-        console.log(item)
         return item
     } catch (error) {
         console.log(error);

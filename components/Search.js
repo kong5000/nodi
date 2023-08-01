@@ -6,7 +6,7 @@ import { Modal, Portal } from 'react-native-paper';
 import SearchModal from './SearchModal';
 import { deleteTrip } from '../services/TripCollectionQueries';
 import { getSetting, storeSetting } from '../services/LocalStorage';
-
+import StyleText from './StyleText';
 const Search = ({ trips, setSelectedTripIndex }) => {
     const [visible, setVisible] = useState(false);
     const [matchFilter, setMatchFilter] = useState("everyone")
@@ -29,13 +29,12 @@ const Search = ({ trips, setSelectedTripIndex }) => {
     useEffect(() => {
         const initialSettings = async () => {
             let localMatchFilter = await getSetting('matchFilter')
-            if(localMatchFilter){
+            if (localMatchFilter) {
                 setMatchFilter(localMatchFilter)
             }
         }
         initialSettings()
     }, [])
-    const components = ["Vancouver", "Toronto", "New York", "Montreal", "Paris"];
     return (
         <SafeAreaView style={styles.view}>
             <Portal>
@@ -80,10 +79,13 @@ const Search = ({ trips, setSelectedTripIndex }) => {
                                 enableDelete(index)
                             }}
                         >
-                            <Text style={[
-                                styles.componentText,
-                                selectedComponent === index && styles.componentTextActive,
-                            ]}>{trip.city.split(',')[0]}</Text>
+                            <StyleText
+                                style={[
+                                    styles.componentText,
+                                    selectedComponent === index && styles.componentTextActive,
+                                ]}
+                                text={trip.city.split(',')[0]}
+                            />
                         </TouchableOpacity>
                     ))
                 }

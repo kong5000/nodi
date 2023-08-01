@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import axios from 'axios';
 import InstagramPhotos from './InstagramPhotos';
 import {
+  ActivityIndicator,
   Animated,
   Dimensions,
   ScrollView,
@@ -19,10 +20,10 @@ import Profile from './Profile';
 import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
-import { calculateAge } from '../services/Utils';
 import StyleText from './StyleText';
 const ParallaxCarousel = ({ items, selectedTrip }) => {
-
+  const [loading, setLoading] = useState([])
+  const [imagesLoaded, setImagesLoaded] = useState(0)
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
   const [showWebView, setShowWebView] = useState(true)
@@ -46,6 +47,9 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
   };
   const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
 
+  useEffect(() => {
+    setImagesLoaded(0)
+  }, [selectedTrip])
 
   useEffect(() => {
     const getInstagramMedia = async () => {
@@ -69,9 +73,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
   };
-  useEffect(() => {
-    console.log(selectedTrip)
-  }, [selectedTrip])
+
   return (
     <View style={styles.screen}>
       {!items.length &&
@@ -131,6 +133,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                 ]}>
               </Animated.View>
               <ScrollView
+                scrollEnabled={(imagesLoaded == items.length)}
                 ref={(element) => refsArray.current.push(element)}
 
                 onScroll={handleScroll}
@@ -139,112 +142,127 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                 bounces={false}
                 contentContainerStyle={styles.scroll}
               >
-                <View style={{
-                  width,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginVertical: 15
-                }
-                }>
+                {(imagesLoaded == items.length) &&
                   <View style={{
+                    width,
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginHorizontal: 25
-                  }}>
-                    <StyleText
-                      text={item.title}
-                      semiBold
-                      style={
-                        { fontSize: 30 }
-                      }
-                    />
-                    <StyleText
-                      text={" /" + item.age}
-                      style={
-                        { fontSize: 20 }
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
+                    marginVertical: 15
+                  }
+                  }>
+                    <View style={{
                       display: 'flex',
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginHorizontal: 25
-                    }}
-                  >
-                    <StyleText
-                      text={"Brasilia"}
-                      style={
-                        { fontSize: 20 }
-                      }
-                    />
-                    <Ionicons
-                      style={styles.detailIcon}
-                      name="location-outline" size={32} />
+                    }}>
+                      <StyleText
+                        text={item.title}
+                        semiBold
+                        style={
+                          { fontSize: 30 }
+                        }
+                      />
+                      <StyleText
+                        text={" / " + item.age}
+                        style={
+                          { fontSize: 20 }
+                        }
+                      />
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginHorizontal: 25
+                      }}
+                    >
+                      <StyleText
+                        text={"Brasilia"}
+                        style={
+                          { fontSize: 20 }
+                        }
+                      />
+                      <Ionicons
+                        style={styles.detailIcon}
+                        name="location-outline" size={32} />
+                    </View>
                   </View>
-                </View>
+                }
 
+                {
+                  (imagesLoaded !== items.length) &&
+                  <View style={{
+                    height: height - SIZES.headerHeight - SIZES.footerHeight,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                    <StyleText
+                      semiBold
+                      text={`${selectedTrip.city.split(',')[0]}`}
+                      style={{ fontSize: 30, margin: 30 }}
+                    />
+                    <ActivityIndicator style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} animating={true} size="large" />
+                  </View>
+                }
+                <Text>{imagesLoaded}</Text>
                 <Animated.Image
+                  // onLoadStart={() => console.log(true)}
+                  onLoadEnd={() => {
+                    setImagesLoaded(prev => prev + 1)
+                  }}
                   source={{ uri: item.image }}
                   style={[
                     styles.image,
-                    // {
-                    //   transform: [
-                    //     {
-                    //       translateX: scrollAnimation.interpolate({
-                    //         inputRange: [
-                    //           width * (index - 1),
-                    //           width * index,
-                    //           width * (index + 1),
-                    //         ],
-                    //         outputRange: [-width * 0.5, 0, width * 0.5],
-                    //       }),
-                    //     },
-                    //   ],
-                    // },
+                    (imagesLoaded !== items.length && {
+                      backgroundColor: 'red',
+                    })
                   ]}
                 />
-                <Animated.View
-                  style={[
-                    {
-                      width: "100%",
-                      opacity: scrollAnimation.interpolate({
-                        inputRange,
-                        outputRange: [0, 1, 0],
-                      }),
-                      transform: [
-                        {
-                          translateX: scrollAnimation.interpolate({
-                            inputRange: inputRange,
-                            outputRange: [250, 0, -250],
-                          }),
-                        },
-                      ],
-                    },
-                  ]}>
-                  <UserInfoScroller interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]} />
-                  <Interests interests={item.interests} />
+                {!(imagesLoaded !== items.length) &&
+                  <Animated.View
+                    style={[
+                      {
+                        width: "100%",
+                        opacity: scrollAnimation.interpolate({
+                          inputRange,
+                          outputRange: [0, 1, 0],
+                        }),
+                        transform: [
+                          {
+                            translateX: scrollAnimation.interpolate({
+                              inputRange: inputRange,
+                              outputRange: [250, 0, -250],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}>
+                    <UserInfoScroller interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]} />
+                    <Interests interests={item.interests} />
 
-                  <Profile />
+                    <Profile />
 
-                  {item.goingTo &&
-                    <DestinationScroller
-                      selectedTrip={selectedTrip}
-                      label={"Going To"}
-                      items={item.goingTo}
-                    />}
-                  <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
+                    {item.goingTo &&
+                      <DestinationScroller
+                        selectedTrip={selectedTrip}
+                        label={"Going To"}
+                        items={item.goingTo}
+                      />}
+                    <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
 
-                  <InstagramPhotos images={instagramImages} handle={instagramHandle} />
+                    <InstagramPhotos images={instagramImages} handle={instagramHandle} />
 
 
-                </Animated.View>
+                  </Animated.View>
+                }
+
               </ScrollView>
             </View>
           );

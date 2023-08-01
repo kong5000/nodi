@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-
-const Profile = ({style}) => {
+import StyleText from './StyleText'
+const Profile = ({ style }) => {
     return (
         <View style={[styles.container, style && style]}>
-            <Text style={styles.profileText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac auctor nibh. Ut id velit id nunc pretium ultricies.  Quisque ac auctor nibh.           </Text>
+            <StyleText style={styles.profileText}
+            text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac auctor nibh. Ut id velit id nunc pretium ultricies.  Quisque ac auctor nibh."}
+            />
         </View >
     )
 }

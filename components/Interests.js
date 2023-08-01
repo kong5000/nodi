@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { THEMES } from '../style'
-
+import StyleText from './StyleText'
 const emojiMap = {
     "Festivals": "🎊",
     "Walking Tours": "🚶",
@@ -30,7 +30,10 @@ const Interests = ({ interests }) => {
                 <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
                     {interests && interests.map((interest, index) =>
                         <View key={index} style={styles.interest}>
-                            <Text style={styles.text}>{emojiMap[interest] + " " + interest}</Text>
+                            <StyleText
+                                style={styles.text}
+                                text={emojiMap[interest] + " " + interest}
+                            />
                         </View>
                     )}
                 </ScrollView>
