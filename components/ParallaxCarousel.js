@@ -32,6 +32,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
   const showConnectModal = () => setConnectModalVisible(true);
   const hideConnectModal = () => setConnectModalVisible(false);
   const [currentImage, setCurrentImage] = useState('')
+  const [currentProfile, setCurrentProfile] = useState(null)
 
   const refsArray = useRef([]);
   const scrollRef = React.useRef();
@@ -85,6 +86,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
         visible={connectModalVisible}
         hideModal={hideConnectModal}
         imageUri={currentImage}
+        currentProfile={currentProfile}
       />
       {!items.length &&
         <View style={{
@@ -140,12 +142,22 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                   },
                 ]}>
               </Animated.View>
-              <Connect
-                onPress={() => {
-                  setCurrentImage(item.image)
-                  showConnectModal()
-                }}
-              />
+              <View style={{
+                position: 'absolute',
+                top: 615,
+                left: 115,
+                zIndex: 1,
+
+              }}>
+                {!connectModalVisible && <Connect
+                  onPress={() => {
+                    setCurrentImage(item.image)
+                    setCurrentProfile(item)
+                    showConnectModal()
+                  }}
+                />}
+
+              </View>
 
               <ScrollView
                 scrollEnabled={(imagesLoaded == items.length)}
@@ -205,24 +217,30 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                       />
                       <Ionicons
                         style={styles.detailIcon}
-                        name="location-outline" size={32} />
+                        name="location-outline"
+                        size={32} />
                     </View>
                   </View>
                 }
                 {
                   (imagesLoaded !== items.length) &&
-                  <View style={{
-                    height: height - SIZES.headerHeight - SIZES.footerHeight,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}>
+                  <View
+                    style={{
+                      height: height - SIZES.headerHeight - SIZES.footerHeight,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
                     <StyleText
                       semiBold
                       text={`${selectedTrip.city.split(',')[0]}`}
                       style={{ fontSize: 30, margin: 30 }}
                     />
-                    <ActivityIndicator style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} animating={true} size="large" />
+                    <ActivityIndicator
+                      style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
+                      animating={true}
+                      size="large"
+                    />
                   </View>
                 }
                 <Animated.Image
@@ -257,8 +275,12 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                         ],
                       },
                     ]}>
-                    <UserInfoScroller interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]} />
-                    <Interests interests={item.interests} />
+                    <UserInfoScroller
+                      interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]}
+                    />
+                    <Interests
+                      interests={item.interests}
+                    />
 
                     <Profile />
 
@@ -268,14 +290,16 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                         label={"Going To"}
                         items={item.goingTo}
                       />}
-                    <DestinationScroller label={"Went To"} items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]} />
-
-                    <InstagramPhotos images={instagramImages} handle={instagramHandle} />
-
-
+                    <DestinationScroller
+                      label={"Went To"}
+                      items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
+                    />
+                    <InstagramPhotos
+                      images={instagramImages}
+                      handle={instagramHandle}
+                    />
                   </Animated.View>
                 }
-
               </ScrollView>
             </View>
           );

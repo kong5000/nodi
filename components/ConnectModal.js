@@ -3,8 +3,9 @@ import { Modal, Portal, TextInput } from 'react-native-paper';
 
 import React from 'react'
 import StyleText from './StyleText';
+import Connect from './Connect';
 
-const ConnectModal = ({ visible, hideModal, imageUri }) => {
+const ConnectModal = ({ visible, hideModal, currentProfile }) => {
     return (
         <Portal>
             <Modal
@@ -16,12 +17,23 @@ const ConnectModal = ({ visible, hideModal, imageUri }) => {
                     style={styles.image}
                     source={{ uri: imageUri }}
                 /> */}
-                <StyleText
-                    text="Send a Message"
-                />
+                {currentProfile && <StyleText
+                    style={{ fontSize: 30 }}
+                    semiBold
+                    text={currentProfile.title}
+                />}
                 <TextInput
-                    style={{ width: "80%", height: 40 }}
+                    activeOutlineColor='black'
+                    placeholder='Send a message'
+                    mode='outlined'
+                    style={{
+                        color: 'black',
+                        width: "80%",
+                        height: 40,
+                        backgroundColor: 'white',
+                    }}
                 />
+                <Connect />
             </Modal>
         </Portal>
     )
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
     containerStyle: {
         display: 'flex',
         backgroundColor: 'white',
-        height: "70%",
+        height: 250,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         borderRadius: 50

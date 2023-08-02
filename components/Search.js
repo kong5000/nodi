@@ -10,6 +10,7 @@ import StyleText from './StyleText';
 const Search = ({ trips, setSelectedTripIndex }) => {
     const [visible, setVisible] = useState(false);
     const [matchFilter, setMatchFilter] = useState("everyone")
+    const [genderMatchFilter, setGenderMatchFilter] = useState("everyone")
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const showModal = () => setVisible(true);
@@ -31,6 +32,10 @@ const Search = ({ trips, setSelectedTripIndex }) => {
             let localMatchFilter = await getSetting('matchFilter')
             if (localMatchFilter) {
                 setMatchFilter(localMatchFilter)
+            }
+            let localGenderFilter = await getSetting('genderFilter')
+            if (localGenderFilter) {
+                setMatchFilter(localGenderFilter)
             }
         }
         initialSettings()
@@ -60,6 +65,8 @@ const Search = ({ trips, setSelectedTripIndex }) => {
                     hideModal={hideModal}
                     matchFilter={matchFilter}
                     setMatchFilter={setMatchFilter}
+                    genderMatchFilter={genderMatchFilter}
+                    setGenderMatchFilter={setGenderMatchFilter}
                 />
                 <TouchableOpacity onPress={showModal}>
                     <Ionicons
@@ -68,30 +75,60 @@ const Search = ({ trips, setSelectedTripIndex }) => {
                 </TouchableOpacity>
                 {
                     trips && trips.map((trip, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                styles.component,
-                                selectedComponent === index && styles.selectedComponent,
-                            ]}
-                            onPress={() => handleComponentClick(index)}
-                            onLongPress={() => {
-                                enableDelete(index)
-                            }}
-                        >
-                            <StyleText
+                        <View>
+                            <TouchableOpacity
+                                key={index}
                                 style={[
-                                    styles.componentText,
-                                    selectedComponent === index && styles.componentTextActive,
+                                    styles.component,
+                                    selectedComponent === index && styles.selectedComponent,
                                 ]}
-                                text={trip.city.split(',')[0]}
-                            />
-                        </TouchableOpacity>
+                                onPress={() => handleComponentClick(index)}
+                                onLongPress={() => {
+                                    enableDelete(index)
+                                }}
+                            >
+                                <StyleText
+                                    style={[
+                                        styles.componentText,
+                                        selectedComponent === index && styles.componentTextActive,
+                                    ]}
+                                    text={trip.city.split(',')[0]}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: -2,
+                                    backgroundColor: 'black',
+                                    borderRadius: 100,
+                                    height: 20,
+                                    width: 20,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderColor: 'white',
+                                    borderWidth: 2
+                                }}
+                                onPress={() => enableDelete(index)}
+                            >
+                                <StyleText
+                                    text="x"
+                                    semiBold
+                                    style={
+                                        {
+                                            color: 'white',
+                                            marginLeft: 0.5,
+                                        }
+                                    }
+                                />
+                            </TouchableOpacity>
+                        </View>
                     ))
                 }
 
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 

@@ -100,7 +100,7 @@ const SIZES = {
     profilePicture: 50,
     iconButton: 35,
     footerHeight: 60,
-    headerHeight: 105
+    headerHeight: 110
 }
 
 const COMPONENTS = {

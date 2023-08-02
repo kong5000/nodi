@@ -58,10 +58,6 @@ const styles = StyleSheet.create({
         width: 65,
     },
     container: {
-        position: 'absolute',
-        top: 615,
-        left: 115,
-        zIndex: 1,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
