@@ -1,32 +1,48 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Portal } from 'react-native-paper';
 import { ToggleButton } from 'react-native-paper';
 import { THEMES } from '../style';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
 import { storeSetting } from '../services/LocalStorage';
-
-const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMatchFilter, setGenderMatchFilter}) => {
+import Location from './Location';
+const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMatchFilter, setGenderMatchFilter, showSearch }) => {
     const [isSwitchOn, setIsSwitchOn] = React.useState(false);
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
     const navigation = useNavigation()
+    const [searchVisible, setSearchVisible] = useState(false)
+    const [hideDates, setHideDates] = useState(false)
+    const [edit, setEdit] = useState(true)
+    const [localValid, setLocalValid] = useState(false)
+    const [location, setLocation] = useState('')
+
+    const [dayTo, setDayTo] = useState('');
+    const [dayFrom, setDayFrom] = useState('');
+    const [monthFrom, setMonthFrom] = useState('');
+    const [monthTo, setMonthTo] = useState('');
 
     return (
         <Portal>
             <Modal visible={visible} onDismiss={hideModal}
                 contentContainerStyle={styles.containerStyle}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionLabel}>Where</Text>
-                    <TouchableOpacity
-                        style={styles.checkBoxContainer}
-                        onPress={() => {
-                            hideModal()
-                            navigation.navigate("Trips")
-                        }
-                        }>
-                        <Text style={styles.checkBoxLabel}>Add New Trip</Text>
+                    <Text style={styles.sectionLabel}>Add Event or Trip</Text>
+                    <TouchableOpacity style={styles.searchBox} onPress={() => {
+                        hideModal()
+                        showSearch()
+                    }}>
+                        <Text style={styles.checkBoxLabel}>Search</Text>
+                        <Ionicons
+                            style={styles.detailIcon}
+                            name="search-circle-outline" size={32} />
                     </TouchableOpacity>
+                    <View
+                        style={{
+                            width: 300,
+                        }}
+                    >
+                    </View>
                 </View>
                 <View style={styles.section}>
                     <Text style={styles.sectionLabel}>Meet</Text>

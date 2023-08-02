@@ -24,7 +24,6 @@ const StackNavigator = () => {
                         <Stack.Screen name="Modal" component={ModalScreen} />
                         <Stack.Screen name="Conversations"component={ConversationScreen} />
                         <Stack.Screen name="Users" component={UserSearchScreen} />
-                        <Stack.Screen name="Trips" component={TripAdderScreen} />
                     </Stack.Group>
                 </>
             ) : (

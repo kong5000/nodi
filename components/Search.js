@@ -7,14 +7,21 @@ import SearchModal from './SearchModal';
 import { deleteTrip } from '../services/TripCollectionQueries';
 import { getSetting, storeSetting } from '../services/LocalStorage';
 import StyleText from './StyleText';
+import TravelAdderScreen from '../screens/TripAdderScreen';
 const Search = ({ trips, setSelectedTripIndex }) => {
+
     const [visible, setVisible] = useState(false);
+    const [searchVisible, setSearchVisible] = useState(false);
     const [matchFilter, setMatchFilter] = useState("everyone")
     const [genderMatchFilter, setGenderMatchFilter] = useState("everyone")
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
+
+    const showSearch = () => setSearchVisible(true)
+    const hideSearch = () => setSearchVisible(false)
+
     const containerStyle = { backgroundColor: 'white', padding: 20 };
     const [indexToDelete, setIndexToDelete] = useState(null)
     const [selectedComponent, setSelectedComponent] = useState(0);
@@ -61,12 +68,17 @@ const Search = ({ trips, setSelectedTripIndex }) => {
                 contentContainerStyle={styles.container}
             >
                 <SearchModal
+                    showSearch={showSearch}
                     visible={visible}
                     hideModal={hideModal}
                     matchFilter={matchFilter}
                     setMatchFilter={setMatchFilter}
                     genderMatchFilter={genderMatchFilter}
                     setGenderMatchFilter={setGenderMatchFilter}
+                />
+                <TravelAdderScreen
+                    visible={searchVisible}
+                    hideModal={hideSearch}
                 />
                 <TouchableOpacity onPress={showModal}>
                     <Ionicons

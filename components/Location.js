@@ -42,13 +42,11 @@ const Location = ({ setHideDates, searchVisible, setSearchVisible, enabled, loca
                                 borderRadius: 20,
                                 borderWidth: 2,
                                 borderColor: COLORS.brightContrast,
-                                backgroundColor: COLORS.mainTheme
+                                backgroundColor: COLORS.mainTheme,
                             },
                             row: {
                                 backgroundColor: COLORS.mainTheme,
                                 borderColor: COLORS.brightContrast,
-                                // ...TEXT_STYLES.searchBarText
-
                             },
                             description: {
                                 ...TEXT_STYLES.searchBarText
@@ -89,7 +87,9 @@ export default Location
 
 const styles = StyleSheet.create({
     container: {
-
+        // position:'absolute',
+        // width: 300,
+        zIndex:1
     },
     enabled: {
     },

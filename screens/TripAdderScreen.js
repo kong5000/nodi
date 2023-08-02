@@ -1,17 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Destination from '../components/Destination';
-import NextButton from '../components/NextButton';
 import { TEXT_STYLES, THEMES } from '../style'
 import Footer from '../components/Footer';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { addTripDoc } from '../services/TripCollectionQueries';
 import getUserData from '../hooks/userData';
-import { useNavigation } from '@react-navigation/core'
+import { Modal, Portal } from 'react-native-paper';
 
-const TravelAdderScreen = ({ setPage, setTrips, trips }) => {
+const TravelAdderScreen = ({ visible, hideModal }) => {
     const { userData } = getUserData()
-    const navigation = useNavigation()
 
     const [destination, setDestination] = useState(null)
     const [valid, setValid] = useState(false)
@@ -19,7 +17,6 @@ const TravelAdderScreen = ({ setPage, setTrips, trips }) => {
     const handleSubmit = async () => {
         try {
             await addTripDoc({ ...destination, userInfo: userData });
-            navigation.navigate('Home')
         } catch (err) {
             alert(err)
         }
@@ -32,40 +29,47 @@ const TravelAdderScreen = ({ setPage, setTrips, trips }) => {
         }
     }, [destination])
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView keyboardShouldPersistTaps={'handled'}>
-                <Text style={TEXT_STYLES.header}>Where To?</Text>
-                <View style={styles.destinationContainer}>
-                    <Destination
-                        destination={destination}
-                        setDestination={setDestination}
-                    />
+        <Portal>
+            <Modal
+                visible={visible}
+                onDismiss={hideModal}
+                contentContainerStyle={styles.containerStyle}>
+                <View style={{
+
+                }} keyboardShouldPersistTaps={'handled'}>
+                    <View style={styles.destinationContainer}>
+                        <Destination
+                            destination={destination}
+                            setDestination={setDestination}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => handleSubmit()}
+                        style={styles.checkButtonContainer}>
+                        <Ionicons name="checkmark-circle-outline" size={60} color={valid ? "green" : "grey"} />
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={() => handleSubmit()}
-                    style={styles.checkButtonContainer}>
-                    <Ionicons name="checkmark-circle-outline" size={60} color={valid ? "green" : "grey"} />
-                </TouchableOpacity>
-            </ScrollView>
-            <Footer />
-        </SafeAreaView>
+            </Modal>
+        </Portal >
     )
 }
 
 export default TravelAdderScreen
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        display: 'flex',
+        backgroundColor: 'white',
+        height: "70%",
+        borderRadius: 50,
+    },
     checkButtonContainer: {
         width: "100%",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
     },
-    destinationContainer: {
-        marginTop: "20%",
-        marginLeft: "7%",
-        marginRight: "7%",
-    },
+
     container: {
         display: 'flex',
         flex: 1,
