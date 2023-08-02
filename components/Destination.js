@@ -6,19 +6,18 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import moment from 'moment';
 
 const Destination = ({ destination, setDestination }) => {
-    const [searchVisible, setSearchVisible] = useState(false)
+    const [searchVisible, setSearchVisible] = useState(true)
     const [hideDates, setHideDates] = useState(false)
     const [edit, setEdit] = useState(true)
     const [localValid, setLocalValid] = useState(false)
     const [location, setLocation] = useState('')
 
-    const [dayTo, setDayTo] = useState('');
-    const [dayFrom, setDayFrom] = useState('');
+    const [dayTo, setDayTo] = useState('2023-08-02');
+    const [dayFrom, setDayFrom] = useState('2023-08-01');
     const [monthFrom, setMonthFrom] = useState('');
     const [monthTo, setMonthTo] = useState('');
 
-
-    useEffect(() => {
+    const updateDestination = (location) => {
         function getDates(startDate, stopDate) {
             var dateArray = [];
             var currentDate = moment(startDate);
@@ -30,8 +29,11 @@ const Destination = ({ destination, setDestination }) => {
             return dateArray;
         }
         let dates = getDates(dayFrom, dayTo)
-
         setDestination({ city: location, dayFrom, dayTo, dates })
+    }
+
+    useEffect(() => {
+        updateDestination()
     }, [dayTo, dayFrom, monthTo, monthFrom])
 
     useEffect(() => {
@@ -54,22 +56,9 @@ const Destination = ({ destination, setDestination }) => {
                 setSearchVisible={setSearchVisible}
                 enabled={edit}
                 setLocation={setLocation}
-                location={location} />
-            {location &&
-                <DateSelectorRow
-                    hide={hideDates}
-                    enabled={edit}
-                    dayTo={dayTo}
-                    setDayTo={setDayTo}
-                    dayFrom={dayFrom}
-                    setDayFrom={setDayFrom}
-                    monthTo={monthTo}
-                    setMonthTo={setMonthTo}
-                    monthFrom={monthFrom}
-                    setMonthFrom={setMonthFrom}
+                location={location}
+                updateDestination={updateDestination}
                 />
-            }
-
 
             {(!edit) &&
                 <View style={styles.editRow}>

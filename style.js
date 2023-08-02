@@ -26,7 +26,7 @@ export const THEMES = {
     },
     displayTheme: {
         borderColor: COLORS.brightContrast,
-        borderWidth: 3,
+        borderWidth: 2,
         borderRadius: 30,
         padding: 8,
         margin: 8
@@ -69,8 +69,7 @@ const TEXT_STYLES = {
     },
     searchBarInput: {
         ...THEMES.displayTheme,
-        backgroundColor: COLORS.mainTheme,
-        color: "white",
+        color: "black",
         padding: 12,
         paddingLeft: 25,
         fontSize: 19,

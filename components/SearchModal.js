@@ -225,7 +225,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: 10,
-        padding: 5,
         borderRadius: 30,
         borderWidth: 2,
         width: 220

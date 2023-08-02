@@ -44,7 +44,10 @@ const TravelAdderScreen = ({ visible, hideModal }) => {
                         />
                     </View>
                     <TouchableOpacity
-                        onPress={() => handleSubmit()}
+                        onPress={() => {
+                            handleSubmit()
+                            hideModal()
+                        }}
                         style={styles.checkButtonContainer}>
                         <Ionicons name="checkmark-circle-outline" size={60} color={valid ? "green" : "grey"} />
                     </TouchableOpacity>
@@ -57,6 +60,10 @@ const TravelAdderScreen = ({ visible, hideModal }) => {
 export default TravelAdderScreen
 
 const styles = StyleSheet.create({
+    destinationContainer: {
+        position: 'relative',
+        top: -20
+    },
     containerStyle: {
         display: 'flex',
         backgroundColor: 'white',
