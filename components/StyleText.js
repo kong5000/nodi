@@ -20,7 +20,7 @@ import {
     WorkSans_800ExtraBold_Italic,
     WorkSans_900Black_Italic,
 } from '@expo-google-fonts/work-sans';
-const StyleText = ({ text, style, bold, semiBold }) => {
+const StyleText = ({ text, style, bold, semiBold, fontSize }) => {
     let [fontsLoaded] = useFonts({
         WorkSans_100Thin,
         WorkSans_200ExtraLight,
@@ -50,7 +50,7 @@ const StyleText = ({ text, style, bold, semiBold }) => {
         if (semiBold) font = styles.semiBold
 
         return (
-            <Text style={[font, style]}>{text}</Text>
+            <Text style={[font, style, fontSize && {fontSize: fontSize}]}>{text}</Text>
         )
     }
 }

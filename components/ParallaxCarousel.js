@@ -21,6 +21,8 @@ import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
 import StyleText from './StyleText';
 import ConnectModal from './ConnectModal';
+import ProfileInfoContainer from './ProfileInfoContainer';
+
 const ParallaxCarousel = ({ items, selectedTrip }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const [paginationOpacity, setPaginationOpacity] = useState()
@@ -275,25 +277,43 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                         ],
                       },
                     ]}>
-                    <UserInfoScroller
+                    {/* <UserInfoScroller
                       interests={["🎂 30", "🏠 Brasilia", "💼 Illustrator"]}
-                    />
-                    <Interests
-                      interests={item.interests}
-                    />
-
-                    <Profile />
-
+                    /> */}
+                    <View style={{ marginVertical: 15 }}>
+                      <ProfileInfoContainer
+                        text='Illustrator'
+                        icon='briefcase-outline'
+                      />
+                      <ProfileInfoContainer
+                        text='University of Brasília'
+                        icon='school-outline'
+                      />
+                      <ProfileInfoContainer
+                        text='Brasilia'
+                        icon='home-outline'
+                      />
+                    </View>
                     {item.goingTo &&
+                      <View style={{ marginBottom:15 }}>
+                        <DestinationScroller
+                          selectedTrip={selectedTrip}
+                          label={"Going To"}
+                          items={item.goingTo}
+                        />
+                      </View>}
+                    <Profile />
+                    <View style={{ marginTop: 15 }}>
                       <DestinationScroller
-                        selectedTrip={selectedTrip}
-                        label={"Going To"}
-                        items={item.goingTo}
-                      />}
-                    <DestinationScroller
-                      label={"Went To"}
-                      items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
-                    />
+                        label={"Went To"}
+                        items={["Vancouver", "Tokyo", "Madrid", "Barcelona"]}
+                      />
+                    </View>
+                    <View style={{ marginTop: 15 }}>
+                      <Interests
+                        interests={item.interests}
+                      />
+                    </View>
                     <InstagramPhotos
                       images={instagramImages}
                       handle={instagramHandle}

@@ -7,7 +7,8 @@ import useAuth from './hooks/useAuth';
 import ModalScreen from './screens/ModalScreen';
 import MatchScreen from './screens/MatchScreen';
 import UserSearchScreen from './screens/UserSearchScreen';
-import TripAdderScreen from './screens/TripAdderScreen';
+import UserSettingsScreen from './screens/UserSettingsScreen';
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -24,6 +25,7 @@ const StackNavigator = () => {
                         <Stack.Screen name="Modal" component={ModalScreen} />
                         <Stack.Screen name="Conversations"component={ConversationScreen} />
                         <Stack.Screen name="Users" component={UserSearchScreen} />
+                        <Stack.Screen name="Settings" component={UserSettingsScreen}/>
                     </Stack.Group>
                 </>
             ) : (

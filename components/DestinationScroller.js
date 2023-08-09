@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     top: {
-        marginVertical: 10,
+        // marginVertical: 10,
         marginHorizontal: 10,
         ...THEMES.shadow,
     },

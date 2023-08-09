@@ -5,7 +5,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 const InstagramPhotos = ({ images, handle }) => {
     return (
-        <View>
+        <View style={{
+            marginTop:10,
+            paddingBottom:30
+        }}>
             <View style={styles.header}>
                 <Ionicons
                     color="black"

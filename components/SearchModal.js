@@ -6,7 +6,8 @@ import { THEMES } from '../style';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
 import { storeSetting } from '../services/LocalStorage';
-import Location from './Location';
+import GenderSelector from './GenderSelector';
+import StyleText from './StyleText';
 const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMatchFilter, setGenderMatchFilter, showSearch }) => {
     const [isSwitchOn, setIsSwitchOn] = React.useState(false);
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
@@ -27,7 +28,12 @@ const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMa
             <Modal visible={visible} onDismiss={hideModal}
                 contentContainerStyle={styles.containerStyle}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionLabel}>Add Event or Trip</Text>
+                    <StyleText
+                        text="Add Event or Trip"
+                        semiBold
+                        fontSize={25}
+                        style={{ marginBottom: 15 }}
+                    />
                     <TouchableOpacity style={styles.searchBox} onPress={() => {
                         hideModal()
                         showSearch()
@@ -44,8 +50,15 @@ const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMa
                     >
                     </View>
                 </View>
+                <View style={styles.borderLineLight} />
                 <View style={styles.section}>
-                    <Text style={styles.sectionLabel}>Meet</Text>
+                    <StyleText
+                        text="Match Preferences"
+                        semiBold
+                        fontSize={25}
+                        style={{ marginBottom: 15 }}
+
+                    />
                     <ToggleButton.Row
                         style={styles.toggleRow}
                         onValueChange={value => {
@@ -100,78 +113,19 @@ const SearchModal = ({ visible, hideModal, setMatchFilter, matchFilter, genderMa
                             value="everyone" >
                         </ToggleButton>
                     </ToggleButton.Row>
-                    <ToggleButton.Row
-                        style={styles.toggleRow}
-                        onValueChange={value => {
-                            setGenderMatchFilter(value)
-                            storeSetting('genderMatchFilter', value)
-                        }}
-                        value={genderMatchFilter}
-                    >
-                        <ToggleButton
-                            style={[
-                                styles.toggleButton,
-                                genderMatchFilter == "Women" ? { backgroundColor: "black" } : {},
-                                {
-                                    borderBottomLeftRadius: 20,
-                                    borderTopLeftRadius: 20
-                                }
-                            ]}
-                            icon={() =>
-                                <View>
-                                    <Text style={[styles.toggleText, genderMatchFilter == "Women" ? { color: "white" } : { color: "black" }]}>Women</Text>
-                                </View>
-                            }
-                            value="Women"
-                            color="red"
-                        >
-                        </ToggleButton>
-                        <ToggleButton
-                            style={[
-                                styles.toggleButton,
-                                genderMatchFilter == "Men" ? { backgroundColor: "black" } : {},
-                            ]}
-
-                            icon={() => <View>
-                                <Text style={[styles.toggleText, genderMatchFilter == "Men" ? { color: "white" } : { color: "black" }]}>Men</Text>
-                            </View>
-                            }
-                            value="Men" >
-                        </ToggleButton>
-                        <ToggleButton
-                            style={[
-                                styles.toggleButton,
-                                genderMatchFilter == "Non-binary" ? { backgroundColor: "black" } : {}
-                            ]}
-                            icon={() => <View>
-                                <Text style={[styles.toggleText, genderMatchFilter == "Non-binary" ? { color: "white" } : { color: "black" }]}>Non-binary</Text>
-                            </View>
-                            }
-                            value="Non-binary" >
-                        </ToggleButton>
-                        <ToggleButton
-                            style={[
-                                styles.toggleButton,
-                                genderMatchFilter == "everyone-gender" ? { backgroundColor: "black" } : {},
-                                {
-                                    borderBottomRightRadius: 20,
-                                    borderTopRightRadius: 20
-                                }
-                            ]}
-                            icon={() => <View>
-                                <Text style={[styles.toggleText, genderMatchFilter == "everyone-gender" ? { color: "white" } : { color: "black" }]}>Everyone</Text>
-                            </View>
-                            }
-                            value="everyone-gender" >
-                        </ToggleButton>
-                    </ToggleButton.Row>
+                    <GenderSelector />
                 </View>
-                {/* <View style={styles.borderLineLight} /> */}
+                <View style={styles.borderLineLight} />
+                <StyleText
+                    text="Find User"
+                    semiBold
+                    fontSize={25}
+                />
                 <TouchableOpacity style={styles.searchBox} onPress={() => {
                     hideModal()
                     navigation.navigate("Users")
                 }}>
-                    <Text style={styles.checkBoxLabel}>Find User</Text>
+                    <Text style={styles.checkBoxLabel}>Search Users</Text>
                     <Ionicons
                         style={styles.detailIcon}
                         name="search-circle-outline" size={32} />
@@ -205,8 +159,10 @@ const styles = StyleSheet.create({
         width: "100%"
     },
     borderLineLight: {
-        borderBottomWidth: 2,
+        borderBottomWidth: 1.5,
+        borderColor: 'lightgrey',
         width: "100%",
+        marginTop: 10
     },
     checkBoxContainer: {
         display: 'flex',

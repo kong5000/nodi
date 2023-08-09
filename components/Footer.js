@@ -10,7 +10,7 @@ const Footer = () => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity onPress={async() => {
-                navigation.navigate('Home')
+                navigation.navigate('Settings')
             }}>
                 <Ionicons name="person-outline" size={33} color="white" />
             </TouchableOpacity>
