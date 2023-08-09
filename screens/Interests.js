@@ -50,7 +50,7 @@ const Interests = ({setPage, interests, setInterests}) => {
     }
     return (
         <View style={styles.interestsContainer}>
-            <Text style={TEXT_STYLES.header}>Favorite things to do on a trip?</Text>
+            <Text style={TEXT_STYLES.header}>Favorite Activities (optional)</Text>
             {thingsToDo.map((item) =>
                 <TouchableOpacity onPress={() => toggleInterest(item.text)}>
                     <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 30,
         margin: 10,
-        // padding: 10,
+        padding: 5,
         fontSize: 18,
         fontWeight: "400",
         color: "white",
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 30,
         margin: 10,
-        padding: 10,
+        padding: 5,
         borderColor: "white"
     },
     updateButton: {

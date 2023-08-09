@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import StyleText from '../components/StyleText';
 import Footer from '../components/Footer';
 
-const UserSettingsScreen = () => {
+const ConnectScreen = () => {
   const [genderMatchFilter, setGenderMatchFilter] = useState('')
   return (
     <SafeAreaView style={{
@@ -15,7 +15,7 @@ const UserSettingsScreen = () => {
       alignItems: 'center'
     }}>
       <StyleText
-        text="Edit Profile Screen"
+        text="Connection/Request Screen"
         fontSize={40}
         semiBold
       />
@@ -24,7 +24,7 @@ const UserSettingsScreen = () => {
   )
 }
 
-export default UserSettingsScreen
+export default ConnectScreen
 
 const styles = StyleSheet.create({
   toggleText: {

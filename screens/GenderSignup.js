@@ -8,7 +8,7 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
     const formIncomplete = !gender
     return (
         <View style={styles.radioContainer}>
-            <Text style={TEXT_STYLES.header}>Select the gender you most indetify with</Text>
+            <Text style={TEXT_STYLES.header}>Select the gender you most identify with</Text>
             <RadioButton.Group
                 onValueChange={value => { setGender(value) }}
                 value={gender}
@@ -40,7 +40,7 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
                         status={gender === 'nonbinary' ? 'checked' : 'unchecked'}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("other")}>
+                {/* <TouchableOpacity style={THEMES.radioRow} onPress={() => setGender("other")}>
                     <Text style={TEXT_STYLES.radioLabel}>Other</Text>
                     <RadioButton.Android
                         uncheckedColor={COLORS.brightContrast}
@@ -48,7 +48,7 @@ const GenderSignup = ({ setGender, gender, setPage }) => {
                         value="other"
                         status={gender === 'other' ? 'checked' : 'unchecked'}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </RadioButton.Group>
             <NextButton
                 index={2}

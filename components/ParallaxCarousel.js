@@ -23,7 +23,7 @@ import StyleText from './StyleText';
 import ConnectModal from './ConnectModal';
 import ProfileInfoContainer from './ProfileInfoContainer';
 
-const ParallaxCarousel = ({ items, selectedTrip }) => {
+const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
@@ -97,9 +97,19 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <Text style={{ fontSize: 20 }}>
-            No matches for this trip yet.
-          </Text>
+          {noTrips ?
+            <StyleText
+              text="Add your first trip"
+              fontSize={25}
+              semiBold
+              style={{margin: 10}}
+            />
+            : <StyleText
+              text="Sorry, no matches for this trip yet"
+              fontSize={25}
+              semiBold
+              style={{margin: 10}}
+            />}
         </View>}
       <StatusBar hidden />
       <Animated.FlatList
@@ -295,7 +305,7 @@ const ParallaxCarousel = ({ items, selectedTrip }) => {
                       />
                     </View>
                     {item.goingTo &&
-                      <View style={{ marginBottom:15 }}>
+                      <View style={{ marginBottom: 15 }}>
                         <DestinationScroller
                           selectedTrip={selectedTrip}
                           label={"Going To"}

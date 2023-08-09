@@ -7,6 +7,7 @@ import Footer from './Footer'
 import { collection, query, orderBy, where, onSnapshot, limit } from 'firebase/firestore'
 import { database } from '../firebase'
 import getUserData from '../hooks/userData'
+import StyleText from './StyleText'
 
 const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
@@ -31,10 +32,12 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                             setActivePartner={setActivePartner}
                         />}
                 /> : <View>
-                    <Text>You have no conversations at the moment</Text>
+                    <StyleText
+                        text="No active conversations"
+                        fontSize={30}
+                    />
                 </View>
             }
-            <Text>{conversations.length}</Text>
             <Footer />
         </>
     )

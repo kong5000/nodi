@@ -25,9 +25,9 @@ const Footer = () => {
                 <Ionicons name="chatbubbles-sharp" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-                navigation.navigate('Home')
+                navigation.navigate('Connect')
             }}>
-                <Ionicons name="options-outline" size={33} color="white" />
+                <Ionicons name="git-pull-request-outline" size={33} color="white" />
             </TouchableOpacity>
         </View>
     )

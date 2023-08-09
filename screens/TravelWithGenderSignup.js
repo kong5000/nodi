@@ -93,7 +93,7 @@ const TravelWithGenderSignup = (
                         color={COLORS.brightContrast}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={THEMES.radioRow} onPress={() => {
+                {/* <TouchableOpacity style={THEMES.radioRow} onPress={() => {
                     setTravelWithOther(!travelWithOther)
                     setIsSwitchOn(false)
                 }}>
@@ -108,7 +108,7 @@ const TravelWithGenderSignup = (
                         uncheckedColor={COLORS.brightContrast}
                         color={COLORS.brightContrast}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             <NextButton
                 index={3}

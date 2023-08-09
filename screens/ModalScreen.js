@@ -13,6 +13,7 @@ import getUserData from '../hooks/userData';
 import { getUserDoc, updateUserDoc } from '../services/UserQueries';
 import { addTripDoc } from '../services/TripCollectionQueries'
 import moment from 'moment';
+import Footer from '../components/Footer';
 const LAST_PAGE = 5
 
 const ModalScreen = () => {
@@ -102,6 +103,7 @@ const ModalScreen = () => {
                     <ActivityIndicator animating={updatingProfile} size="large" color="#ff0000" />
                 </>
             }
+          {(page==5 && !updatingProfile) &&  <Footer/>}
         </SafeAreaView>
     )
 }

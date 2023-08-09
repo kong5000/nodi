@@ -21,7 +21,7 @@ const Search = ({ trips, setSelectedTripIndex }) => {
 
     const showSearch = () => setSearchVisible(true)
     const hideSearch = () => setSearchVisible(false)
-
+    const [tripToDelete, setTripToDelete] = useState('')
     const containerStyle = { backgroundColor: 'white', padding: 20 };
     const [indexToDelete, setIndexToDelete] = useState(null)
     const [selectedComponent, setSelectedComponent] = useState(0);
@@ -31,6 +31,7 @@ const Search = ({ trips, setSelectedTripIndex }) => {
     };
 
     const enableDelete = (index) => {
+        setTripToDelete(trips[index].city)
         setIndexToDelete(index)
         setShowDeleteModal(true)
     }
@@ -52,14 +53,51 @@ const Search = ({ trips, setSelectedTripIndex }) => {
             <Portal>
                 <Modal visible={showDeleteModal} onDismiss={() => setShowDeleteModal(false)}
                     contentContainerStyle={styles.containerStyle}>
-                    <TouchableOpacity
-                        onPress={async () => {
-                            await deleteTrip(trips[indexToDelete].id)
-                            setShowDeleteModal(false)
-                        }}
-                    >
-                        <Text>Confirm Delete?</Text>
-                    </TouchableOpacity>
+                    <StyleText
+                        text={tripToDelete}
+                        fontSize={20}
+                    />
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginTop: 10
+                    }}>
+                        <TouchableOpacity
+                            style={{
+                                margin: 10,
+                                borderWidth: 1,
+                                borderRadius: 20,
+                                padding: 10,
+                            }}
+                            onPress={async () => {
+                                await deleteTrip(trips[indexToDelete].id)
+                                setShowDeleteModal(false)
+                            }}
+                        >
+                            <StyleText
+                                text="Delete"
+                                semiBold
+                                fontSize={20}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                margin: 10,
+                                borderWidth: 1,
+                                borderRadius: 20,
+                                padding: 10,
+                            }}
+                            onPress={async () => {
+                                setShowDeleteModal(false)
+                            }}
+                        >
+                            <StyleText
+                                text="Cancel"
+                                semiBold
+                                fontSize={20}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </Modal>
             </Portal>
             <ScrollView
@@ -152,8 +190,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center",
         backgroundColor: "white",
-        height: "50%",
+        height: "25%",
         width: "100%",
+        borderRadius: 20
     },
     city: {
         width: 100,

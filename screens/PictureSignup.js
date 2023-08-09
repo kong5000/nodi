@@ -15,7 +15,7 @@ const PictureSignup = ({ setPage, images, setImages }) => {
     const [loading3, setLoading3] = useState(false)
     const [loading4, setLoading4] = useState(false)
 
-    const formIncomplete = images.length < 2
+    const formIncomplete = images.length < 1
     // Todo, filter nsfw images on backend (possibly on front end too?)
     const updateLoadingStates = (index, state) => {
         switch (index) {
@@ -79,7 +79,7 @@ const PictureSignup = ({ setPage, images, setImages }) => {
 
     return (
         <View style={styles.pictureSelection}>
-            <Text style={TEXT_STYLES.header}>Add photos! (min 2)</Text>
+            <Text style={TEXT_STYLES.header}>Add photos</Text>
             <View style={styles.content}>
                 <View style={styles.mainPictureContainer}>
                     <PictureButton images={images} onPress={pickImage} size={"large"} index={0} loading={loading0} />
@@ -95,7 +95,7 @@ const PictureSignup = ({ setPage, images, setImages }) => {
                 index={1}
                 setPage={setPage}
                 formIncomplete={formIncomplete}
-                incompleteMessage="Please select at least 2 photos" />
+                incompleteMessage="Please select at least 1 photo" />
         </View>
     )
 }
