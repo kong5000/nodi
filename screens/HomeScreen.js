@@ -1,6 +1,7 @@
 import {
     StyleSheet, View,
     Dimensions,
+    TouchableOpacity,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
@@ -13,6 +14,8 @@ import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
 import { calculateAge } from '../services/Utils'
 import getUserData from '../hooks/userData'
+import StyleText from '../components/StyleText'
+import { addGeoHash, radiusQuery } from '../services/GeoQueries'
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -71,8 +74,27 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.screen}>
+            <TouchableOpacity
+                onPress={() => {
+                    addGeoHash()
+                }}
+            >
+                <StyleText
+                    text="TEST GEO"
+                />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => {
+                    radiusQuery()
+                }}
+            >
+                <StyleText
+                    text="TEST Query geo"
+                />
+            </TouchableOpacity>
             <Search trips={trips} setSelectedTripIndex={setSelectedTripIndex} />
-            <ParallaxCarousel 
+            <ParallaxCarousel
                 noTrips={!trips.length}
                 items={filteredItems}
                 selectedTrip={trips[selectedTripIndex]} />

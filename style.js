@@ -59,8 +59,8 @@ const TEXT_STYLES = {
     },
     input: {
         ...THEMES.displayTheme,
-        backgroundColor: COLORS.mainTheme,
-        color: "white",
+        backgroundColor: 'white',
+        color: "black",
         padding: 12,
         paddingLeft: 25,
         fontSize: 23,
@@ -98,7 +98,7 @@ const TEXT_STYLES = {
 const SIZES = {
     profilePicture: 50,
     iconButton: 35,
-    footerHeight: 60,
+    footerHeight: 70,
     headerHeight: 110
 }
 

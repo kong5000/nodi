@@ -156,7 +156,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
               </Animated.View>
               <View style={{
                 position: 'absolute',
-                top: 615,
+                top: 605,
                 left: 115,
                 zIndex: 1,
 
@@ -245,7 +245,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                     }}>
                     <StyleText
                       semiBold
-                      text={`${selectedTrip.city.split(',')[0]}`}
+                      text={`${selectedTrip && selectedTrip.city.split(',')[0]}`}
                       style={{ fontSize: 30, margin: 30 }}
                     />
                     <ActivityIndicator

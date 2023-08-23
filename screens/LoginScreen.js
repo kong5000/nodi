@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
 import { COLORS, TEXT_STYLES } from '../style'
 import { Asset, useAssets } from 'expo-asset';
-
+import { addGeoHash } from '../services/GeoQueries'
 const LoginScreen = () => {
     const [assets, error] = useAssets([require('../assets/gradient.png')]);
     const [email, setEmail] = useState('')
@@ -57,7 +57,7 @@ const LoginScreen = () => {
             style={styles.container}
             behavior="padding"
         >
-            <ImageBackground source={{ uri: Asset.fromModule(require("../assets/gradient.png")).uri }} resizeMode="cover" style={styles.image}>
+            {/* <ImageBackground source={{ uri: Asset.fromModule(require("../assets/gradient.png")).uri }} resizeMode="cover" style={styles.image}> */}
 
                 <View style={styles.inputContainer}>
                     {creatingAccount && <Text>Creating Your Account</Text>}
@@ -104,7 +104,7 @@ const LoginScreen = () => {
                 }}>
                     <Text>DEBUG LOGIN</Text>
                 </TouchableOpacity>
-            </ImageBackground>
+            {/* </ImageBackground> */}
 
         </KeyboardAvoidingView >
     )
@@ -114,7 +114,7 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.mainTheme,
+        backgroundColor: "white",
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
