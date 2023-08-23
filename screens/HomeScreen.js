@@ -16,6 +16,7 @@ import { calculateAge } from '../services/Utils'
 import getUserData from '../hooks/userData'
 import StyleText from '../components/StyleText'
 import { addGeoHash, radiusQuery } from '../services/GeoQueries'
+import * as Location from 'expo-location';
 
 const HomeScreen = () => {
     const { user } = useAuth()
@@ -26,6 +27,26 @@ const HomeScreen = () => {
     const [filteredItems, setFilteredItems] = useState([])
 
     const [selectedTripIndex, setSelectedTripIndex] = useState(0)
+
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+            console.log(location)
+        })();
+    }, []);
+
+
 
     const { trips } = getUserData()
 
