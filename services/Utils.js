@@ -1,3 +1,4 @@
+import { radiusQuery } from './GeoQueries'
 import { getTripMatches, getUserTrips } from './TripCollectionQueries'
 import { getPasses, getUserLikes } from './UserQueries'
 
@@ -36,7 +37,7 @@ const addUserDetails = async (potentialCards, userTrips) => {
                             overLapDays += 1
                         }
                     })
-                    seeYouIn.push({city: potentialCard.city, matchDays})
+                    seeYouIn.push({ city: potentialCard.city, matchDays })
                 } else {
                     missedYouIn.push(potentialCard.city)
                 }
@@ -54,49 +55,10 @@ const addUserDetails = async (potentialCards, userTrips) => {
     })
     return detailedCards
 }
-export const getCards = async (uid) => {
-    let userTrips = await getUserTrips(uid)
-    if (userTrips.length == 0) return
-    let passes = await getPassedUsers(uid)
-    let likes = await getUserLikes(uid)
-    let likedUserIds = likes.map((likeObject) => likeObject.id)
-    let skippedUsers = [...likedUserIds, ...passes]
-    let tempMatches = []
-    for (trip of userTrips) {
-        let documents = await getTripMatches(trip)
-        documents = filterDocuments(documents, skippedUsers, uid)
-        potentialCards = await addUserDetails(documents, userTrips)
-        tempMatches.push(potentialCards)
-    }
-    let potentialMatches = []
-    for (let temp of tempMatches) {
-        potentialMatches = [...potentialMatches, ...temp]
-    }
-    let matchMap = {}
-    potentialMatches.forEach(match => {
-        if(!matchMap[match.userInfo.id]){
-            matchMap[match.userInfo.id] = match
-        }else{
-            matchMap[match.userInfo.id].seeYouIn.push(match.seeYouIn[0])
-            matchMap[match.userInfo.id].daysMatching += match.daysMatching
-        }
-    })
-    potentialMatches = Object.values(matchMap)
-    // potentialMatches = potentialMatches.map(match => {
-    //     let daysMatched = 0
-    //     userTrips.forEach(userTrip => {
-    //         if (userTrip.city == match.city) {
-    //             match.dates.forEach(date => {
-    //                 if (userTrips.dates.includes(date)) {
-    //                     daysMatched += 1
-    //                 }
-    //             })
-    //             return { ...match, daysMatched }
-    //         }
-    //     })
-    // })
-
-    return potentialMatches
+export const getCards = async (userData) => {
+    const { geohash, lastLocation } = userData
+    const matches = await radiusQuery(lastLocation)
+    return matches
 }
 export const calculateAge = (dateOfBirth) => {
     var today = new Date();

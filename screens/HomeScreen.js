@@ -20,6 +20,7 @@ import * as Location from 'expo-location';
 
 const HomeScreen = () => {
     const { user } = useAuth()
+    const { userData } = getUserData()
     // const [trips, setTrips] = useState([])
     const [cards, setCards] = useState(DUMMY_DATA)
 
@@ -60,19 +61,19 @@ const HomeScreen = () => {
 
     useEffect(() => {
         const queryData = async () => {
+            if(!userData) return
             try {
-                let potentialMatches = await getCards(user.uid)
+                let potentialMatches = await getCards(userData)
                 // potentialMatches = DUMMY_DATA
                 setCards(potentialMatches)
                 let carouselItems = potentialMatches.map(match => {
                     return ({
-                        id: match.userInfo.id,
-                        image: match.userInfo.pictures[0],
-                        title: match.userInfo.name,
-                        age: calculateAge(match.userInfo.birthDate),
-                        city: match.city,
-                        goingTo: match.userInfo.goingTo,
-                        interests: match.userInfo.interests
+                        id: match.id,
+                        image: match.pictures[0],
+                        name: match.name,
+                        age: calculateAge(match.birthDate),
+                        goingTo: match.goingTo,
+                        interests: match.interests
                     })
                 })
                 setItems(carouselItems)
@@ -82,22 +83,13 @@ const HomeScreen = () => {
             }
         }
         queryData()
-    }, [])
-
-    useEffect(() => {
-        const selectedTrip = trips[selectedTripIndex]
-        if (!selectedTrip) return
-        if (!items.length) return
-        if (!trips) return
-        const filtered = items.filter(item => item.city == selectedTrip.city)
-        setFilteredItems(filtered)
-    }, [items, trips, selectedTripIndex])
+    }, [userData])
 
     return (
         <View style={styles.screen}>
             <ParallaxCarousel
                 noTrips={!trips.length}
-                items={filteredItems}
+                items={items}
                 selectedTrip={trips[selectedTripIndex]} />
             <Footer />
         </View>

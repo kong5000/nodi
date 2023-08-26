@@ -33,10 +33,11 @@ export const addGeoHash = async (data, userIds) => {
 }
 
 
-export const radiusQuery = async () => {
+export const radiusQuery = async (lastLocation) => {
     // Find cities within 50km of London
-    const center = [49.28077203059793, -123.12187952416022];
-    const radiusInM = 90 * 1000;
+    const { latitude, longitude } = lastLocation
+    const center = [latitude, longitude];
+    const radiusInM = 90 * 100000;
 
     // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
     // a separate query for each pair. There can be up to 9 pairs of bounds
@@ -45,7 +46,7 @@ export const radiusQuery = async () => {
     const promises = [];
     for (const b of bounds) {
         const q = query(
-            collection(database, 'locations'),
+            collection(database, 'users'),
             orderBy('geohash'),
             startAt(b[0]),
             endAt(b[1]));
@@ -58,17 +59,21 @@ export const radiusQuery = async () => {
     const matchingDocs = [];
     for (const snap of snapshots) {
         for (const doc of snap.docs) {
-            const lat = doc.get('lat');
-            const lng = doc.get('lng');
             console.log(doc.data())
-            // We have to filter out a few false positives due to GeoHash
-            // accuracy, but most will match
-            const distanceInKm = geofire.distanceBetween([lat, lng], center);
-            const distanceInM = distanceInKm * 1000;
-            if (distanceInM <= radiusInM) {
-                matchingDocs.push({...doc.data(), distanceInKm});
+
+            const lastLocation = doc.get('lastLocation')
+            if (lastLocation) {
+                const lat = lastLocation.latitude
+                const lng = lastLocation.longitude
+                // We have to filter out a few false positives due to GeoHash
+                // accuracy, but most will match
+                const distanceInKm = geofire.distanceBetween([lat, lng], center);
+                const distanceInM = distanceInKm * 1000;
+                if (distanceInM <= radiusInM) {
+                    matchingDocs.push({ ...doc.data(), distanceInKm });
+                }
             }
         }
     }
-    console.log(matchingDocs)
+    return matchingDocs
 }

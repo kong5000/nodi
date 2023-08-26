@@ -5,7 +5,7 @@ const COLORS = {
         background: 'white',
         primary: 'rebeccapurple'
     },
-    mainTheme: "#5CC981",
+    mainTheme: "#598EF3",
     darkContrast: "#1A5465",
     // brightContrast: "#B8EDC2"
     brightContrast: "black",
@@ -102,6 +102,10 @@ const SIZES = {
     headerHeight: 110
 }
 
+const FONT_SIZE ={
+    profileName : 35
+}
+
 const COMPONENTS = {
     component: {
         padding: 10,
@@ -125,4 +129,4 @@ const COMPONENTS = {
     },
 }
 
-export { COLORS, SIZES, TEXT_STYLES, COMPONENTS }
+export { COLORS, SIZES, TEXT_STYLES, COMPONENTS ,FONT_SIZE}

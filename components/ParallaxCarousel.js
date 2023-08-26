@@ -16,7 +16,7 @@ import {
   View,
 } from 'react-native';
 import Connect from './Connect';
-import { SIZES } from '../style';
+import { COLORS, FONT_SIZE, SIZES } from '../style';
 const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
 import Interests from './Interests';
@@ -118,7 +118,6 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                 }
               >
                 <Animated.Image
-                  // onLoadStart={() => console.log(true)}
                   onLoadEnd={() => {
                     setImagesLoaded(prev => prev + 1)
                   }}
@@ -128,29 +127,28 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                   ]}
                 />
                 <ScrollView
-                contentContainerStyle={{
-                  // flex: 1
-                  width: width
-                }}
+                  contentContainerStyle={{
+                    // flex: 1
+                    width: width
+                  }}
                   showsVerticalScrollIndicator={false}
                   ref={(element) => refsArray.current.push(element)}
                   overScrollMode='never'
                   bounces={false}>
-                  <View style={styles.slider}/>   
+                  <View style={styles.slider} />
                   <View style={styles.footer}>
                     <TouchableOpacity
                       style={{
                         height: 90,
                         width: 90,
                         borderRadius: 100,
-                        backgroundColor: 'blue',
+                        backgroundColor: COLORS.mainTheme,
                         position: 'relative',
                         top: 40,
-                        left: width - width/3,
+                        left: width - width / 3,
                         zIndex: 10,
                       }}
                     >
-
                     </TouchableOpacity>
                     <View style={{
                       flex: 1,
@@ -158,6 +156,11 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                       borderTopLeftRadius: 40,
                       borderTopRightRadius: 40
                     }}>
+                      <StyleText
+                        text={`${item.name}, ${item.age}`}
+                        semiBold
+                        fontSize={FONT_SIZE.profileName}
+                      />
                     </View>
                   </View>
                 </ScrollView>
