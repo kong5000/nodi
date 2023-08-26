@@ -95,26 +95,6 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <TouchableOpacity
-                onPress={() => {
-                    addGeoHash()
-                }}
-            >
-                <StyleText
-                    text="TEST GEO"
-                />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => {
-                    radiusQuery()
-                }}
-            >
-                <StyleText
-                    text="TEST Query geo"
-                />
-            </TouchableOpacity>
-            <Search trips={trips} setSelectedTripIndex={setSelectedTripIndex} />
             <ParallaxCarousel
                 noTrips={!trips.length}
                 items={filteredItems}

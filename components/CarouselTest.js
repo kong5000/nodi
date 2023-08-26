@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
-
 import Ionicons from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 import InstagramPhotos from './InstagramPhotos';
@@ -12,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import Connect from './Connect';
@@ -25,8 +22,6 @@ import UserInfoScroller from './UserInfoScroller';
 import StyleText from './StyleText';
 import ConnectModal from './ConnectModal';
 import ProfileInfoContainer from './ProfileInfoContainer';
-import { relativeTimeRounding } from 'moment';
-import { ribbon } from 'd3';
 
 const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
@@ -94,7 +89,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
           handleScrollToTop()
         }}
         ref={scrollRef}
-        data={items}
+        data={[1,2,3]}
         bounces={false}
         horizontal
         pagingEnabled
@@ -113,52 +108,42 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
           return (
             <View style={styles.item}>
               <Animated.View
-                style={
-                  { flex: 1, backgroundColor: 'transparent' }
-                }
-              >
-                <Animated.Image
-                  // onLoadStart={() => console.log(true)}
-                  onLoadEnd={() => {
-                    setImagesLoaded(prev => prev + 1)
-                  }}
-                  source={{ uri: item.image }}
-                  style={[
-                    styles.image,
-                  ]}
-                />
-                <ScrollView
-                contentContainerStyle={{
-                  // flex: 1
-                  width: width
-                }}
-                  showsVerticalScrollIndicator={false}
-                  ref={(element) => refsArray.current.push(element)}
-                  overScrollMode='never'
-                  bounces={false}>
-                  <View style={styles.slider}/>   
-                  <View style={styles.footer}>
-                    <TouchableOpacity
-                      style={{
-                        height: 90,
-                        width: 90,
-                        borderRadius: 100,
-                        backgroundColor: 'blue',
-                        position: 'relative',
-                        top: 40,
-                        left: width - width/3,
-                        zIndex: 10,
-                      }}
+                style={[
+                  {
+                    width: "100%",
+                    opacity: scrollAnimation.interpolate({
+                      inputRange,
+                      outputRange: [0, 1, 0],
+                    }),
+                    transform: [
+                      {
+                        translateX: scrollAnimation.interpolate({
+                          inputRange: inputRange,
+                          outputRange: [250, 0, -250],
+                        }),
+                      },
+                    ],
+                  },
+                ]}>
+                <ScrollView overScrollMode='never' bounces={false}>
+                  <View style={styles.slider}>
+                    <ScrollView
+                      horizontal
+                      snapToInterval={width}
+                      decelerationRate="fast"
+                      showsHorizontalScrollIndicator={false}
+                      bounces={false}
                     >
-
-                    </TouchableOpacity>
+                    </ScrollView>
+                  </View>
+                  <View style={styles.footer}>
+                    <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: "cyan" }}></View>
                     <View style={{
                       flex: 1,
                       backgroundColor: "white",
                       borderTopLeftRadius: 40,
                       borderTopRightRadius: 40
-                    }}>
-                    </View>
+                    }}></View>
                   </View>
                 </ScrollView>
               </Animated.View>
@@ -166,6 +151,12 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
           );
         }}
       />
+      {/* <Pagination
+        opacity={paginationOpacity}
+        items={items}
+        scrollAnimation={scrollAnimation}
+        scrollRef={scrollRef}
+      /> */}
     </View >
   );
 };
@@ -175,14 +166,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   slider: {
-    height: height * 0.45,
+    height: height / 2,
+    backgroundColor: 'cyan',
     // borderBottomEndRadius: 55
   },
   footer: {
     flex: 1,
     height: height,
-    position: 'relative',
-    top: -40
+    backgroundColor: 'red'
   },
   screen: {
     flex: 1,
@@ -195,15 +186,6 @@ const styles = StyleSheet.create({
     height,
     // backgroundColor: 'red'
   },
-  image: {
-    width: width,
-    height: height / 2 + height / 10,
-    resizeMode: 'cover',
-    position: 'absolute',
-    top: 0
-    // borderTopLeftRadius: 50
-  },
 });
 
 export default ParallaxCarousel;
-

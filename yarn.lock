@@ -7667,7 +7667,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@*", "prop-types@^15.5.10", "prop-types@^15.7.2", "prop-types@^15.7.x", "prop-types@^15.8.1", "prop-types@15.8.1":
+"prop-types@*", "prop-types@^15.5.10", "prop-types@^15.6.0", "prop-types@^15.7.2", "prop-types@^15.7.x", "prop-types@^15.8.1", "prop-types@15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -8040,6 +8040,13 @@
     "@callstack/react-theme-provider" "^3.0.8"
     "color" "^3.1.2"
     "use-latest-callback" "^0.1.5"
+
+"react-native-parallax-scroll-view@^0.21.3":
+  "integrity" "sha512-oVbZPijNGYGcpU2z7k/ZOOnl0vYxch7qtVvaJpH4+wLVnEP49NC2diCzjFGz8PE0yEcgyeTdkpdUK8RTD3QEew=="
+  "resolved" "https://registry.npmjs.org/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.21.3.tgz"
+  "version" "0.21.3"
+  dependencies:
+    "prop-types" "^15.6.0"
 
 "react-native-parsed-text@0.0.22":
   "integrity" "sha512-hfD83RDXZf9Fvth3DowR7j65fMnlqM9PpxZBGWkzVcUTFtqe6/yPcIoIAgrJbKn6YmtzkivmhWE2MCE4JKBXrQ=="
