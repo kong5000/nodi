@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-
+import UserDetail from './UserDetail';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
+import { calculateAge } from '../services/Utils'
+import * as style from '../style'
+import NextDestinations from './NextDestinations';
+
 import InstagramPhotos from './InstagramPhotos';
 import {
   ActivityIndicator,
@@ -23,10 +27,12 @@ import Interests from './Interests';
 import DestinationScroller from './DestinationScroller';
 import UserInfoScroller from './UserInfoScroller';
 import StyleText from './StyleText';
+import InterestsProfile from './InterestsProfile';
 import ConnectModal from './ConnectModal';
 import ProfileInfoContainer from './ProfileInfoContainer';
 import { relativeTimeRounding } from 'moment';
 import { ribbon } from 'd3';
+import { FontAwesome } from "@expo/vector-icons"
 
 const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
@@ -76,7 +82,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
           tempPictures.push(mediaObject)
         }
       })
-      setInstagramImages(tempPictures.slice(0, 6))
+      setInstagramImages(tempPictures.slice(0, 4))
     }
     getInstagramMedia()
   }, [])
@@ -121,15 +127,15 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                   onLoadEnd={() => {
                     setImagesLoaded(prev => prev + 1)
                   }}
-                  source={{ uri: item.image }}
+                  source={{ uri: item.picture }}
                   style={[
                     styles.image,
                   ]}
                 />
                 <ScrollView
                   contentContainerStyle={{
-                    // flex: 1
-                    width: width
+                    width: width,
+                    paddingBottom: "10%"
                   }}
                   showsVerticalScrollIndicator={false}
                   ref={(element) => refsArray.current.push(element)}
@@ -139,6 +145,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                   <View style={styles.footer}>
                     <TouchableOpacity
                       style={{
+                        ...style.FLEX_CENTERED,
                         height: 90,
                         width: 90,
                         borderRadius: 100,
@@ -149,6 +156,14 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                         zIndex: 10,
                       }}
                     >
+                      <Ionicons
+                        style={{
+                          ioniconStrokeWidth: 100
+                        }}
+                        // ionicon-stroke-width
+                        name="paper-plane-outline"
+                        size={45} color="white"
+                      />
                     </TouchableOpacity>
                     <View style={{
                       flex: 1,
@@ -156,11 +171,111 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                       borderTopLeftRadius: 40,
                       borderTopRightRadius: 40
                     }}>
-                      <StyleText
-                        text={`${item.name}, ${item.age}`}
-                        semiBold
-                        fontSize={FONT_SIZE.profileName}
-                      />
+                      <View style={{
+                        width: "63%",
+                        marginLeft: "10%",
+                        marginTop: "10%",
+                      }}>
+                        <StyleText
+                          text={`${item.name}, ${calculateAge(item.birthDate)}`}
+                          semiBold
+                          fontSize={FONT_SIZE.profileName}
+                        />
+                      </View>
+                      <View style={{
+                        display: 'flex',
+                        alignItems: 'left',
+                        marginLeft: '10%',
+                        marginTop: '2%',
+                      }}>
+                        {item.home && <UserDetail
+                          icon="person-outline"
+                          text={item.home}
+                        />}
+                        {item.profession && <UserDetail
+                          icon="person-outline"
+                          text={item.profession}
+                        />}
+                        {item.education && <UserDetail
+                          icon="person-outline"
+                          text={item.education}
+                        />}
+                      </View>
+
+                      <View style={{
+                        marginLeft: '10%',
+                        marginTop: '10%',
+                      }}>
+                        <StyleText
+                          text='About'
+                          bold
+                          fontSize={22}
+                          style={{ marginBottom: "3%" }}
+                        />
+                        <Profile />
+                      </View>
+                      <View
+                        style={{
+                          marginLeft: '10%',
+                          marginTop: '10%',
+                        }}
+                      >
+                        <StyleText
+                          text='Interests'
+                          bold
+                          fontSize={22}
+                          style={{ marginBottom: "3%" }}
+                        />
+                        <InterestsProfile interests={item.interests} />
+                      </View>
+
+                      <View
+                        style={{
+                          marginLeft: '10%',
+                          marginTop: '10%',
+                        }}
+                      >
+                        <StyleText
+                          text='Next Stop'
+                          bold
+                          fontSize={22}
+                          style={{ marginBottom: "3%" }}
+                        />
+                        <NextDestinations
+                          destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
+                        />
+                      </View>
+                      <View style={{ marginHorizontal: "10%" }}>
+                        <View style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginTop: '10%'
+                        }}>
+                          {/* <Ionicons
+                            color="black"
+                            name="logo-instagram" size={30} 
+                            style={{marginRight: "1%"}}
+                            /> */}
+                          <StyleText
+                            text={"Instagram"}
+                            bold
+                            fontSize={22}
+                          />
+                          <StyleText
+                            text={`@${instagramHandle}`}
+                            fontSize={20}
+                            style={{
+                              color: COLORS.mainTheme
+                            }}
+                          />
+                        </View>
+                        <InstagramPhotos
+                          images={instagramImages}
+                          handle={instagramHandle}
+                        />
+                      </View>
                     </View>
                   </View>
                 </ScrollView>
@@ -183,7 +298,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    height: height,
+    // height: height * 1.5,
     position: 'relative',
     top: -40
   },

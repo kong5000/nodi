@@ -12,7 +12,6 @@ import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
 import ParallaxCarousel from '../components/ParallaxCarousel'
 import Search from '../components/Search'
-import { calculateAge } from '../services/Utils'
 import getUserData from '../hooks/userData'
 import StyleText from '../components/StyleText'
 import { addGeoHash, radiusQuery } from '../services/GeoQueries'
@@ -66,17 +65,8 @@ const HomeScreen = () => {
                 let potentialMatches = await getCards(userData)
                 // potentialMatches = DUMMY_DATA
                 setCards(potentialMatches)
-                let carouselItems = potentialMatches.map(match => {
-                    return ({
-                        id: match.id,
-                        image: match.pictures[0],
-                        name: match.name,
-                        age: calculateAge(match.birthDate),
-                        goingTo: match.goingTo,
-                        interests: match.interests
-                    })
-                })
-                setItems(carouselItems)
+      
+                setItems(potentialMatches)
             } catch (err) {
                 // alert(err)
                 console.log(err)

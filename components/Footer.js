@@ -9,25 +9,20 @@ const Footer = () => {
 
     return (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={async() => {
-                navigation.navigate('Settings')
-            }}>
-                <Ionicons name="person-outline" size={33} color="white" />
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Home')
             }}>
-                <Ionicons name="earth-outline" size={33} color="white" />
+                <Ionicons name="id-card-outline" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Conversations')
             }}>
                 <Ionicons name="chatbubbles-sharp" size={33} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                navigation.navigate('Connect')
+            <TouchableOpacity onPress={async () => {
+                navigation.navigate('Settings')
             }}>
-                <Ionicons name="git-pull-request-outline" size={33} color="white" />
+                <Ionicons name="person-outline" size={33} color="white" />
             </TouchableOpacity>
         </View>
     )

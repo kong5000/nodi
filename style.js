@@ -9,6 +9,7 @@ const COLORS = {
     darkContrast: "#1A5465",
     // brightContrast: "#B8EDC2"
     brightContrast: "black",
+    neutralGrey: "#C4C4C4"
 };
 
 export const THEMES = {
@@ -102,8 +103,8 @@ const SIZES = {
     headerHeight: 110
 }
 
-const FONT_SIZE ={
-    profileName : 35
+const FONT_SIZE = {
+    profileName: 28
 }
 
 const COMPONENTS = {
@@ -129,4 +130,11 @@ const COMPONENTS = {
     },
 }
 
-export { COLORS, SIZES, TEXT_STYLES, COMPONENTS ,FONT_SIZE}
+const FLEX_CENTERED = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+}
+
+
+export { COLORS, SIZES, TEXT_STYLES, COMPONENTS, FONT_SIZE, FLEX_CENTERED }
