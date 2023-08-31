@@ -1,5 +1,6 @@
-import { Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import { StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native'
 import { Modal, Portal, TextInput } from 'react-native-paper';
+import { Image } from "react-native-expo-image-cache";
 
 import React from 'react'
 import StyleText from './StyleText';
@@ -17,7 +18,7 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
             >
                 <Image
                     style={styles.image}
-                    source={{ uri: imageUri }}
+                    uri={imageUri}
                 />
                 {currentProfile && <StyleText
                     style={{ fontSize: 30 }}
@@ -37,18 +38,18 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                     }}
                 />
                 <TouchableOpacity
-                style={{
-                    backgroundColor:COLORS.mainTheme,
-                    width: "85%",
-                    padding: "5%",
-                    margin: "5%",
-                    borderRadius: 12,
-                    ...FLEX_CENTERED
-                }}
+                    style={{
+                        backgroundColor: COLORS.mainTheme,
+                        width: "85%",
+                        padding: "5%",
+                        margin: "5%",
+                        borderRadius: 12,
+                        ...FLEX_CENTERED
+                    }}
                 >
                     <StyleText
                         text="Send"
-                        style={{color: "white"}}
+                        style={{ color: "white" }}
                         fontSize={25}
                         semiBold
                     />

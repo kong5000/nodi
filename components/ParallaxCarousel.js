@@ -6,6 +6,8 @@ import axios from 'axios';
 import { calculateAge } from '../services/Utils'
 import * as style from '../style'
 import NextDestinations from './NextDestinations';
+import {Image} from "react-native-expo-image-cache";
+import {CacheManager} from "react-native-expo-image-cache";
 
 import InstagramPhotos from './InstagramPhotos';
 import {
@@ -51,7 +53,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   const scrollRef = React.useRef();
   const scrollAnimation = React.useRef(new Animated.Value(0)).current;
 
-  const handleScrollToTop = () => {
+  const handleScrollToTop = (event) => {
     if (refsArray.current) {
       refsArray.current.forEach(ref => {
         if (ref) {
@@ -66,9 +68,12 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   };
   const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
 
-  useEffect(() => {
-    setImagesLoaded(0)
-  }, [selectedTrip])
+  useEffect (() => {
+    const clearImageCache = async () => {
+      await CacheManager.clearCache();
+    }
+    clearImageCache()
+  },[])
 
   useEffect(() => {
     const getInstagramMedia = async () => {
@@ -91,7 +96,15 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
     const { contentOffset } = event.nativeEvent;
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
+    // console.log('currentScreenIndex', parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width));
   };
+
+  const handleMomentumEnd = (event) => {
+    // console.log('currentScreenIndex', parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width))
+    let currentScreenIndex =  parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width)
+    setCurrentImage(items[currentScreenIndex].picture)
+    handleScrollToTop(event)
+  }
 
   return (
     <View style={styles.screen}>
@@ -102,8 +115,8 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
         currentProfile={currentProfile}
       />
       <Animated.FlatList
-        onMomentumScrollEnd={() => {
-          handleScrollToTop()
+        onMomentumScrollEnd={(event) => {
+          handleMomentumEnd(event)
         }}
         ref={scrollRef}
         data={items}
@@ -112,18 +125,19 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.id}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollAnimation } } }],
-          { useNativeDriver: true },
-        )}
+        onScroll={(e) => {
+          Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollAnimation } } }],
+            { useNativeDriver: true },
+          )
+          handleScroll(e)
+        }}
         renderItem={({ item, index }) => {
-          const inputRange = [
-            width * (index - 0.5),
-            width * index,
-            width * (index + 0.5),
-          ];
           return (
             <View style={styles.item}>
+               {/* Image below just for caching for quick loading in modal */}
+              <Image style={{ height: 0, width: 0 }} uri={item.picture} />
+
               <Animated.View
                 style={
                   { flex: 1, backgroundColor: 'transparent' }
