@@ -75,6 +75,9 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         borderRadius: 15,
                         ...FLEX_CENTERED
                     }}
+                    onPress={() => {
+                        // Check if person is already match?
+                    }}
                 >
                     <StyleText
                         text="Send"

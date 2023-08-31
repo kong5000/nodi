@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import Footer from '../components/Footer'
-import SearchUser from '../components/SearchUser'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const UserSearchScreen = () => {
@@ -38,10 +37,6 @@ const UserSearchScreen = () => {
     }
     return (
         <View style={styles.screen}>
-            <SearchUser
-                input={input}
-                setInput={setInput}
-                onChangeText={onChangeText} />
             <FlatList
                 keyExtractor={item => item.id}
                 data={data}
