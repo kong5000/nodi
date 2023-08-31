@@ -95,6 +95,12 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
 
   return (
     <View style={styles.screen}>
+      <ConnectModal
+        visible={connectModalVisible}
+        hideModal={hideConnectModal}
+        imageUri={currentImage}
+        currentProfile={currentProfile}
+      />
       <Animated.FlatList
         onMomentumScrollEnd={() => {
           handleScrollToTop()
@@ -154,6 +160,10 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                         top: 40,
                         left: width - width / 3,
                         zIndex: 10,
+                      }}
+                      onPress={() => {
+                        setCurrentImage(item.picture)
+                        showConnectModal()
                       }}
                     >
                       <Ionicons

@@ -12,7 +12,7 @@ const Footer = () => {
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Home')
             }}>
-                <Ionicons name="id-card-outline" size={33} color="white" />
+                <Ionicons name="person-outline" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Conversations')

@@ -1,11 +1,13 @@
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { Modal, Portal, TextInput } from 'react-native-paper';
 
 import React from 'react'
 import StyleText from './StyleText';
 import Connect from './Connect';
+import { COLORS, FLEX_CENTERED } from '../style';
+const { width, height } = Dimensions.get('window');
 
-const ConnectModal = ({ visible, hideModal, currentProfile }) => {
+const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
     return (
         <Portal>
             <Modal
@@ -13,10 +15,10 @@ const ConnectModal = ({ visible, hideModal, currentProfile }) => {
                 onDismiss={hideModal}
                 contentContainerStyle={styles.containerStyle}
             >
-                {/* <Image
+                <Image
                     style={styles.image}
                     source={{ uri: imageUri }}
-                /> */}
+                />
                 {currentProfile && <StyleText
                     style={{ fontSize: 30 }}
                     semiBold
@@ -28,12 +30,29 @@ const ConnectModal = ({ visible, hideModal, currentProfile }) => {
                     mode='outlined'
                     style={{
                         color: 'black',
-                        width: "80%",
-                        height: 40,
+                        width: "85%",
+                        height: 55,
                         backgroundColor: 'white',
+                        borderColor: COLORS.neutralGrey
                     }}
                 />
-                <Connect />
+                <TouchableOpacity
+                style={{
+                    backgroundColor:COLORS.mainTheme,
+                    width: "85%",
+                    padding: "5%",
+                    margin: "5%",
+                    borderRadius: 12,
+                    ...FLEX_CENTERED
+                }}
+                >
+                    <StyleText
+                        text="Send"
+                        style={{color: "white"}}
+                        fontSize={25}
+                        semiBold
+                    />
+                </TouchableOpacity>
             </Modal>
         </Portal>
     )
@@ -42,8 +61,8 @@ const ConnectModal = ({ visible, hideModal, currentProfile }) => {
 export default ConnectModal
 const styles = StyleSheet.create({
     image: {
-        width: 400,
-        height: 400,
+        width: width * 0.85,
+        height: width * 0.85,
         resizeMode: 'cover',
         borderRadius: 20,
         // borderTopLeftRadius: 50
@@ -109,7 +128,7 @@ const styles = StyleSheet.create({
     containerStyle: {
         display: 'flex',
         backgroundColor: 'white',
-        height: 250,
+        // height: 250,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         borderRadius: 50
