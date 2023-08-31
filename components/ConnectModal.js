@@ -1,11 +1,13 @@
-import { StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native'
 import { Modal, Portal, TextInput } from 'react-native-paper';
 import { Image } from "react-native-expo-image-cache";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import StyleText from './StyleText';
 import Connect from './Connect';
 import { COLORS, FLEX_CENTERED } from '../style';
+import { calculateAge } from '../services/Utils';
 const { width, height } = Dimensions.get('window');
 
 const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
@@ -16,15 +18,39 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                 onDismiss={hideModal}
                 contentContainerStyle={styles.containerStyle}
             >
+                {currentProfile && <View style={{
+                    ...FLEX_CENTERED,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: "100%"
+                }}>
+                    <StyleText
+                        style={{ fontSize: 30, marginLeft: "5%" }}
+                        semiBold
+                        text={currentProfile.name + ',' + calculateAge(currentProfile.birthDate)}
+                    />
+                    <TouchableOpacity
+                        style={{
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            borderColor: COLORS.neutralGrey,
+                            marginRight: "5%",
+                            padding: "1%"
+                        }}
+                        onPress={hideModal}
+                    >
+                        <Ionicons
+                            name="close-outline"
+                            size={40}
+                            color={COLORS.mainTheme}
+                        />
+                    </TouchableOpacity>
+                </View>}
+
                 <Image
                     style={styles.image}
                     uri={imageUri}
                 />
-                {currentProfile && <StyleText
-                    style={{ fontSize: 30 }}
-                    semiBold
-                    text={currentProfile.title}
-                />}
                 <TextInput
                     activeOutlineColor='black'
                     placeholder='Send a message'
@@ -34,7 +60,10 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         width: "85%",
                         height: 55,
                         backgroundColor: 'white',
-                        borderColor: COLORS.neutralGrey
+                    }}
+                    outlineStyle={{
+                        borderColor: COLORS.neutralGrey,
+                        borderRadius: 15
                     }}
                 />
                 <TouchableOpacity
@@ -43,7 +72,7 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         width: "85%",
                         padding: "5%",
                         margin: "5%",
-                        borderRadius: 12,
+                        borderRadius: 15,
                         ...FLEX_CENTERED
                     }}
                 >
@@ -61,90 +90,22 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
 
 export default ConnectModal
 const styles = StyleSheet.create({
-    image: {
-        width: width * 0.85,
-        height: width * 0.85,
-        resizeMode: 'cover',
-        borderRadius: 20,
-        // borderTopLeftRadius: 50
-    },
-    toggleText: {
-        fontSize: 20
-    },
-    toggleButton: {
-        width: 100
-    },
-    toggleRow: {
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    section: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    borderLine: {
-        borderBottomWidth: 2,
-        width: "100%"
-    },
-    borderLineLight: {
-        borderBottomWidth: 2,
-        width: "100%",
-    },
-    checkBoxContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: 10,
-        padding: 5,
-        borderRadius: 30,
-        borderWidth: 2,
-        width: 175
-    },
-    searchBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: 10,
-        padding: 5,
-        borderRadius: 30,
-        borderWidth: 2,
-        width: 220
-    },
-    checkBoxLabel: {
-        fontSize: 20,
-        padding: 8,
-    },
-    sectionLabel: {
-        fontSize: 25,
-        marginBottom: 5,
-    },
-    sectionLabelText: {
-        fontSize: 16,
-        margin: 5
-    },
-
     containerStyle: {
         display: 'flex',
         backgroundColor: 'white',
         // height: 250,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        borderRadius: 50
+        borderRadius: 30,
+        margin: "5%",
+        paddingTop: "5%"
     },
-    radioContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+    image: {
+        width: width * 0.80,
+        height: width * 0.80,
+        resizeMode: 'cover',
+        borderRadius: 20,
+        marginVertical: "5%",
+        // borderTopLeftRadius: 50
     },
-
-    modalHeader: {
-        fontWeight: 'bold',
-        margin: 10
-    },
-
 })

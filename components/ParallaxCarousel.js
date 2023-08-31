@@ -33,7 +33,7 @@ import InterestsProfile from './InterestsProfile';
 import ConnectModal from './ConnectModal';
 import ProfileInfoContainer from './ProfileInfoContainer';
 import { relativeTimeRounding } from 'moment';
-import { ribbon } from 'd3';
+import { index, ribbon } from 'd3';
 import { FontAwesome } from "@expo/vector-icons"
 
 const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
@@ -69,11 +69,16 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
 
   useEffect (() => {
+    setCurrentProfile(items[0])
     const clearImageCache = async () => {
       await CacheManager.clearCache();
     }
     clearImageCache()
   },[])
+  
+  useEffect (() => {
+    setCurrentProfile(items[0])
+  },[items])
 
   useEffect(() => {
     const getInstagramMedia = async () => {
@@ -103,6 +108,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
     // console.log('currentScreenIndex', parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width))
     let currentScreenIndex =  parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width)
     setCurrentImage(items[currentScreenIndex].picture)
+    setCurrentProfile(items[currentScreenIndex])
     handleScrollToTop(event)
   }
 
