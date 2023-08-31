@@ -1,17 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import UserDetail from './UserDetail';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 import { calculateAge } from '../services/Utils'
 import * as style from '../style'
 import NextDestinations from './NextDestinations';
-import {Image} from "react-native-expo-image-cache";
-import {CacheManager} from "react-native-expo-image-cache";
+import { Image } from "react-native-expo-image-cache";
+import { CacheManager } from "react-native-expo-image-cache";
 
 import InstagramPhotos from './InstagramPhotos';
 import {
-  ActivityIndicator,
   Animated,
   Dimensions,
   ScrollView,
@@ -21,26 +19,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Connect from './Connect';
-import { COLORS, FONT_SIZE, SIZES } from '../style';
+import { COLORS, FONT_SIZE } from '../style';
 const { width, height } = Dimensions.get('window');
 import Profile from './Profile';
-import Interests from './Interests';
-import DestinationScroller from './DestinationScroller';
-import UserInfoScroller from './UserInfoScroller';
 import StyleText from './StyleText';
 import InterestsProfile from './InterestsProfile';
 import ConnectModal from './ConnectModal';
-import ProfileInfoContainer from './ProfileInfoContainer';
-import { relativeTimeRounding } from 'moment';
-import { index, ribbon } from 'd3';
-import { FontAwesome } from "@expo/vector-icons"
 
-const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
+const ParallaxCarousel = ({ items }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
   const [paginationOpacity, setPaginationOpacity] = useState()
   const [instagramImages, setInstagramImages] = useState([])
-  const [showWebView, setShowWebView] = useState(true)
   const [instagramHandle, setInstagramHandle] = useState('')
   const [connectModalVisible, setConnectModalVisible] = useState(false)
 
@@ -68,24 +57,23 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
   };
   const access_token = "IGQVJWUTE0aHFHa1dsNWk1NVU2bHpIWnFnLW9iZA2swalRyajMzeXl1c1IzVk5YRnBMUURJaWxXdktNWTNtelN0X183WDZAxellYTWtkZAWROaUc2LXZAPZAUpGVjh1R0NMcTdKd2lPbndVakhOYkd6TUVxeQZDZD"
 
-  useEffect (() => {
+  useEffect(() => {
     setCurrentProfile(items[0])
     const clearImageCache = async () => {
       await CacheManager.clearCache();
     }
     clearImageCache()
-  },[])
-  
-  useEffect (() => {
+  }, [])
+
+  useEffect(() => {
     setCurrentProfile(items[0])
-  },[items])
+  }, [items])
 
   useEffect(() => {
     const getInstagramMedia = async () => {
       const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
 
       setInstagramHandle(graphResponse.data.data[0].username)
-      setShowWebView(false)
       let tempPictures = []
       graphResponse.data.data.forEach(mediaObject => {
         if (mediaObject.media_type != "VIDEO") {
@@ -101,12 +89,10 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
     const { contentOffset } = event.nativeEvent;
     const currentPosition = contentOffset.y;
     setPaginationOpacity(0.75 - 2.5 * currentPosition / 100)
-    // console.log('currentScreenIndex', parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width));
   };
 
   const handleMomentumEnd = (event) => {
-    // console.log('currentScreenIndex', parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width))
-    let currentScreenIndex =  parseInt(event.nativeEvent.contentOffset.x/Dimensions.get('window').width)
+    let currentScreenIndex = parseInt(event.nativeEvent.contentOffset.x / Dimensions.get('window').width)
     setCurrentImage(items[currentScreenIndex].picture)
     setCurrentProfile(items[currentScreenIndex])
     handleScrollToTop(event)
@@ -141,7 +127,7 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
         renderItem={({ item, index }) => {
           return (
             <View style={styles.item}>
-               {/* Image below just for caching for quick loading in modal */}
+              {/* Image below just for caching for quick loading in modal */}
               <Image style={{ height: 0, width: 0 }} uri={item.picture} />
 
               <Animated.View
@@ -190,7 +176,6 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                         style={{
                           ioniconStrokeWidth: 100
                         }}
-                        // ionicon-stroke-width
                         name="paper-plane-outline"
                         size={45} color="white"
                       />
@@ -283,11 +268,6 @@ const ParallaxCarousel = ({ items, selectedTrip, noTrips }) => {
                           justifyContent: 'space-between',
                           marginTop: '10%'
                         }}>
-                          {/* <Ionicons
-                            color="black"
-                            name="logo-instagram" size={30} 
-                            style={{marginRight: "1%"}}
-                            /> */}
                           <StyleText
                             text={"Instagram"}
                             bold

@@ -2,15 +2,19 @@ import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-nati
 import { Modal, Portal, TextInput } from 'react-native-paper';
 import { Image } from "react-native-expo-image-cache";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import getUserData from '../hooks/userData'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import StyleText from './StyleText';
-import Connect from './Connect';
 import { COLORS, FLEX_CENTERED } from '../style';
 import { calculateAge } from '../services/Utils';
+import { addNewRequest } from '../services/RequestQueries';
 const { width, height } = Dimensions.get('window');
 
 const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
+    const { userData } = getUserData()
+    const [text, setText] = useState("")
+
     return (
         <Portal>
             <Modal
@@ -65,6 +69,8 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         borderColor: COLORS.neutralGrey,
                         borderRadius: 15
                     }}
+                    value={text}
+                    onChangeText={text => setText(text)}
                 />
                 <TouchableOpacity
                     style={{
@@ -75,8 +81,16 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         borderRadius: 15,
                         ...FLEX_CENTERED
                     }}
-                    onPress={() => {
-                        // Check if person is already match?
+                    onPress={async () => {
+                        console.log(userData.id)
+                        console.log(currentProfile.id)
+                        try {
+                            await addNewRequest(userData, currentProfile, text)
+                            // Check if person is already match?
+                        } catch (err) {
+                            console.log(err)
+                        }
+
                     }}
                 >
                     <StyleText

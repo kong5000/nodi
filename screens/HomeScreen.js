@@ -1,39 +1,26 @@
 import {
     StyleSheet, View,
-    Dimensions,
-    TouchableOpacity,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/core'
 import useAuth from '../hooks/useAuth'
-import { auth } from '../firebase'
-import { DUMMY_DATA } from '../test/dummy_data'
 import { getCards } from '../services/Utils'
 import Footer from '../components/Footer'
 import ParallaxCarousel from '../components/ParallaxCarousel'
-import Search from '../components/Search'
 import getUserData from '../hooks/userData'
-import StyleText from '../components/StyleText'
-import { addGeoHash, radiusQuery } from '../services/GeoQueries'
 import * as Location from 'expo-location';
 
 const HomeScreen = () => {
     const { user } = useAuth()
     const { userData } = getUserData()
     // const [trips, setTrips] = useState([])
-    const [cards, setCards] = useState(DUMMY_DATA)
 
     const [items, setItems] = useState([])
-    const [filteredItems, setFilteredItems] = useState([])
-
-    const [selectedTripIndex, setSelectedTripIndex] = useState(0)
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
     useEffect(() => {
         (async () => {
-
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
@@ -46,29 +33,13 @@ const HomeScreen = () => {
         })();
     }, []);
 
-
-
-    const { trips } = getUserData()
-
-    // useEffect(()=> {
-    //     console.log(selectedTrip)
-    //     if(!selectedTrip){
-    //         setFilteredItems(items)
-    //     }
-
-    // },[selectedTripIndex])
-
     useEffect(() => {
         const queryData = async () => {
-            if(!userData) return
+            if (!userData) return
             try {
                 let potentialMatches = await getCards(userData)
-                // potentialMatches = DUMMY_DATA
-                setCards(potentialMatches)
-      
                 setItems(potentialMatches)
             } catch (err) {
-                // alert(err)
                 console.log(err)
             }
         }
@@ -78,9 +49,8 @@ const HomeScreen = () => {
     return (
         <View style={styles.screen}>
             <ParallaxCarousel
-                noTrips={!trips.length}
                 items={items}
-                selectedTrip={trips[selectedTripIndex]} />
+            />
             <Footer />
         </View>
     )
