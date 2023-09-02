@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Footer from '../components/Footer'
 import { ToggleButton } from 'react-native-paper';
@@ -161,7 +161,7 @@ const SettingsScreen = () => {
                             loading={imageLoading}
                         />
                     </View>
-                    <View style={{
+                    <TouchableOpacity style={{
                         ...FLEX_CENTERED,
                         width: "50%",
                         backgroundColor: COLORS.mainTheme,
@@ -177,7 +177,7 @@ const SettingsScreen = () => {
                             bold
                             text="View Profile"
                         />
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
             <Footer />

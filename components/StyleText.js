@@ -2,28 +2,35 @@ import { StyleSheet, Text } from 'react-native'
 import React from 'react'
 import {
     useFonts,
-    Inter_100Thin,
-    Inter_200ExtraLight,
-    Inter_300Light,
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-    Inter_800ExtraBold,
-    Inter_900Black,
-  } from '@expo-google-fonts/inter';
+    Roboto_100Thin,
+    Roboto_100Thin_Italic,
+    Roboto_300Light,
+    Roboto_300Light_Italic,
+    Roboto_400Regular,
+    Roboto_400Regular_Italic,
+    Roboto_500Medium,
+    Roboto_500Medium_Italic,
+    Roboto_700Bold,
+    Roboto_700Bold_Italic,
+    Roboto_900Black,
+    Roboto_900Black_Italic,
+} from '@expo-google-fonts/roboto';
+
 const StyleText = ({ text, style, bold, semiBold, fontSize }) => {
     let [fontsLoaded] = useFonts({
-        Inter_100Thin,
-        Inter_200ExtraLight,
-        Inter_300Light,
-        Inter_400Regular,
-        Inter_500Medium,
-        Inter_600SemiBold,
-        Inter_700Bold,
-        Inter_800ExtraBold,
-        Inter_900Black,
-      });
+        Roboto_100Thin,
+        Roboto_100Thin_Italic,
+        Roboto_300Light,
+        Roboto_300Light_Italic,
+        Roboto_400Regular,
+        Roboto_400Regular_Italic,
+        Roboto_500Medium,
+        Roboto_500Medium_Italic,
+        Roboto_700Bold,
+        Roboto_700Bold_Italic,
+        Roboto_900Black,
+        Roboto_900Black_Italic,
+    });
     if (!fontsLoaded) {
         return <></>
     } else {
@@ -33,7 +40,7 @@ const StyleText = ({ text, style, bold, semiBold, fontSize }) => {
         if (semiBold) font = styles.semiBold
 
         return (
-            <Text style={[font, style, fontSize && {fontSize: fontSize}]}>{text}</Text>
+            <Text style={[font, style, fontSize && { fontSize: fontSize }]}>{text}</Text>
         )
     }
 }
@@ -42,13 +49,13 @@ export default StyleText
 
 const styles = StyleSheet.create({
     text: {
-        fontFamily: 'Inter_400Regular',
+        fontFamily: 'Roboto_400Regular',
     },
     bold: {
-        fontFamily: 'Inter_700Bold',
+        fontFamily: 'Roboto_700Bold',
     },
-    semiBold:{
-        fontFamily: 'Inter_600SemiBold',
+    semiBold: {
+        fontFamily: 'Roboto_500Medium',
 
     }
 })
