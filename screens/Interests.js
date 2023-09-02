@@ -1,25 +1,25 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { COLORS, TEXT_STYLES } from '../style'
+import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
 import NextButton from '../components/NextButton';
+import StyleText from '../components/StyleText'
+const { width, height } = Dimensions.get('window');
 
 const thingsToDo = [
     { text: "Festivals", emoticon: "🎊" },
-    { text: "Walking Tours", emoticon: "🚶" },
     { text: "Road Trips", emoticon: "🚗" },
     { text: "Beaches", emoticon: "🏖️" },
     { text: "Markets", emoticon: "🧺" },
-    { text: "Parks and Nature", emoticon: "🌳" },
+    { text: "Nature", emoticon: "🌳" },
     { text: "Architecture", emoticon: "🏛️" },
-    { text: "Museums and Art", emoticon: "🖼️" },
+    { text: "Museums", emoticon: "🖼️" },
     { text: "Hiking", emoticon: "⛰️" },
-    { text: "Biking", emoticon: "🚲" },
-    { text: "Sporting Events", emoticon: "🏟️" },
+    { text: "Sports", emoticon: "🏟️" },
     { text: "Concerts", emoticon: "🎤" },
     { text: "Nightlife", emoticon: "🍸" },
-    { text: "Performing Arts", emoticon: "🎭" },
+    { text: "Art", emoticon: "🎭" },
 ]
 
 const foodAndDrink = [
@@ -29,7 +29,8 @@ const foodAndDrink = [
     { text: "Pubs and Bars", emoticon: "🍺" },
 ]
 
-const Interests = ({setPage, interests, setInterests}) => {
+const Interests = ({ setPage }) => {
+    const [interests, setInterests] = useState([])
     const [formIncomplete, setFormIncomplete] = useState(true)
 
     useEffect(() => {
@@ -49,26 +50,16 @@ const Interests = ({setPage, interests, setInterests}) => {
         }
     }
     return (
-        <View style={styles.interestsContainer}>
-            <Text style={TEXT_STYLES.header}>Favorite Activities (optional)</Text>
+        <View style={styles.container}>
             {thingsToDo.map((item) =>
                 <TouchableOpacity onPress={() => toggleInterest(item.text)}>
-                    <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>
-                        <Text style={styles.activityText}>{item.text} {item.emoticon}</Text>
+                    <View style={[styles.activity, interests.includes(item.text) ? styles.enabled : styles.activityDisabled]}>
+                        <StyleText
+                            text={item.text}
+                            fontSize={16}
+                        />
                     </View>
                 </TouchableOpacity>)}
-
-            {foodAndDrink.map((item) =>
-                <TouchableOpacity onPress={() => toggleInterest(item.text)}>
-                    <View style={interests.includes(item.text) ? styles.activityDisabled : styles.activity}>
-                        <Text style={styles.activityText}>{item.text} {item.emoticon}</Text>
-                    </View>
-                </TouchableOpacity>)}
-            <NextButton
-                index={4}
-                setPage={setPage}
-                formIncomplete={formIncomplete}
-                incompleteMessage="Please pick at least two interests" />
         </View>
     )
 }
@@ -77,36 +68,30 @@ export default Interests
 
 
 const styles = StyleSheet.create({
-    activityText: {
-        ...TEXT_STYLES.standard,
-        color: COLORS.darkContrast,
-        fontSize: 17,
-    },
-    interestsContainer: {
+    container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '100%',
+        width: '82%',
         flexDirection: 'row',
     },
     activity: {
-        backgroundColor: COLORS.mainTheme,
-        borderColor: COLORS.brightContrast,
-        borderWidth: 2,
-        borderRadius: 30,
-        margin: 10,
-        padding: 5,
-        fontSize: 18,
-        fontWeight: "400",
+        ...FLEX_CENTERED,
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderRadius: 15,
+        width: width * 0.37,
+        marginVertical: '4%',
+        marginRight: '4%'
+    },
+    enabled: {
+        backgroundColor: COLORS.lightHighlight,
+        borderColor: 'transparent',
         color: "white",
- 
+
     },
     activityDisabled: {
-        backgroundColor: "white",
-        borderWidth: 2,
-        borderRadius: 30,
-        margin: 10,
-        padding: 5,
-        borderColor: "white"
+        borderColor: COLORS.neutralGrey,
     },
     updateButton: {
 

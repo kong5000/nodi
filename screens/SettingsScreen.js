@@ -1,7 +1,7 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import Footer from '../components/Footer'
-import { ToggleButton } from 'react-native-paper';
+import { ToggleButton, TextInput } from 'react-native-paper';
 import StyleText from '../components/StyleText';
 import { COLORS, FLEX_CENTERED } from '../style';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,6 +10,10 @@ import getUserData from '../hooks/userData'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, database } from '../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
+import Interests from './Interests';
+const { width, height } = Dimensions.get('window');
+
+
 const BOTTOM_MARGIN = "7%"
 const SettingsScreen = () => {
     const { userData } = getUserData()
@@ -17,6 +21,11 @@ const SettingsScreen = () => {
     const [imageLoading, setImageLoading] = useState(false)
     const [showSaved, setShowSaved] = useState(true)
     const [settingMenu, setSettingMenu] = useState("profile")
+    const [firstName, setFirstName] = useState(userData.name)
+    const [lastName, setLastName] = useState(userData.lastName)
+    const [occupation, setOccupation] = useState(userData.occupation)
+    const [education, setEducation] = useState(userData.education)
+
     const pickImage = async (index) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -69,13 +78,13 @@ const SettingsScreen = () => {
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        width: "90%",
+                        width: "80%",
                         marginBottom: BOTTOM_MARGIN
                     }}>
                         <StyleText
-                            semiBold
+                            bold
                             text="Settings"
-                            fontSize={30}
+                            fontSize={34}
                         />
                         {showSaved &&
                             <View style={{
@@ -125,7 +134,6 @@ const SettingsScreen = () => {
                                 </View>
                             }
                             value="profile"
-                            color="red"
                         >
                         </ToggleButton>
                         <ToggleButton
@@ -178,6 +186,76 @@ const SettingsScreen = () => {
                             text="View Profile"
                         />
                     </TouchableOpacity>
+                    <View style={{
+                        marginTop: '5%'
+                    }}>
+                        <TextInput
+                            theme={{
+                                colors: {
+                                    onSurfaceVariant: COLORS.halfGrey,
+                                }
+                            }}
+                            label='First Name'
+                            activeOutlineColor='black'
+                            mode='outlined'
+                            style={styles.textInput}
+                            outlineStyle={styles.textInputOutline}
+                            value={firstName}
+                            onChangeText={text => setFirstName(text)}
+                        />
+                        <TextInput
+                            theme={{
+                                colors: {
+                                    onSurfaceVariant: COLORS.halfGrey,
+                                }
+                            }}
+                            label='Last Name'
+                            activeOutlineColor='black'
+                            mode='outlined'
+                            style={styles.textInput}
+                            outlineStyle={styles.textInputOutline}
+                            value={lastName}
+                            onChangeText={text => setLastName(text)}
+                        />
+                        <TextInput
+                            theme={{
+                                colors: {
+                                    onSurfaceVariant: COLORS.halfGrey,
+                                }
+                            }}
+                            label='Occupation'
+                            activeOutlineColor='black'
+                            mode='outlined'
+                            style={styles.textInput}
+                            outlineStyle={styles.textInputOutline}
+                            value={occupation}
+                            onChangeText={text => setOccupation(text)}
+                        />
+                        <TextInput
+                            theme={{
+                                colors: {
+                                    onSurfaceVariant: COLORS.halfGrey,
+                                }
+                            }}
+                            label='Education (Institution)'
+                            activeOutlineColor='black'
+                            mode='outlined'
+                            style={styles.textInput}
+                            outlineStyle={styles.textInputOutline}
+                            value={education}
+                            onChangeText={text => setEducation(text)}
+                        />
+                    </View>
+                    <StyleText
+                        text="Your Interests"
+                        fontSize={24}
+                        bold
+                        style={{
+                            width: "85%",
+                            marginTop: "5%"
+                        }}
+                    />
+                    <Interests/>
                 </View>
             </ScrollView>
             <Footer />
@@ -196,7 +274,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     toggleButton: {
-        width: "50%",
+        width: "45%",
     },
     toggleRow: {
         marginHorizontal: '5%',
@@ -211,4 +289,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: BOTTOM_MARGIN
     },
+    textInput: {
+        color: 'black',
+        minWidth: "75%",
+        height: 55,
+        backgroundColor: 'white',
+        marginBottom: '4%'
+    },
+    textInputOutline: {
+        borderColor: COLORS.neutralGrey,
+        borderRadius: 15
+    }
+
 })

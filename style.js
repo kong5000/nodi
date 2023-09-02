@@ -10,7 +10,9 @@ const COLORS = {
     // brightContrast: "#B8EDC2"
     brightContrast: "black",
     neutralGrey: "#C4C4C4",
-    neutralBlueGrey: "#EDF2FA"
+    neutralBlueGrey: "#EDF2FA",
+    lightHighlight: "#dfe8f7",
+    halfGrey: 'rgba(0, 0, 0, 0.4)'
 };
 
 export const THEMES = {

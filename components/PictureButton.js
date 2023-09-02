@@ -1,7 +1,8 @@
-import { View, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react'
 import { COLORS } from '../style';
+import { Image } from "react-native-expo-image-cache";
 
 const PictureButton = ({ onPress, image, size, loading }) => {
     return (
@@ -12,7 +13,7 @@ const PictureButton = ({ onPress, image, size, loading }) => {
                 image ?
                     <Image
                         style={styles.image}
-                        source={{ uri: image }}
+                        uri={image} 
                     />
                     :
                     <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} style={{ color: COLORS.brightContrast }} />
