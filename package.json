@@ -13,6 +13,7 @@
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo-google-fonts/roboto": "^0.2.3",
     "@expo-google-fonts/work-sans": "^0.2.3",
+    "@expo/vector-icons": "^13.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
