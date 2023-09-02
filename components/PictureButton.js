@@ -1,22 +1,40 @@
-import { StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react'
 import { COLORS } from '../style';
 
-const PictureButton = ({ onPress, images, size, index, loading }) => {
+const PictureButton = ({ onPress, image, size, loading }) => {
     return (
-        <TouchableOpacity onPress={() => onPress(index)} style={size == "large" ? styles.imageContainer : styles.imageContainerSmall}>
+        <TouchableOpacity onPress={() => onPress()} style={styles.imageContainer}>
             {loading ?
                 <ActivityIndicator animating={true} size="large" color={COLORS.darkContrast} />
                 :
-                images[index] ?
+                image ?
                     <Image
                         style={styles.image}
-                        source={{ uri: images[index] }}
+                        source={{ uri: image }}
                     />
                     :
-                    <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} style={{color: COLORS.brightContrast}} />
+                    <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} style={{ color: COLORS.brightContrast }} />
             }
+
+            <View style={{
+                position: 'absolute',
+                bottom: -15,
+                right: -15,
+                backgroundColor: COLORS.mainTheme,
+                borderRadius: 100,
+                padding: 5,
+                borderWidth: 4,
+                borderColor: "white"
+            }}>
+                <Ionicons
+                    name="camera-outline"
+                    size={30}
+                    color={"white"}
+                />
+            </View>
+
         </TouchableOpacity>
     )
 }
@@ -35,22 +53,11 @@ const styles = StyleSheet.create({
         aspectRatio: 1, // Maintain a 1:1 aspect ratio for the container
         justifyContent: 'center',
         alignItems: 'center',
-        width: '45%',
+        width: '33%',
         borderRadius: 20,
         borderColor: COLORS.brightContrast,
-        borderWidth: 3
-
     },
-    imageContainerSmall: {
-        aspectRatio: 1, // Maintain a 1:1 aspect ratio for the container
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '30%',
-        borderRadius: 20,
-        borderColor: COLORS.brightContrast,
-        borderWidth: 3
 
-    },
     modalHeader: {
         fontWeight: 'bold',
         margin: 10

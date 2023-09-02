@@ -9,7 +9,8 @@ const COLORS = {
     darkContrast: "#1A5465",
     // brightContrast: "#B8EDC2"
     brightContrast: "black",
-    neutralGrey: "#C4C4C4"
+    neutralGrey: "#C4C4C4",
+    neutralBlueGrey: "#EDF2FA"
 };
 
 export const THEMES = {

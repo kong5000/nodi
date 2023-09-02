@@ -8,6 +8,7 @@ import ModalScreen from './screens/ModalScreen';
 import MatchScreen from './screens/MatchScreen';
 import UserSearchScreen from './screens/UserSearchScreen';
 import UserSettingsScreen from './screens/UserSettingsScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import ConnectScreen from './screens/ConnectScreen';
 import Connect from './components/Connect';
 const Stack = createNativeStackNavigator();
@@ -26,9 +27,8 @@ const StackNavigator = () => {
                         <Stack.Screen name="Modal" component={ModalScreen} />
                         <Stack.Screen name="Conversations"component={ConversationScreen} />
                         <Stack.Screen name="Users" component={UserSearchScreen} />
-                        <Stack.Screen name="Settings" component={UserSettingsScreen}/>
                         <Stack.Screen name="Connect" component={ConnectScreen}/>
-                        
+                        <Stack.Screen name="Settings" component={SettingsScreen}/>
                     </Stack.Group>
                 </>
             ) : (
