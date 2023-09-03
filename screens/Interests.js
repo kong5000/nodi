@@ -10,7 +10,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import CustomToggleButton from '../components/CustomToggleButton'
+import SettingsButtonsGroup from '../components/SettingsButtonsGroup'
 
 const thingsToDo = [
     {
@@ -62,14 +63,6 @@ const thingsToDo = [
         />
     },
     {
-        text: "Hiking", icon: <FontAwesome5
-            name="mountain"
-            size={20}
-            color={COLORS.mainTheme}
-            style={{ marginRight: '10%' }}
-        />
-    },
-    {
         text: "Sports", icon: <FontAwesome5
             name="basketball-ball"
             size={24}
@@ -100,45 +93,16 @@ const thingsToDo = [
     },
 ]
 
-const foodAndDrink = [
-    { text: "Vegan Food", emoticon: "🥬" },
-    { text: "Street Food", emoticon: "🥙" },
-    { text: "Fine Dining", emoticon: "🍽️" },
-    { text: "Pubs and Bars", emoticon: "🍺" },
-]
-
-const Interests = ({ setPage }) => {
+const Interests = () => {
     const [interests, setInterests] = useState([])
-    const [formIncomplete, setFormIncomplete] = useState(true)
 
-    useEffect(() => {
-        if (interests.length >= 2) {
-            setFormIncomplete(false)
-        } else {
-            setFormIncomplete(true)
-        }
-    }, [interests])
-
-    const toggleInterest = (activity) => {
-        if (interests.includes(activity)) {
-            const updatedArray = interests.filter((item) => item !== activity);
-            setInterests(updatedArray)
-        } else {
-            setInterests([...interests, activity])
-        }
-    }
     return (
         <View style={styles.container}>
-            {thingsToDo.map((item) =>
-                <TouchableOpacity onPress={() => toggleInterest(item.text)}>
-                    <View style={[styles.activity, interests.includes(item.text) ? styles.enabled : styles.activityDisabled]}>
-                        {item.icon}
-                        <StyleText
-                            text={item.text}
-                            fontSize={16}
-                        />
-                    </View>
-                </TouchableOpacity>)}
+            <SettingsButtonsGroup
+                activeButtons={interests}
+                setActiveButtons={setInterests}
+                list={thingsToDo}
+            />
         </View>
     )
 }
@@ -152,32 +116,5 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         width: '82%',
         flexDirection: 'row',
-    },
-    activity: {
-        ...FLEX_CENTERED,
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        borderWidth: 1,
-        borderRadius: 15,
-        width: width * 0.37,
-        marginVertical: '4%',
-        marginRight: '4%'
-    },
-    enabled: {
-        backgroundColor: COLORS.lightHighlight,
-        borderColor: 'transparent',
-        color: "white",
-
-    },
-    activityDisabled: {
-        borderColor: COLORS.neutralGrey,
-    },
-    updateButton: {
-
-    },
-    greyedOut: {
-        color: 'gray'
     }
 });

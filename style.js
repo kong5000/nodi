@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native'
+const { width, height } = Dimensions.get('window');
 const COLORS = {
     chatBackground: {
         backgroundColor: 'white',
@@ -107,7 +109,9 @@ const SIZES = {
 }
 
 const FONT_SIZE = {
-    profileName: 28
+    profileName: 28,
+    small: 15,
+    title: 24
 }
 
 const COMPONENTS = {
@@ -139,5 +143,28 @@ const FLEX_CENTERED = {
     alignItems: 'center'
 }
 
+const BUTTON_STYLE = {
+    button: {
+        ...FLEX_CENTERED,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderRadius: 15,
+        width: width * 0.37,
+        marginVertical: '4%',
+        marginHorizontal: '2%'
+    },
+    enabledButton: {
+        backgroundColor: COLORS.lightHighlight,
+        borderColor: 'transparent',
+        color: "white",
 
-export { COLORS, SIZES, TEXT_STYLES, COMPONENTS, FONT_SIZE, FLEX_CENTERED }
+    },
+    disabledButton: {
+        borderColor: COLORS.neutralGrey,
+    },
+}
+
+export { COLORS, SIZES, TEXT_STYLES, COMPONENTS, FONT_SIZE, FLEX_CENTERED, BUTTON_STYLE }
