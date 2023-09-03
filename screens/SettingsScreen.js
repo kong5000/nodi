@@ -12,6 +12,8 @@ import { storage, database } from '../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
 import Interests from './Interests';
 const { width, height } = Dimensions.get('window');
+import { FontAwesome5 } from '@expo/vector-icons';
+
 
 
 const BOTTOM_MARGIN = "7%"
@@ -25,7 +27,7 @@ const SettingsScreen = () => {
     const [lastName, setLastName] = useState(userData.lastName)
     const [occupation, setOccupation] = useState(userData.occupation)
     const [education, setEducation] = useState(userData.education)
-
+    const [intro, setIntro] = useState(userData.intro)
     const pickImage = async (index) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -73,6 +75,7 @@ const SettingsScreen = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    paddingBottom: "20%"
                 }}>
                     <View style={{
                         display: 'flex',
@@ -161,6 +164,7 @@ const SettingsScreen = () => {
                             value="account" >
                         </ToggleButton>
                     </ToggleButton.Row>
+
                     <View style={styles.mainPictureContainer}>
                         <PictureButton
                             image={userData.picture}
@@ -186,6 +190,47 @@ const SettingsScreen = () => {
                             text="View Profile"
                         />
                     </TouchableOpacity>
+                    <StyleText
+                        text="Your Intro"
+                        fontSize={24}
+                        bold
+                        style={{
+                            width: "85%",
+                            marginTop: "7.5%",
+                            marginBottom: "1%"
+                        }}
+                    />
+                    <StyleText
+                        text="Tell us about yourself and what you're up to"
+                        fontSize={15}
+                        style={{
+                            width: "84%",
+                            marginBottom: "2.5%",
+                        }}
+                    />
+                    <TextInput
+                        multiline
+                        activeOutlineColor='black'
+                        style={{
+                            width: "85%",
+                            height: 155,
+                            marginBottom: "7.5%",
+                            fontWeight: '700'
+
+                        }}
+                        outlineStyle={styles.textInputOutline}
+                        mode='outlined'
+                        value={intro}
+                        onChangeText={text => setIntro(text)}
+                    />
+                    <StyleText
+                        text="Your Details"
+                        fontSize={24}
+                        bold
+                        style={{
+                            width: "85%",
+                        }}
+                    />
                     <View style={{
                         marginTop: '5%'
                     }}>
@@ -255,7 +300,53 @@ const SettingsScreen = () => {
                             marginTop: "5%"
                         }}
                     />
-                    <Interests/>
+                    <Interests />
+                    <StyleText
+                        text="Connected Accounts"
+                        fontSize={24}
+                        bold
+                        style={{
+                            width: "85%",
+                            marginTop: "5%",
+                        }}
+                    />
+                    <StyleText
+                        text="Share your instagram account on your profile"
+                        fontSize={15}
+                        style={{
+                            width: "84%",
+                            marginBottom: "2.5%",
+                        }}
+                    />
+                    <TouchableOpacity style={{
+                        ...FLEX_CENTERED,
+                        width: "70%",
+                        backgroundColor: COLORS.mainTheme,
+                        borderRadius: 30,
+                        paddingHorizontal: 15,
+                        paddingVertical: 10,
+                    }}>
+                        <View style={{
+                            ...FLEX_CENTERED,
+                            flexDirection: 'row',
+                        }}>
+                            <FontAwesome5
+                                name="instagram"
+                                size={30}
+                                color="white"
+                                style={{ marginRight: "5%" }}
+                            />
+                            <StyleText
+                                style={{
+                                    ...styles.buttonText,
+                                    color: "white"
+                                }}
+                                fontSize={20}
+                                bold
+                                text="Link Instagram"
+                            />
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
             <Footer />
@@ -268,7 +359,7 @@ export default SettingsScreen
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     buttonText: {
         fontSize: 20
@@ -291,10 +382,11 @@ const styles = StyleSheet.create({
     },
     textInput: {
         color: 'black',
-        minWidth: "75%",
+        minWidth: "85%",
         height: 55,
         backgroundColor: 'white',
-        marginBottom: '4%'
+        marginBottom: '4%',
+        fontWeight: '700'
     },
     textInputOutline: {
         borderColor: COLORS.neutralGrey,
