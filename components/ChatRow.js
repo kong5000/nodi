@@ -4,6 +4,7 @@ import { auth } from '../firebase'
 import { SIZES, COLORS } from '../style'
 import moment from 'moment';
 import useAuth from '../hooks/useAuth';
+import StyleText from './StyleText';
 
 const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
@@ -48,8 +49,17 @@ const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) =>
                 source={{ uri: partnerInfo.profilePicture }} />}
             <View>
                 <Text style={styles.displayName}>{partnerInfo?.displayName}</Text>
-                {conversationDetails.lastAuthor == user.uid && <Text>You:</Text>}
-                <Text>{conversationDetails.lastMessage}</Text>
+                <View style={{
+                    display:
+                        'flex',
+                    flexDirection:
+                        'row'
+                }}>
+                    {conversationDetails.lastAuthor == user.uid && <StyleText text="You: " style={{ color: COLORS.halfGrey }} />}
+                    <StyleText
+                        text={conversationDetails.lastMessage}
+                    />
+                </View>
             </View>
             <Text style={styles.timestamp}>{date}</Text>
         </TouchableOpacity>
@@ -76,8 +86,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 5,
         paddingRight: 5,
-        margin: 10,
-        borderRadius: 10
+        // margin: 10,
+        borderRadius: 10,
     },
     profilePicture: {
         width: SIZES.profilePicture,

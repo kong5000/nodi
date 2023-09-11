@@ -102,7 +102,7 @@ const TEXT_STYLES = {
     },
 }
 const SIZES = {
-    profilePicture: 50,
+    profilePicture: 60,
     iconButton: 35,
     footerHeight: 70,
     headerHeight: 110
