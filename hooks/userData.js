@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
 import { subscribeToUserTrips } from '../services/TripCollectionQueries';
 import { subscribeToConversations } from '../services/ConversationQueries';
-import { set } from 'lodash';
 
 export const UserDataContext = createContext({
     userData: null,
@@ -14,7 +13,9 @@ export const UserDataContext = createContext({
     trips: [],
     setTrips: () => { },
     conversations: [],
-    setConversations: () => { }
+    setConversations: () => { },
+    activeChat: null,
+    setActiveChat: () => {}
 });
 
 export const UserDataProvider = ({ children }) => {
@@ -24,6 +25,7 @@ export const UserDataProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     const [trips, setTrips] = useState([])
     const [conversations, setConversations] = useState([])
+    const [activeChat, setActiveChat] = useState(null)
     const value = { userData, setUserData };
 
     const setData = (data) => {
@@ -107,7 +109,9 @@ export const UserDataProvider = ({ children }) => {
         trips,
         setTrips,
         conversations,
-        setConversations
+        setConversations,
+        activeChat,
+        setActiveChat
     }}>
         {children}
     </UserDataContext.Provider>;

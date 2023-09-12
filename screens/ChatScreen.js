@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
@@ -13,9 +13,19 @@ import { addChatMessage } from '../services/ConversationQueries'
 import { storage } from '../firebase'
 import * as ImagePicker from 'expo-image-picker';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useRoute } from '@react-navigation/core';
+import StyleText from '../components/StyleText'
+import getUserData from '../hooks/userData'
+import Footer from '../components/Footer'
+const { width, height } = Dimensions.get('window');
+import { useNavigation } from '@react-navigation/core'
 
-const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => {
+const ChatScreen = ({ setActivePartner, activePartner }) => {
+    const navigation = useNavigation()
+    const { activeChat } = getUserData()
     const { user } = useAuth()
+    const route = useRoute();
+    const [partner, setPartner] = useState(null)
     const [messages, setMessages] = useState([])
     const [enableLoadEarlier, setEnableLoadEarlier] = useState(false)
     const [menuVisible, setMenuVisible] = useState(false)
@@ -28,8 +38,8 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
     const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
         const initializeMessages = async () => {
-            // let latest = await getMessages(activeConversation.id, user.uid)
-            let latest = await getMessages(activeConversation.id, user.uid)
+            // let latest = await getMessages(activeChat.id, user.uid)
+            let latest = await getMessages(activeChat.id, user.uid)
             if (latest.length >= 15) {
                 setEnableLoadEarlier(true)
             }
@@ -37,9 +47,23 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
         }
         initializeMessages()
     }, [])
+    useEffect(() => {
+        if (activeChat && user) {
+            activeChat.members.forEach(memberId => {
+                if (memberId !== user.uid) {
+                    setPartner(activeChat.memberInfo[memberId])
+                    console.log("Partner Below")
+                    console.log(activeChat.memberInfo[memberId])
+                }
+            })
+        }
+        console.log(activeChat)
+        console.log(user.uid)
+        console.log("ABOVE")
+    }, [activeChat, user])
 
     useLayoutEffect(() => {
-        const messagesRef = collection(database, 'conversations', activeConversation.id, 'messages')
+        const messagesRef = collection(database, 'conversations', activeChat.id, 'messages')
         // Only subcribe to chat messages that were made after opening the chat
         const q = query(messagesRef, where("createdAt", ">", new Date()),
             orderBy('createdAt', 'desc'),
@@ -67,11 +91,11 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
 
     const onSend = useCallback(async (messages = []) => {
         const { text } = messages[0]
-        await addChatMessage(text, null, activeConversation.id, user.uid)
+        await addChatMessage(text, null, activeChat.id, user.uid)
     }, [])
 
     const unMatch = async () => {
-        await deleteConversation(activeConversation.id)
+        await deleteConversation(activeChat.id)
         setActivePartner(null)
     }
 
@@ -98,7 +122,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                 await uploadBytes(storageRef, blob);
 
                 const downloadURL = await getDownloadURL(storageRef);
-                await addChatMessage('', downloadURL, activeConversation.id, user.uid)
+                await addChatMessage('', downloadURL, activeChat.id, user.uid)
 
                 return downloadURL
             }
@@ -109,7 +133,9 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
     }
 
     return (
-        <SafeAreaView style={{ height: "100%" }}>
+
+        <SafeAreaView style={styles.screen}>
+            {/* {partner && <StyleText text={partner.profilePicture} />} */}
             <TouchableOpacity onPress={pickImage}>
                 <Text>UPLOAD IMAGE</Text>
             </TouchableOpacity>
@@ -119,15 +145,17 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                 </Modal>
             </Portal>
             <View style={styles.chatBar}>
-                <View style={styles.partnerDisplay}>
-                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }} onPress={() => {
-                        setActivePartner(null)
-                    }}>
-                        <Ionicons name="arrow-back-outline" size={32} />
-                        <Image style={styles.profilePicture} source={{ uri: activePartner.profilePicture }} />
-                    </TouchableOpacity>
-                    <Text style={styles.displayName}>{activePartner.displayName}</Text>
-                </View>
+                {
+                    partner && <View style={styles.partnerDisplay}>
+                        <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }} onPress={() => {
+                            navigation.goBack()
+                        }}>
+                            <Ionicons name="arrow-back-outline" size={32} />
+                            <Image style={styles.profilePicture} source={{ uri: partner.profilePicture }} />
+                        </TouchableOpacity>
+                        <Text style={styles.displayName}>{partner.displayName}</Text>
+                    </View>
+                }
                 <Menu
                     visible={menuVisible}
                     onDismiss={closeMenu}
@@ -144,7 +172,7 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                     <Menu.Item onPress={() => { }} title="Report" />
                 </Menu>
             </View>
-
+            {/* <View style={{ height: "80%", marginBottom: 2200 }}> */}
             <GiftedChat
                 loadEarlier={enableLoadEarlier}
                 messages={messages}
@@ -153,12 +181,19 @@ const ChatScreen = ({ setActivePartner, activeConversation, activePartner }) => 
                     _id: 1,
                 }}
             />
+            <View style={{ marginVertical: 20 }}></View>
+            {/* </View> */}
+            <Footer />
         </SafeAreaView>
     )
 }
 export default ChatScreen
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        backgroundColor: "white",
+    },
     partnerDisplay: {
         display: 'flex',
         flexDirection: 'row',

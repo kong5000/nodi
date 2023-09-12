@@ -4,6 +4,8 @@ import { AuthProvider } from './hooks/useAuth';
 import { UserDataProvider } from './hooks/userData';
 import { PaperProvider } from 'react-native-paper';
 import StackNavigator from './StackNavigator';
+import { ChatProvider } from './hooks/useChat';
+
 
 export default function App() {
 
@@ -12,7 +14,9 @@ export default function App() {
       <NavigationContainer>
         <AuthProvider>
           <UserDataProvider>
-            <StackNavigator />
+            <ChatProvider>
+              <StackNavigator />
+            </ChatProvider>
           </UserDataProvider>
         </AuthProvider>
       </NavigationContainer>

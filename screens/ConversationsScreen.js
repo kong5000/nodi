@@ -6,13 +6,24 @@ import { View, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import { COLORS } from '../style';
 import { Searchbar } from 'react-native-paper';
 import StyleText from '../components/StyleText';
+import { useNavigation } from '@react-navigation/core'
+import getUserData from '../hooks/userData';
 
 const ConversationScreen = () => {
+    const navigation = useNavigation()
+    const { setActiveChat } = getUserData()
     const [activePartner, setActivePartner] = useState(null)
     const [activeConversation, setActiveConversation] = useState(null)
     const [searchQuery, setSearchQuery] = useState('')
     const onChangeSearch = (textInput) => {
         setSearchQuery(textInput)
+    }
+    const onConversationSelected = (data) => {
+        console.log("AAAAA")
+        console.log(data)
+        console.log(activeConversation)
+        navigation.navigate('Chat', { partner: data, conversation: activeConversation })
+
     }
     return (
         <SafeAreaView style={styles.screen}>
@@ -63,11 +74,11 @@ const ConversationScreen = () => {
                             }
                         }}
                     />
-                    <ConversationList setActivePartner={setActivePartner} setActiveConversation={setActiveConversation} />
-                    {activePartner && <ChatScreen
-                        activeConversation={activeConversation}
-                        activePartner={activePartner}
-                        setActivePartner={setActivePartner} />}
+                    <ConversationList
+                        onConversationSelected={onConversationSelected}
+                        setActivePartner={setActivePartner}
+                        setActiveConversation={setActiveChat}
+                    />
                 </View>
             </ScrollView>
             <Footer />

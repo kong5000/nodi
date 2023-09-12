@@ -1,20 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import ConversationScreen from './screens/ConversationsScreen';
 import useAuth from './hooks/useAuth';
-import ModalScreen from './screens/ModalScreen';
-import MatchScreen from './screens/MatchScreen';
-import UserSearchScreen from './screens/UserSearchScreen';
-import UserSettingsScreen from './screens/UserSettingsScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import ConnectScreen from './screens/ConnectScreen';
-import Connect from './components/Connect';
+import ChatScreen from './screens/ChatScreen';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
     const { user } = useAuth()
+    
     return (
         <Stack.Navigator screenOptions={{
             headerShown: false
@@ -23,12 +19,9 @@ const StackNavigator = () => {
                 <>
                     <Stack.Group>
                         <Stack.Screen name="Home" component={HomeScreen} />
-                        <Stack.Screen name="Match" component={MatchScreen} />
-                        <Stack.Screen name="Modal" component={ModalScreen} />
-                        <Stack.Screen name="Conversations"component={ConversationScreen} />
-                        <Stack.Screen name="Users" component={UserSearchScreen} />
-                        <Stack.Screen name="Connect" component={ConnectScreen}/>
-                        <Stack.Screen name="Settings" component={SettingsScreen}/>
+                        <Stack.Screen name="Conversations" component={ConversationScreen} />
+                        <Stack.Screen name="Chat" component={ChatScreen} />
+                        <Stack.Screen name="Settings" component={SettingsScreen} />
                     </Stack.Group>
                 </>
             ) : (

@@ -6,7 +6,7 @@ import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import StyleText from './StyleText';
 
-const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) => {
+const ChatRow = ({ onConversationSelected,conversationDetails, setActivePartner, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
     const { user } = useAuth()
@@ -38,8 +38,9 @@ const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) =>
     }, [conversationDetails])
 
     const onPress = async () => {
-        setActivePartner(partnerInfo)
         onChatRowPressed(conversationDetails)
+        onConversationSelected(partnerInfo)
+        setActivePartner(partnerInfo)
     }
 
     return (
@@ -48,7 +49,12 @@ const ChatRow = ({ conversationDetails, setActivePartner, onChatRowPressed }) =>
                 style={styles.profilePicture}
                 source={{ uri: partnerInfo.profilePicture }} />}
             <View>
-                <Text style={styles.displayName}>{partnerInfo?.displayName}</Text>
+                <StyleText
+                    semiBold
+                    text={partnerInfo?.displayName}
+                    fontSize={17}
+                    style={{ marginBottom: 5 }}
+                />
                 <View style={{
                     display:
                         'flex',

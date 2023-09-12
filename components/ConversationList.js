@@ -9,7 +9,7 @@ import { database } from '../firebase'
 import getUserData from '../hooks/userData'
 import StyleText from './StyleText'
 
-const ConversationList = ({ setActivePartner, setActiveConversation, activeConversation }) => {
+const ConversationList = ({onConversationSelected, setActivePartner, setActiveConversation, activeConversation }) => {
     const { user } = useAuth()
     const { conversations, setConversations } = getUserData()
     // const [conversations, setConversations] = useState([]);
@@ -31,6 +31,7 @@ const ConversationList = ({ setActivePartner, setActiveConversation, activeConve
                             setActiveConversation={setActiveConversation}
                             conversationDetails={item}
                             setActivePartner={setActivePartner}
+                            onConversationSelected={onConversationSelected}
                         />}
                 /> : <View>
                     <StyleText
