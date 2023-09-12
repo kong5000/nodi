@@ -1,19 +1,9 @@
 import {
-    onSnapshot,
+    Timestamp,
     doc,
-    updateDoc,
-    setDoc,
-    deleteDoc,
-    query,
-    getDocs,
-    where,
-    limit,
-    orderBy,
-    collection,
-    addDoc
-} from 'firebase/firestore'
-import { database } from '../firebase'
-import { Timestamp } from 'firebase/firestore';
+    setDoc
+} from 'firebase/firestore';
+import { database } from '../firebase';
 
 export const addNewRequest = async (sender, receiver, message) => {
     const userIds = [sender.id, receiver.id]

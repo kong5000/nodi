@@ -6,7 +6,7 @@ import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import StyleText from './StyleText';
 
-const ChatRow = ({ onConversationSelected,conversationDetails, setActivePartner, onChatRowPressed }) => {
+const ChatRow = ({  conversationDetails, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
     const { user } = useAuth()
@@ -39,8 +39,6 @@ const ChatRow = ({ onConversationSelected,conversationDetails, setActivePartner,
 
     const onPress = async () => {
         onChatRowPressed(conversationDetails)
-        onConversationSelected(partnerInfo)
-        setActivePartner(partnerInfo)
     }
 
     return (

@@ -7,7 +7,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { database, storage } from '../firebase';
 import getUserData from '../hooks/userData';
-import Interests from '../screens/Interests';
+import Interests from './Interests';
 import { COLORS, FLEX_CENTERED, FONT_SIZE } from '../style';
 import PictureButton from './PictureButton';
 import StyleText from './StyleText';

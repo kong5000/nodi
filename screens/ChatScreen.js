@@ -20,11 +20,10 @@ import Footer from '../components/Footer'
 const { width, height } = Dimensions.get('window');
 import { useNavigation } from '@react-navigation/core'
 
-const ChatScreen = ({ setActivePartner, activePartner }) => {
+const ChatScreen = () => {
     const navigation = useNavigation()
     const { activeChat } = getUserData()
     const { user } = useAuth()
-    const route = useRoute();
     const [partner, setPartner] = useState(null)
     const [messages, setMessages] = useState([])
     const [enableLoadEarlier, setEnableLoadEarlier] = useState(false)
@@ -47,6 +46,7 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
         }
         initializeMessages()
     }, [])
+
     useEffect(() => {
         if (activeChat && user) {
             activeChat.members.forEach(memberId => {
@@ -57,9 +57,6 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
                 }
             })
         }
-        console.log(activeChat)
-        console.log(user.uid)
-        console.log("ABOVE")
     }, [activeChat, user])
 
     useLayoutEffect(() => {
@@ -96,7 +93,6 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
 
     const unMatch = async () => {
         await deleteConversation(activeChat.id)
-        setActivePartner(null)
     }
 
     const pickImage = async (index) => {
@@ -135,7 +131,6 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
     return (
 
         <SafeAreaView style={styles.screen}>
-            {/* {partner && <StyleText text={partner.profilePicture} />} */}
             <TouchableOpacity onPress={pickImage}>
                 <Text>UPLOAD IMAGE</Text>
             </TouchableOpacity>
@@ -172,7 +167,6 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
                     <Menu.Item onPress={() => { }} title="Report" />
                 </Menu>
             </View>
-            {/* <View style={{ height: "80%", marginBottom: 2200 }}> */}
             <GiftedChat
                 loadEarlier={enableLoadEarlier}
                 messages={messages}
@@ -182,7 +176,6 @@ const ChatScreen = ({ setActivePartner, activePartner }) => {
                 }}
             />
             <View style={{ marginVertical: 20 }}></View>
-            {/* </View> */}
             <Footer />
         </SafeAreaView>
     )

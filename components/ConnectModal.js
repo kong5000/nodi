@@ -11,7 +11,7 @@ import { calculateAge } from '../services/Utils';
 import { addNewRequest } from '../services/RequestQueries';
 const { width, height } = Dimensions.get('window');
 
-const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
+const ConnectModal = ({ visible, hideModal, currentProfile }) => {
     const { userData } = getUserData()
     const [text, setText] = useState("")
 
@@ -50,11 +50,6 @@ const ConnectModal = ({ visible, hideModal, currentProfile, imageUri }) => {
                         />
                     </TouchableOpacity>
                 </View>}
-
-                <Image
-                    style={styles.image}
-                    uri={imageUri}
-                />
                 <TextInput
                     activeOutlineColor='black'
                     placeholder='Send a message'

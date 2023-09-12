@@ -1,21 +1,19 @@
-import { View, Text, FlatList, SafeAreaView } from 'react-native'
-import React, { useState, useLayoutEffect } from 'react'
-import ChatRow from './ChatRow'
-import { getConversations } from '../services/ConversationQueries'
-import useAuth from '../hooks/useAuth'
-import Footer from './Footer'
-import { collection, query, orderBy, where, onSnapshot, limit } from 'firebase/firestore'
-import { database } from '../firebase'
+import { useNavigation } from '@react-navigation/core'
+import React from 'react'
+import { FlatList, View } from 'react-native'
 import getUserData from '../hooks/userData'
+import ChatRow from './ChatRow'
 import StyleText from './StyleText'
 
-const ConversationList = ({onConversationSelected, setActivePartner, setActiveConversation, activeConversation }) => {
-    const { user } = useAuth()
-    const { conversations, setConversations } = getUserData()
-    // const [conversations, setConversations] = useState([]);
+const ConversationList = () => {
+    const { setActiveChat } = getUserData()
+
+    const navigation = useNavigation()
+    const { conversations } = getUserData()
 
     const onChatRowPressed = async (conversationDetails) => {
-        setActiveConversation(conversationDetails)
+        setActiveChat(conversationDetails)
+        navigation.navigate('Chat')
     }
 
     return (
@@ -28,10 +26,7 @@ const ConversationList = ({onConversationSelected, setActivePartner, setActiveCo
                     renderItem={({ item }) =>
                         <ChatRow
                             onChatRowPressed={onChatRowPressed}
-                            setActiveConversation={setActiveConversation}
                             conversationDetails={item}
-                            setActivePartner={setActivePartner}
-                            onConversationSelected={onConversationSelected}
                         />}
                 /> : <View>
                     <StyleText

@@ -1,97 +1,120 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
 import React from 'react'
-import { THEMES } from '../style'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
+import NextButton from './NextButton';
 import StyleText from './StyleText'
-const emojiMap = {
-    "Festivals": "🎊",
-    "Walking Tours": "🚶",
-    "Road Trips": "🚗",
-    "Beaches": "🏖️",
-    "Markets": "🧺",
-    "Parks and Nature": "🌳",
-    "Architecture": "🏛️",
-    "Museums and Art": "🖼️",
-    "Hiking": "⛰️",
-    "Biking": "🚲",
-    "Sporting Events": "🏟️",
-    "Concerts": "🎤",
-    "Nightlife": "🍸",
-    "Performing Arts": "🎭",
-    "Vegan Food": "🥬",
-    "Street Food": "🥙",
-    "Fine Dining": "🍽️",
-    "Pubs and Bars": "🍺"
-}
+const { width, height } = Dimensions.get('window');
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import CustomToggleButton from './CustomToggleButton'
+import SettingsButtonsGroup from './SettingsButtonsGroup'
 
-const Interests = ({ interests }) => {
+const thingsToDo = [
+    {
+        text: "Festivals", icon: <MaterialCommunityIcons
+            name="party-popper" size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Road Trips", icon: <MaterialIcons
+            name="drive-eta"
+            size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+
+    },
+    {
+        text: "Beaches", icon: <FontAwesome5
+            name="umbrella-beach"
+            size={20}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Markets", icon: <FontAwesome5
+            name="shopping-basket"
+            size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Nature", icon: <FontAwesome5
+            name="tree"
+            size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Museums", icon: <MaterialIcons
+            name="museum"
+            size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Sports", icon: <FontAwesome5
+            name="basketball-ball"
+            size={24}
+            color={COLORS.mainTheme}
+            style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Concerts", icon: <FontAwesome5
+            name="music"
+            size={24}
+            color={COLORS.mainTheme} style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Nightlife", icon: <FontAwesome5
+            name="cocktail"
+            size={24}
+            color={COLORS.mainTheme} style={{ marginRight: '10%' }}
+        />
+    },
+    {
+        text: "Art", icon: <FontAwesome5
+            name="paint-brush"
+            size={24}
+            color={COLORS.mainTheme} style={{ marginRight: '10%' }}
+        />
+    },
+]
+
+const Interests = () => {
+    const [interests, setInterests] = useState([])
+
     return (
-        <View style={styles.top}>
-            <View style={styles.view}>
-                <ScrollView showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={styles.container}>
-                    {interests && interests.map((interest, index) =>
-                        <View key={index} style={styles.interest}>
-                            <StyleText
-                                style={styles.text}
-                                text={emojiMap[interest] + " " + interest}
-                            />
-                        </View>
-                    )}
-                </ScrollView>
-            </View>
+        <View style={styles.container}>
+            <SettingsButtonsGroup
+                activeButtons={interests}
+                setActiveButtons={setInterests}
+                list={thingsToDo}
+            />
         </View>
-
     )
 }
 
 export default Interests
 
+
 const styles = StyleSheet.create({
-    textContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        borderBottomWidth: 0,
-        borderRightWidth: 1,
-        // width: 80,
-        padding: 10,
-        borderColor: 'grey',
-        // backgroundColor: 'black',
-        height: "100%"
-    },
-    top: {
-        // marginVertical: 15,
-        marginHorizontal: 10
-    },
-    header: {
-        fontSize: 20,
-        // width: 90,
-        // borderColor: 'black',
-        // marginLeft: 10,
-        // color: "white",
-
-    },
-    view: {
-        ...THEMES.shadow,
-        borderRadius: 8,
-        // borderWidth: 2,
-        backgroundColor: "white",
-
-    },
     container: {
-        height: 50,
-        // width: "100%",
-        // // backgroundColor: 'red',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexWrap: 'wrap',
+        width: '82%',
         flexDirection: 'row',
-    },
-    interest: {
-        borderRightWidth: 0.5,
-        borderColor: "grey"
-    },
-    text: {
-        padding: 10,
-        margin: 5,
-        fontSize: 18
     }
-})
+});

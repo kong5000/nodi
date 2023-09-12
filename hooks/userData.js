@@ -4,14 +4,11 @@ import useAuth from './useAuth';
 import { collection, onSnapshot, getDoc, doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
-import { subscribeToUserTrips } from '../services/TripCollectionQueries';
 import { subscribeToConversations } from '../services/ConversationQueries';
 
 export const UserDataContext = createContext({
     userData: null,
     setUserData: () => { },
-    trips: [],
-    setTrips: () => { },
     conversations: [],
     setConversations: () => { },
     activeChat: null,
@@ -23,7 +20,6 @@ export const UserDataProvider = ({ children }) => {
 
     const { user } = useAuth()
     const [userData, setUserData] = useState(null);
-    const [trips, setTrips] = useState([])
     const [conversations, setConversations] = useState([])
     const [activeChat, setActiveChat] = useState(null)
     const value = { userData, setUserData };
@@ -93,12 +89,6 @@ export const UserDataProvider = ({ children }) => {
 
     useEffect(() => {
         if (!user) return;
-        const unsubscribe = subscribeToUserTrips(user.uid, trips, setTrips)
-        return unsubscribe;
-    }, [user])
-
-    useEffect(() => {
-        if (!user) return;
         const unsubscribe = subscribeToConversations(user.uid, setConversations)
         return unsubscribe;
     }, [user])
@@ -106,8 +96,6 @@ export const UserDataProvider = ({ children }) => {
     return <UserDataContext.Provider value={{
         userData,
         setUserData,
-        trips,
-        setTrips,
         conversations,
         setConversations,
         activeChat,
