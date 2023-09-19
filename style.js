@@ -11,8 +11,10 @@ const COLORS = {
     darkContrast: "#1A5465",
     // brightContrast: "#B8EDC2"
     brightContrast: "black",
+    grey: "#F3F3F3",
     neutralGrey: "#C4C4C4",
     neutralBlueGrey: "#EDF2FA",
+    lightBlue: "#cfe1fc",
     lightHighlight: "#dfe8f7",
     halfGrey: 'rgba(0, 0, 0, 0.4)'
 };

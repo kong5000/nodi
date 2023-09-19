@@ -6,7 +6,7 @@ import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { getMessages } from '../services/ConversationQueries'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { SIZES, TEXT_STYLES } from '../style'
+import { BUTTON_STYLE, COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
 import { Menu, Portal, Modal, Button } from 'react-native-paper'
 import { deleteConversation } from '../services/ConversationQueries'
 import { addChatMessage } from '../services/ConversationQueries'
@@ -19,6 +19,9 @@ import getUserData from '../hooks/userData'
 import Footer from '../components/Footer'
 const { width, height } = Dimensions.get('window');
 import { useNavigation } from '@react-navigation/core'
+import { Bubble, Time } from 'react-native-gifted-chat'
+import CustomInputToolbar from '../components/CustomInputToolbar'
+import { color } from 'd3'
 
 const ChatScreen = () => {
     const navigation = useNavigation()
@@ -33,6 +36,8 @@ const ChatScreen = () => {
     const hideModal = () => setVisible(false);
     const openMenu = () => setMenuVisible(true);
     const containerStyle = { backgroundColor: 'white', padding: 20 };
+
+    const isIntroduction = true
 
     const closeMenu = () => setMenuVisible(false);
     useEffect(() => {
@@ -131,9 +136,6 @@ const ChatScreen = () => {
     return (
 
         <SafeAreaView style={styles.screen}>
-            <TouchableOpacity onPress={pickImage}>
-                <Text>UPLOAD IMAGE</Text>
-            </TouchableOpacity>
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <Button onPress={unMatch}>Confirm Unmatch?</Button>
@@ -142,13 +144,23 @@ const ChatScreen = () => {
             <View style={styles.chatBar}>
                 {
                     partner && <View style={styles.partnerDisplay}>
-                        <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }} onPress={() => {
+                        <TouchableOpacity style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }} onPress={() => {
                             navigation.goBack()
                         }}>
-                            <Ionicons name="arrow-back-outline" size={32} />
+                            <Ionicons name="arrow-back-outline" size={32} style={{
+                                marginRight: '5%'
+                            }} />
                             <Image style={styles.profilePicture} source={{ uri: partner.profilePicture }} />
                         </TouchableOpacity>
-                        <Text style={styles.displayName}>{partner.displayName}</Text>
+                        <StyleText
+                            text={partner.displayName}
+                            semiBold
+                            fontSize={24}
+                        />
                     </View>
                 }
                 <Menu
@@ -174,7 +186,74 @@ const ChatScreen = () => {
                 user={{
                     _id: 1,
                 }}
+                renderTime={props => <Time
+                    timeTextStyle={{
+                        right: { color: COLORS.halfGrey },
+                        left: { color: COLORS.halfGrey },
+                    }}
+                    {...props} />}
+                render
+                renderInputToolbar={props => <CustomInputToolbar {...props} />}
+                renderBubble={props => {
+                    return (
+                        <Bubble
+                            {...props}
+                            textStyle={{
+                                right: { color: 'black' },
+                            }}
+                            wrapperStyle={{
+                                right: { backgroundColor: COLORS.lightBlue, },
+                                left: { backgroundColor: COLORS.grey, },
+                            }}
+                        />
+                    )
+                }}
             />
+            <View style={{
+                position: 'absolute',
+                bottom: SIZES.footerHeight, 
+                height: "33%",
+                width: "100%",
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+            }}>
+                <TouchableOpacity >
+                    <View style={{
+                        ...BUTTON_STYLE.button,
+                        backgroundColor: COLORS.mainTheme,
+                        borderWidth: 0,
+                        display: 'flex',
+                        minWidth: "80%",
+                        ...FLEX_CENTERED,
+                    }}>
+                        <StyleText
+                            text="Accept"
+                            fontSize={18}
+                            semiBold
+                            style={{
+                                color: 'white'
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity >
+                    <View style={{
+                        ...BUTTON_STYLE.button,
+                        minWidth: "80%",
+                        ...FLEX_CENTERED,
+                        borderColor: 'red'
+                    }}>
+                        <StyleText
+                            text="Decline"
+                            semiBold
+                            style={{ color: 'red' }}
+                            fontSize={18}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
             <View style={{ marginVertical: 20 }}></View>
             <Footer />
         </SafeAreaView>
@@ -190,14 +269,14 @@ const styles = StyleSheet.create({
     partnerDisplay: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     chatBar: {
         display: 'flex',
         flexDirection: 'row',
-        width: "100%",
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginHorizontal: "4%"
     },
     profilePicture: {
         width: SIZES.profilePicture,
