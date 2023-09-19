@@ -16,6 +16,7 @@ const COLORS = {
     neutralBlueGrey: "#EDF2FA",
     lightBlue: "#cfe1fc",
     lightHighlight: "#dfe8f7",
+    darkBlue: "#4F7BD0",
     halfGrey: 'rgba(0, 0, 0, 0.4)'
 };
 

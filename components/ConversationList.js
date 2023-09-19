@@ -20,7 +20,7 @@ const ConversationList = () => {
         <>
             {conversations.length > 0 ?
                 <FlatList
-                    style={{ width: "85%" }}
+                    style={{ width: "85%", height: "100%" }}
                     data={conversations}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) =>

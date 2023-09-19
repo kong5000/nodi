@@ -14,7 +14,6 @@ const ConversationScreen = () => {
 
     return (
         <SafeAreaView style={styles.screen}>
-            <ScrollView>
                 <View style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -57,7 +56,6 @@ const ConversationScreen = () => {
                     />
                     <ConversationList />
                 </View>
-            </ScrollView>
             <Footer />
         </SafeAreaView>
     )
