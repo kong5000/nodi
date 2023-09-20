@@ -6,19 +6,19 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesome } from '@expo/vector-icons';
 
 import { COLORS, SIZES, TEXT_STYLES } from '../style'
-import { Button, TextInput } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 import CustomButton from '../components/CustomButton';
 const SignupScreen = () => {
     const [step, setStep] = useState(0)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
-    const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
+    const onContinue = () => {
+        // Form validation
+        // Error messages
+        setStep(prev => prev + 1)
+    }
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
@@ -100,9 +100,13 @@ const SignupScreen = () => {
 
             }}>
                 <CustomButton
-                    label={"Next"}
+                    onPress={onContinue}
+                    label={"Continue"}
                 />
             </View>
+            {/* {step == 0 && Hometown and Bio} */}
+            {/* Interests */}
+            {/* Finished ? */}
         </SafeAreaView>
     )
 }
