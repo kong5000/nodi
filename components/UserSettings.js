@@ -9,8 +9,9 @@ import { database, storage } from '../firebase';
 import getUserData from '../hooks/userData';
 import Interests from './Interests';
 import { COLORS, FLEX_CENTERED, FONT_SIZE } from '../style';
-import PictureButton from './PictureButton';
 import StyleText from './StyleText';
+import ProfilePicture from './ProfilePicture'
+
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
 
@@ -25,53 +26,10 @@ const UserSettings = () => {
     const [occupation, setOccupation] = useState(userData.occupation)
     const [education, setEducation] = useState(userData.education)
     const [intro, setIntro] = useState(userData.intro)
-    const pickImage = async (index) => {
-        try {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [4, 4],
-                quality: 0,
-                allowsMultipleSelection: false,
-            });
-            if (!result.canceled) {
-                setImageLoading(true)
-                setProfilePicture(result.uri)
 
-                const uid = userData.id;
-                const filename = `profile_picture_${index + "_" + uid}`;
-                const response = await fetch(result.uri);
-
-                const blob = await response.blob();
-                const storageRef = ref(storage, filename);
-
-                await uploadBytes(storageRef, blob);
-
-                const downloadURL = await getDownloadURL(storageRef);
-
-                const userRef = doc(database, 'users', uid);
-
-                await updateDoc(userRef, {
-                    picture: downloadURL,
-                })
-                setImageLoading(false)
-            }
-        } catch (e) {
-            setImageLoading(false)
-            console.log(e)
-            alert(e)
-        }
-    }
     return (
         <>
-            <View style={styles.mainPictureContainer}>
-                <PictureButton
-                    image={userData.picture}
-                    onPress={pickImage}
-                    index={0}
-                    loading={imageLoading}
-                />
-            </View>
+            <ProfilePicture/>
             <TouchableOpacity style={{
                 ...FLEX_CENTERED,
                 width: "50%",
@@ -291,5 +249,4 @@ const styles = StyleSheet.create({
         borderColor: COLORS.neutralGrey,
         borderRadius: FONT_SIZE.small
     }
-
 })

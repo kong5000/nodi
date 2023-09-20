@@ -21,7 +21,7 @@ const Footer = () => {
                 <Ionicons name="chatbubbles-sharp" size={33} color="white" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-                navigation.navigate('Requests')
+                navigation.navigate('Signup')
             }}>
                 <Ionicons name="paper-plane-outline" size={33} color="white" />
             </TouchableOpacity>

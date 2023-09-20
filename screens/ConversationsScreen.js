@@ -4,7 +4,7 @@ import { Searchbar } from 'react-native-paper';
 import ConversationList from '../components/ConversationList';
 import Footer from '../components/Footer';
 import StyleText from '../components/StyleText';
-import { COLORS } from '../style';
+import { COLORS, SIZES } from '../style';
 
 const ConversationScreen = () => {
     const [searchQuery, setSearchQuery] = useState('')
@@ -23,7 +23,7 @@ const ConversationScreen = () => {
                     <View style={{
                         display: 'flex',
                         width: "80%",
-                        marginBottom: "7%"
+                        marginBottom: SIZES.marginVertical
                     }}>
                         <StyleText
                             bold

@@ -173,9 +173,6 @@ const ParallaxCarousel = ({ items }) => {
                       }}
                     >
                       <Ionicons
-                        style={{
-                          ioniconStrokeWidth: 100
-                        }}
                         name="paper-plane-outline"
                         size={45} color="white"
                       />

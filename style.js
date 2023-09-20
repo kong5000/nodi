@@ -54,6 +54,18 @@ export const THEMES = {
 }
 
 const TEXT_STYLES = {
+    textInput: {
+        color: 'black',
+        minWidth: "85%",
+        height: 55,
+        backgroundColor: 'white',
+        marginBottom: '4%',
+        fontWeight: '700'
+    },
+    textInputOutline: {
+        borderColor: COLORS.neutralGrey,
+        borderRadius: 15
+    },
     standard: {
         fontFamily: 'Montserrat_600SemiBold',
         color: COLORS.brightContrast,
@@ -108,7 +120,8 @@ const SIZES = {
     profilePicture: 60,
     iconButton: 35,
     footerHeight: 70,
-    headerHeight: 110
+    headerHeight: 110,
+    marginVertical: "7%"
 }
 
 const FONT_SIZE = {
