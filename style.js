@@ -67,7 +67,6 @@ const TEXT_STYLES = {
         borderRadius: 15
     },
     standard: {
-        fontFamily: 'Montserrat_600SemiBold',
         color: COLORS.brightContrast,
         fontSize: 20,
     },
@@ -76,7 +75,6 @@ const TEXT_STYLES = {
         fontWeight: 'bold',
         fontSize: 30,
         margin: 20,
-        fontFamily: 'Montserrat_700Bold'
     },
     input: {
         ...THEMES.displayTheme,
@@ -85,7 +83,6 @@ const TEXT_STYLES = {
         padding: 12,
         paddingLeft: 25,
         fontSize: 23,
-        // fontFamily: 'Montserrat_400Regular',
         margin: 10,
     },
     searchBarInput: {
@@ -101,13 +98,11 @@ const TEXT_STYLES = {
         color: "white",
         paddingLeft: 10,
         fontSize: 20,
-        fontFamily: 'Montserrat_400Regular',
     },
     radioLabel: {
         fontWeight: 'bold',
         margin: 10,
         fontSize: 20,
-        fontFamily: 'Montserrat_600SemiBold',
         color: COLORS.brightContrast,
         paddingRight: 50
     },

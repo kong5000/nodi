@@ -12,6 +12,9 @@ const { width, height } = Dimensions.get('window');
 import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style'
 import { TextInput } from 'react-native-paper'
 import CustomButton from '../components/CustomButton';
+import LocationSearch from '../components/LocationSearch';
+import AddLocation from '../components/AddLocation';
+
 const SignupScreen = () => {
     const [step, setStep] = useState(0)
     const [firstName, setFirstName] = useState("")
@@ -174,92 +177,11 @@ const SignupScreen = () => {
                             style={{ marginBottom: "5%" }}
                         />
                     </View>
+                    <LocationSearch
+                        showIcon
+                        placeholder="Search City"
+                    />
 
-                    <View style={{
-                        borderWidth: 1,
-                        borderColor: COLORS.halfGrey,
-                        height: 55,
-                        // minWidth: '80%',
-                        // maxWidth: '80%',
-                        zIndex: 1,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginBottom: "15%",
-                        borderRadius: 10,
-                        padding: 10,
-                    }}>
-                        <Ionicons name="search-outline" size={26} color={COLORS.mainTheme} style={{
-                            zIndex: 1,
-
-                        }} />
-                        <GooglePlacesAutocomplete
-                            // placeholder='Enter your placeholder text here'
-                            placeholder='Search City'
-                            textInputProps={{
-                                placeholderTextColor: COLORS.halfGrey,
-                            
-                            }}
-                            enablePoweredByContainer={false}
-                            // autoFillOnNotFound={true}
-                            styles={{
-                                container: {
-                                    borderColor: 'purple'
-                                },
-                                textInput: {
-                                    // ...TEXT_STYLES.searchBarInput
-                                },
-                                listView: {
-                                    position: 'absolute',
-                                    left: -37,
-                                    width: width * 0.8,
-                                    zIndex: 2,
-                                    top: 60,
-                                    borderWidth: 1,
-
-                                },
-                                row: {
-
-                                },
-                                description: {
-                                    backgroundColor: 'red'
-                                    // ...TEXT_STYLES.searchBarText
-                                },
-                            }}
-                            renderRow={(data, index) =>
-                                <View style={{
-                                }}>
-                                    <StyleText
-                                        text={data.description}
-                                    />
-                                </View>
-                            }
-                            listEmptyComponent={
-                                <TouchableOpacity
-                                    onPress={() => alert("Request location/event to be implemented")}
-                                >
-                                    <Text style={TEXT_STYLES.searchBarText}>Couldn't find it?</Text>
-                                </TouchableOpacity>}
-                            // height={200}
-                            listViewDisplayed={false}
-                            onPress={(data, details = null) => {
-                                // setHideDates(false)
-                                // setLocation(data.description)
-                                // setSearchVisible(false)
-                                // ref.current.setAddressText(data.description)
-                                // updateDestination(data.description)
-                            }}
-                            query={{
-                                key: PLACES_API_KEY,
-                                language: 'en',
-                                types: '(cities)'
-                            }}
-                            onFail={error => console.error(error)}
-                            debounce={100}
-                            fetchDetails={false}
-                        />
-                    </View>
                     <StyleText
                         text="Write your intro"
                         fontSize={FONT_SIZE.title}
@@ -286,7 +208,7 @@ const SignupScreen = () => {
                 </View>
             }
             {step == 2 &&
-                <View>
+                <View style={{ width: "80%", display: 'flex' }}>
                     <TextInput
                         theme={{
                             colors: {
@@ -315,6 +237,7 @@ const SignupScreen = () => {
                         value={education}
                         onChangeText={text => setEducation(text)}
                     />
+                    <AddLocation />
                 </View>
             }
         </SafeAreaView >
