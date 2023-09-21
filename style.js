@@ -89,12 +89,12 @@ const TEXT_STYLES = {
         margin: 10,
     },
     searchBarInput: {
-        ...THEMES.displayTheme,
+        // ...THEMES.displayTheme,
+        borderWidth: 1,
         color: "black",
         padding: 12,
         paddingLeft: 25,
         fontSize: 19,
-        fontFamily: 'Montserrat_400Regular',
         margin: 10,
     },
     searchBarText: {

@@ -5,8 +5,11 @@ import StyleText from '../components/StyleText'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-
-import { COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { PLACES_API_KEY } from "@env"
+import { Dimensions } from 'react-native'
+const { width, height } = Dimensions.get('window');
+import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style'
 import { TextInput } from 'react-native-paper'
 import CustomButton from '../components/CustomButton';
 const SignupScreen = () => {
@@ -17,6 +20,12 @@ const SignupScreen = () => {
     const [intro, setIntro] = useState("")
     const [occupation, setOccupation] = useState("")
     const [education, setEducation] = useState("")
+
+    const stepBack = () => {
+        if (step > 0) {
+            setStep(prev => prev - 1)
+        }
+    }
 
     const onContinue = () => {
         // Form validation
@@ -34,6 +43,33 @@ const SignupScreen = () => {
     };
     return (
         <SafeAreaView style={styles.screen}>
+            {step != 0 && <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '80%',
+                marginBottom: "10%"
+
+            }}>
+                <TouchableOpacity
+                    style={{
+                        borderWidth: 1,
+                        ...FLEX_CENTERED,
+                        height: 50,
+                        width: 50,
+                        borderRadius: 12.5,
+                        borderColor: COLORS.mainTheme
+                    }}
+                    onPress={stepBack}
+                >
+                    <Ionicons name="chevron-back" size={24} color={COLORS.mainTheme} />
+                </TouchableOpacity>
+                <CustomButton
+                    label="Skip"
+                    style={{ paddingHorizontal: 40 }}
+                    onPress={() => setStep(prev => prev + 1)}
+                />
+            </View>}
             {step == 0 &&
                 <View style={{ marginTop: "5%", width: "100%" }}>
                     <StyleText
@@ -109,47 +145,17 @@ const SignupScreen = () => {
                 />
             </View>
             {step == 1 &&
-                <View style={{ width: "100%", display: 'flex', ...FLEX_CENTERED }}>
-                    <View style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: '80%',
-                            marginBottom: "10%"
-
-                        }}>
-                            <TouchableOpacity
-                                style={{
-                                    borderWidth: 1,
-                                    ...FLEX_CENTERED,
-                                    height: 50,
-                                    width: 50,
-                                    borderRadius: 12.5,
-                                    borderColor: COLORS.mainTheme
-                                }}
-                                onPress={() => setStep(0)}
-                            >
-                                <Ionicons name="chevron-back" size={24} color={COLORS.mainTheme} />
-                            </TouchableOpacity>
-                            <CustomButton
-                                label="Skip"
-                                style={{ paddingHorizontal: 40 }}
-                                onPress={() => setStep(prev => prev + 1)}
-                            />
-                        </View>
-                    </View>
+                <View style={{ width: "80%", display: 'flex' }}>
                     <View
                         style={{
-                            width: "80%",
                             display: 'flex',
-                            justifyContent: 'center',
-                            marginBottom: "10%"
+                            // justifyContent: 'center',
+                            marginBottom: "15%"
                         }}
                     >
                         <StyleText
                             bold
-                            text="About"
+                            text="About you"
                             fontSize={34}
                             style={{ marginBottom: 12 }}
                         />
@@ -158,13 +164,114 @@ const SignupScreen = () => {
                             text="Prompt to write about yourself here"
                         />
                     </View>
+                    <View style={{
+                        width: "100%",
+                    }}>
+                        <StyleText
+                            text="What's your hometown?"
+                            fontSize={FONT_SIZE.title}
+                            bold
+                            style={{ marginBottom: "5%" }}
+                        />
+                    </View>
 
+                    <View style={{
+                        borderWidth: 1,
+                        borderColor: COLORS.halfGrey,
+                        height: 55,
+                        // minWidth: '80%',
+                        // maxWidth: '80%',
+                        zIndex: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: "15%",
+                        borderRadius: 10,
+                        padding: 10,
+                    }}>
+                        <Ionicons name="search-outline" size={26} color={COLORS.mainTheme} style={{
+                            zIndex: 1,
+
+                        }} />
+                        <GooglePlacesAutocomplete
+                            // placeholder='Enter your placeholder text here'
+                            placeholder='Search City'
+                            textInputProps={{
+                                placeholderTextColor: COLORS.halfGrey,
+                            
+                            }}
+                            enablePoweredByContainer={false}
+                            // autoFillOnNotFound={true}
+                            styles={{
+                                container: {
+                                    borderColor: 'purple'
+                                },
+                                textInput: {
+                                    // ...TEXT_STYLES.searchBarInput
+                                },
+                                listView: {
+                                    position: 'absolute',
+                                    left: -37,
+                                    width: width * 0.8,
+                                    zIndex: 2,
+                                    top: 60,
+                                    borderWidth: 1,
+
+                                },
+                                row: {
+
+                                },
+                                description: {
+                                    backgroundColor: 'red'
+                                    // ...TEXT_STYLES.searchBarText
+                                },
+                            }}
+                            renderRow={(data, index) =>
+                                <View style={{
+                                }}>
+                                    <StyleText
+                                        text={data.description}
+                                    />
+                                </View>
+                            }
+                            listEmptyComponent={
+                                <TouchableOpacity
+                                    onPress={() => alert("Request location/event to be implemented")}
+                                >
+                                    <Text style={TEXT_STYLES.searchBarText}>Couldn't find it?</Text>
+                                </TouchableOpacity>}
+                            // height={200}
+                            listViewDisplayed={false}
+                            onPress={(data, details = null) => {
+                                // setHideDates(false)
+                                // setLocation(data.description)
+                                // setSearchVisible(false)
+                                // ref.current.setAddressText(data.description)
+                                // updateDestination(data.description)
+                            }}
+                            query={{
+                                key: PLACES_API_KEY,
+                                language: 'en',
+                                types: '(cities)'
+                            }}
+                            onFail={error => console.error(error)}
+                            debounce={100}
+                            fetchDetails={false}
+                        />
+                    </View>
+                    <StyleText
+                        text="Write your intro"
+                        fontSize={FONT_SIZE.title}
+                        bold
+                        style={{ marginBottom: "5%" }}
+                    />
                     <View style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
                         <TextInput
                             multiline
                             activeOutlineColor='black'
                             style={{
-                                width: "80%",
+                                width: "100%",
                                 height: 200,
                                 marginBottom: "7.5%",
                                 fontWeight: '700'
