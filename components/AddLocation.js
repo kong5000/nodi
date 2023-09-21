@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import LocationSearch from './LocationSearch'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { AutocompleteDropdown, AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, View, Text, FlatList, TouchableOpacity } from 'react-native'
+import CustomButton from './CustomButton'
+import { TextInput } from 'react-native-paper'
+import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
+import StyleText from './StyleText'
 const COUNTRIES = [
     { "id": "1", "title": "🇦🇫 Afghanistan" },
     { "id": "2", "title": "🇦🇱 Albania" },
@@ -201,71 +202,77 @@ const COUNTRIES = [
     { "id": "195", "title": "🇿🇲 Zambia" },
     { "id": "196", "title": "🇿🇼 Zimbabwe" }
 ]
-import CustomButton from './CustomButton'
-import StyleText from './StyleText'
 
 const AddLocation = () => {
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [input, setInput] = useState(null);
+    const [data, setData] = useState(null);
+    const [valid, setValid] = useState(false)
+    const filterData = () => {
+        
+        if (input && input != " ") {
+            return COUNTRIES.filter(country => country.title.includes(input)).slice(0, 7)
+        }
+        return null
+    }
+
     useEffect(() => {
-    }, [selectedItem])
+        setData(filterData())
+    }, [input])
+
+    const onChangeText = (text) => {
+        setInput(text)
+    }
+
     return (
-        <View
-        // style={{
-        //     display: 'flex',
-        //     flexDirection: 'row',
-        //     alignItems: 'center'
-        // }}
-        >
-            <AutocompleteDropdownContextProvider>
-                <AutocompleteDropdown
-                    onSelectItem={item => {
-                        item && setSelectedItem(item.title)
-                    }}
-                    rightButtonsContainerStyle={{
-                        right: 8,
-                        height: 30,
-
-                    }}
-                    suggestionsListContainerStyle={{
-                        // minWidth: "100%",
-                        position: 'relative',
-                        right: "10%",
-                        bottom: "145%",
-
-
-                        backgroundColor: 'red'
-                    }}
-                    inputContainerStyle={{
-                        // minWidth: "75%",
-                        // marginRight: "10%",
-                        height: 50,
-                        borderRadius: 10,
-                    }}
-                    showClear={false}
-                    clearOnFocus={true}
-                    closeOnBlur={true}
-                    closeOnSubmit={true}
-                    dataSet={COUNTRIES}
-                    renderItem={(item, text) =>
-                        <View style={{ minWidth: "100%" }}>
-                            <StyleText
-                                style={{
-                                    padding: 10
-                                }}
-                                fontSize={18}
-                                text={item.title}
-                            />
-                        </View>
-                    }
-                />
-            </AutocompleteDropdownContextProvider>
-
+        <View>
             <View style={{
-                height: 50,
-                width: 50
+                display: "flex",
+                flexDirection: 'row',
+                alignItems: 'center',
+       
             }}>
-                <CustomButton label="+" />
+                <TextInput
+                    theme={{
+                        colors: {
+                            onSurfaceVariant: COLORS.halfGrey,
+                        }
+                    }}
+                    label='Country'
+                    activeOutlineColor='black'
+                    mode='outlined'
+                    style={TEXT_STYLES.textInput}
+                    outlineStyle={TEXT_STYLES.textInputOutline}
+                    value={input}
+                    onChangeText={text => setInput(text)}
+                />
+                <TouchableOpacity style={{
+                    height: 50,
+                    width: 50,
+                    backgroundColor: valid ? COLORS.mainTheme : COLORS.halfGrey,
+                    borderRadius: 15,
+                    marginHorizontal: 15,
+                    ...FLEX_CENTERED
+                }}>
+                    <StyleText
+                        style={{ color: 'white' }}
+                        fontSize={27}
+                        text="+"
+                    />
+                </TouchableOpacity>
             </View>
+            <FlatList
+                data={data}
+                renderItem={(item, index) => (
+                    <TouchableOpacity onPress={() => {
+                        setInput(item.item.title)
+                        setValid(true)
+                        setData(null)
+                    }}>
+                        <Text>{item.item.title}</Text>
+                    </TouchableOpacity>
+                )}
+                keyExtractor={item => item.id}
+            />
         </View>
     )
 }

@@ -16,7 +16,7 @@ import LocationSearch from '../components/LocationSearch';
 import AddLocation from '../components/AddLocation';
 
 const SignupScreen = () => {
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(2)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
