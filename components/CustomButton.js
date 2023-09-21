@@ -18,9 +18,9 @@ const CustomButton = ({ onPress, label, style, icon, textColor }) => {
                 display: 'flex',
                 ...style
             }}>
-                <View style={{marginRight: 12}}>
-                    {icon && icon}
-                </View>
+                {icon && <View style={{ marginRight: 12 }}>
+                    {icon}
+                </View>}
                 <StyleText
                     text={label}
                     fontSize={18}

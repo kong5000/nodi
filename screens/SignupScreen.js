@@ -4,8 +4,9 @@ import ProfilePicture from '../components/ProfilePicture'
 import StyleText from '../components/StyleText'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS, SIZES, TEXT_STYLES } from '../style'
+import { COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
 import { TextInput } from 'react-native-paper'
 import CustomButton from '../components/CustomButton';
 const SignupScreen = () => {
@@ -13,6 +14,9 @@ const SignupScreen = () => {
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [intro, setIntro] = useState("")
+    const [occupation, setOccupation] = useState("")
+    const [education, setEducation] = useState("")
 
     const onContinue = () => {
         // Form validation
@@ -104,10 +108,109 @@ const SignupScreen = () => {
                     label={"Continue"}
                 />
             </View>
-            {/* {step == 0 && Hometown and Bio} */}
-            {/* Interests */}
-            {/* Finished ? */}
-        </SafeAreaView>
+            {step == 1 &&
+                <View style={{ width: "100%", display: 'flex', ...FLEX_CENTERED }}>
+                    <View style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: '80%',
+                            marginBottom: "10%"
+
+                        }}>
+                            <TouchableOpacity
+                                style={{
+                                    borderWidth: 1,
+                                    ...FLEX_CENTERED,
+                                    height: 50,
+                                    width: 50,
+                                    borderRadius: 12.5,
+                                    borderColor: COLORS.mainTheme
+                                }}
+                                onPress={() => setStep(0)}
+                            >
+                                <Ionicons name="chevron-back" size={24} color={COLORS.mainTheme} />
+                            </TouchableOpacity>
+                            <CustomButton
+                                label="Skip"
+                                style={{ paddingHorizontal: 40 }}
+                                onPress={() => setStep(prev => prev + 1)}
+                            />
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            width: "80%",
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginBottom: "10%"
+                        }}
+                    >
+                        <StyleText
+                            bold
+                            text="About"
+                            fontSize={34}
+                            style={{ marginBottom: 12 }}
+                        />
+                        <StyleText
+                            fontSize={20}
+                            text="Prompt to write about yourself here"
+                        />
+                    </View>
+
+                    <View style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
+                        <TextInput
+                            multiline
+                            activeOutlineColor='black'
+                            style={{
+                                width: "80%",
+                                height: 200,
+                                marginBottom: "7.5%",
+                                fontWeight: '700'
+
+                            }}
+                            outlineStyle={TEXT_STYLES.textInputOutline}
+                            mode='outlined'
+                            value={intro}
+                            onChangeText={text => setIntro(text)}
+                        />
+                    </View>
+                </View>
+            }
+            {step == 2 &&
+                <View>
+                    <TextInput
+                        theme={{
+                            colors: {
+                                onSurfaceVariant: COLORS.halfGrey,
+                            }
+                        }}
+                        label='Occupation'
+                        activeOutlineColor='black'
+                        mode='outlined'
+                        style={TEXT_STYLES.textInput}
+                        outlineStyle={TEXT_STYLES.textInputOutline}
+                        value={occupation}
+                        onChangeText={text => setOccupation(text)}
+                    />
+                    <TextInput
+                        theme={{
+                            colors: {
+                                onSurfaceVariant: COLORS.halfGrey,
+                            }
+                        }}
+                        label='Education (Institution)'
+                        activeOutlineColor='black'
+                        mode='outlined'
+                        style={TEXT_STYLES.textInput}
+                        outlineStyle={TEXT_STYLES.textInputOutline}
+                        value={education}
+                        onChangeText={text => setEducation(text)}
+                    />
+                </View>
+            }
+        </SafeAreaView >
     )
 }
 
