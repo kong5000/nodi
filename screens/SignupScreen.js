@@ -14,6 +14,7 @@ import { TextInput } from 'react-native-paper'
 import CustomButton from '../components/CustomButton';
 import LocationSearch from '../components/LocationSearch';
 import AddLocation from '../components/AddLocation';
+import CountryFlag from "react-native-country-flag";
 
 const SignupScreen = () => {
     const [step, setStep] = useState(2)
@@ -23,6 +24,7 @@ const SignupScreen = () => {
     const [intro, setIntro] = useState("")
     const [occupation, setOccupation] = useState("")
     const [education, setEducation] = useState("")
+    const [futureLocations, setFutureLocations] = useState([])
 
     const stepBack = () => {
         if (step > 0) {
@@ -237,7 +239,45 @@ const SignupScreen = () => {
                         value={education}
                         onChangeText={text => setEducation(text)}
                     />
-                    <AddLocation />
+                    <AddLocation
+                        onAdd={(newLocation) => {
+                            setFutureLocations(prev => [...prev, newLocation])
+                        }}
+                    />
+                    {futureLocations && futureLocations.map(loc =>
+                        <View style={{
+                            display: 'flex',
+                            ...FLEX_CENTERED,
+                        }}>
+                            <View style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                marginVertical: 10,
+                                width: "100%",
+                                borderWidth: 1,
+                                borderRadius: 15,
+                                borderColor: COLORS.neutralGrey,
+                                padding: 20,
+                                alignItems: 'center',
+                                justifyContent: 'space-between'
+                            }}>
+                                <View style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}>
+                                    <CountryFlag isoCode={loc.iso} size={30}
+                                        style={{ borderRadius: 2, marginRight: 10 }} />
+                                    <StyleText
+                                        fontSize={20}
+                                        text={loc.name} />
+                                </View>
+                                <Ionicons
+                                    name="close-outline" size={30}
+                                    color={COLORS.neutralGrey}
+                                />
+                            </View>
+                        </View>)
+                    }
                 </View>
             }
         </SafeAreaView >

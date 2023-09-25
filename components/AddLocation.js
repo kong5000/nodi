@@ -6,8 +6,10 @@ import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
 import StyleText from './StyleText'
 import CountryFlag from "react-native-country-flag";
 import { COUNTRIES, COUNTRY_NAMES } from '../data'
-const AddLocation = () => {
+
+const AddLocation = ({ onAdd }) => {
     const [input, setInput] = useState(null);
+    const [isoCode, setIsoCode] = useState('')
     const [data, setData] = useState(null);
     const [valid, setValid] = useState(false)
     const filterData = () => {
@@ -20,7 +22,7 @@ const AddLocation = () => {
     const checkCountryInputValid = () => {
         if (COUNTRY_NAMES.includes(input)) {
             setValid(true)
-        }else{
+        } else {
             setValid(false)
         }
     }
@@ -33,7 +35,7 @@ const AddLocation = () => {
 
     useEffect(() => {
         setData(null)
-    }, [valid]) 
+    }, [valid])
 
 
     return (
@@ -68,7 +70,14 @@ const AddLocation = () => {
                     borderRadius: 15,
                     marginHorizontal: 15,
                     ...FLEX_CENTERED
-                }}>
+                }}
+                    onPress={() => {
+                        onAdd({ name: input, iso: isoCode })
+                        setData(null)
+                        setInput('')
+                        setIsoCode('')
+                    }}
+                >
                     <StyleText
                         style={{ color: 'white' }}
                         fontSize={27}
@@ -88,6 +97,7 @@ const AddLocation = () => {
                         }}
                         onPress={() => {
                             setInput(item.item.name)
+                            setIsoCode(item.item.iso)
                             setData(null)
                         }}>
                         <CountryFlag isoCode={item.item.iso} size={30}
