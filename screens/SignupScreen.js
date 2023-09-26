@@ -1,21 +1,17 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import ProfilePicture from '../components/ProfilePicture'
-import StyleText from '../components/StyleText'
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import CountryFlag from "react-native-country-flag";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { PLACES_API_KEY } from "@env"
-import { Dimensions } from 'react-native'
-const { width, height } = Dimensions.get('window');
-import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style'
-import { TextInput } from 'react-native-paper'
+import { TextInput } from 'react-native-paper';
+import AddLocation from '../components/AddLocation';
 import CustomButton from '../components/CustomButton';
 import LocationSearch from '../components/LocationSearch';
-import AddLocation from '../components/AddLocation';
-import CountryFlag from "react-native-country-flag";
-import { COUNTRY_ISO_MAP } from '../data';
+import ProfilePicture from '../components/ProfilePicture';
+import StyleText from '../components/StyleText';
+import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
+import Interests from '../components/Interests';
+const { width, height } = Dimensions.get('window');
 
 const SignupScreen = () => {
     const [step, setStep] = useState(2)
@@ -140,7 +136,7 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
-            <View style={{
+            {step < 6 && <View style={{
                 position: 'absolute',
                 width: '80%',
                 bottom: SIZES.footerHeight
@@ -150,7 +146,7 @@ const SignupScreen = () => {
                     onPress={onContinue}
                     label={"Continue"}
                 />
-            </View>
+            </View>}
             {step == 1 &&
                 <View style={{ width: "80%", display: 'flex' }}>
                     <View
@@ -209,7 +205,7 @@ const SignupScreen = () => {
                         value={occupation}
                         onChangeText={text => setOccupation(text)}
                     />
-                    <View style={{
+                    {/* <View style={{
                         width: "100%",
                         marginTop: "10%"
                     }}>
@@ -233,7 +229,7 @@ const SignupScreen = () => {
                         outlineStyle={TEXT_STYLES.textInputOutline}
                         value={education}
                         onChangeText={text => setEducation(text)}
-                    />
+                    /> */}
                 </View>
             }
             {step == 2 &&
@@ -335,7 +331,6 @@ const SignupScreen = () => {
                             ...FLEX_CENTERED,
                             zIndex: -1
                         }}>
-                            {/* <StyleText text={JSON.stringify(favoritePlaces)}/> */}
                             <View style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -377,9 +372,14 @@ const SignupScreen = () => {
                 step == 4 && <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText
                         text="Write your intro"
-                        fontSize={FONT_SIZE.title}
+                        fontSize={34}
                         bold
                         style={{ marginBottom: "5%" }}
+                    />
+                    <StyleText
+                        text="Prompt for users to write stuff about themselves"
+                        fontSize={22}
+                        style={{ marginBottom: "10%" }}
                     />
                     <View style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
                         <TextInput
@@ -397,6 +397,48 @@ const SignupScreen = () => {
                             value={intro}
                             onChangeText={text => setIntro(text)}
                         />
+                    </View>
+
+                </View>
+            }
+            {
+                step == 5 && <View style={{ width: "80%", display: 'flex' }}>
+                    <StyleText
+                        text="Interests"
+                        fontSize={34}
+                        bold
+                        style={{ marginBottom: "5%" }}
+                    />
+                    <StyleText
+                        text="Prompt user to share activities they enjoy"
+                        fontSize={22}
+                        style={{ marginBottom: "10%" }}
+                    />
+                    <View style={{
+                        minWidth: width
+                    }}>
+                        <Interests />
+                    </View>
+                </View>
+            }
+            {
+                step == 6 && <View style={{
+                    display: 'flex',
+                    height: "75%",
+                    ...FLEX_CENTERED
+                }}>
+                    <StyleText
+                        text="Creating your profile"
+                        bold
+                        fontSize={34}
+                        style={{
+                            flex: 1
+                        }}
+                    />
+                    <View style={{
+                        flex: 1
+                    }}>
+                        <ActivityIndicator size="large" color={COLORS.mainTheme} />
                     </View>
                 </View>
             }

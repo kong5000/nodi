@@ -29,7 +29,7 @@ const UserSettings = () => {
 
     return (
         <>
-            <ProfilePicture/>
+            <ProfilePicture />
             <TouchableOpacity style={{
                 ...FLEX_CENTERED,
                 width: "50%",
@@ -158,7 +158,9 @@ const UserSettings = () => {
                     marginBottom: "5%"
                 }}
             />
-            <Interests />
+            <View >
+                <Interests />
+            </View>
 
             <StyleText
                 text="Connected Accounts"

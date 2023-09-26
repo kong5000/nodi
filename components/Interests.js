@@ -112,9 +112,9 @@ export default Interests
 
 const styles = StyleSheet.create({
     container: {
+        width: "85%",
         display: 'flex',
         flexWrap: 'wrap',
-        width: '82%',
         flexDirection: 'row',
     }
 });
