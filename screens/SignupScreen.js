@@ -26,19 +26,13 @@ const SignupScreen = () => {
     const [occupation, setOccupation] = useState("")
     const [education, setEducation] = useState("")
     const [futureLocations, setFutureLocations] = useState([])
-    const [futureLocationsHasItems, setFutureLocationsHasItems] = useState(false)
+    const [favoritePlaces, setFavoritePlaces] = useState([])
+
     const stepBack = () => {
         if (step > 0) {
             setStep(prev => prev - 1)
         }
     }
-    useEffect(() => {
-        if (futureLocations.length > 0) {
-            setFutureLocationsHasItems(true)
-        } else {
-            setFutureLocationsHasItems(false)
-        }
-    }, [futureLocations])
 
     const onContinue = () => {
         // Form validation
@@ -256,8 +250,6 @@ const SignupScreen = () => {
                         <AddLocation
                             onAdd={(newLocation) => {
                                 if (!futureLocations.find((location => location.name == newLocation.name))) {
-                                    console.log(COUNTRY_ISO_MAP["Afghanistan"])
-
                                     setFutureLocations(prev => [...prev, newLocation])
                                 }
                             }}
@@ -325,24 +317,25 @@ const SignupScreen = () => {
                     <View style={{ marginBottom: "10%" }}>
                         <AddLocation
                             onAdd={(newLocation) => {
-                                if (!futureLocations.find((location => location.name == newLocation.name))) {
-                                    // setFutureLocations(prev => [...prev, {name: newLocation, iso: COUNTRY_ISO_MAP[newLocation]}])
+                                if (!favoritePlaces.find((location => location.name == newLocation.name))) {
+                                    setFavoritePlaces(prev => [...prev, newLocation])
                                 }
                             }}
                         />
                     </View>
-                    {futureLocations.length > 0 && <StyleText
-                        text="Your next destinations: "
+                    {favoritePlaces.length > 0 && <StyleText
+                        text="Your favorite countries to visit: "
                         fontSize={22}
                         style={{ zIndex: -1 }}
 
                     />}
-                    {futureLocations && futureLocations.map(loc =>
+                    {favoritePlaces && favoritePlaces.map(loc =>
                         <View style={{
                             display: 'flex',
                             ...FLEX_CENTERED,
                             zIndex: -1
                         }}>
+                            {/* <StyleText text={JSON.stringify(favoritePlaces)}/> */}
                             <View style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -367,7 +360,7 @@ const SignupScreen = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        setFutureLocations(prev => prev.filter((location) => location.name != loc.name))
+                                        setFavoritePlaces(prev => prev.filter((location) => location.name != loc.name))
                                     }}
                                 >
                                     <Ionicons
