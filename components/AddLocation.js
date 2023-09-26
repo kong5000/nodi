@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-paper'
 import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
 import StyleText from './StyleText'
 import CountryFlag from "react-native-country-flag";
-import { COUNTRIES, COUNTRY_NAMES } from '../data'
+import { COUNTRIES, COUNTRY_NAMES, COUNTRY_ISO_MAP } from '../data'
 
 const AddLocation = ({ onAdd }) => {
     const [input, setInput] = useState(null);
@@ -14,7 +14,7 @@ const AddLocation = ({ onAdd }) => {
     const [valid, setValid] = useState(false)
     const filterData = () => {
         if (input && input != " ") {
-            return COUNTRIES.filter(country => country.name.includes(input)).slice(0, 7)
+            return COUNTRIES.filter(country => country.name.includes(input)).slice(0, 5)
         }
         return null
     }
@@ -28,7 +28,6 @@ const AddLocation = ({ onAdd }) => {
     }
 
     useEffect(() => {
-        console.log(input)
         setData(filterData())
         checkCountryInputValid()
     }, [input])
@@ -44,7 +43,6 @@ const AddLocation = ({ onAdd }) => {
                 display: "flex",
                 flexDirection: 'row',
                 alignItems: 'center',
-
             }}>
                 <TextInput
                     theme={{
@@ -55,7 +53,10 @@ const AddLocation = ({ onAdd }) => {
                     label='Country'
                     activeOutlineColor='black'
                     mode='outlined'
-                    style={TEXT_STYLES.textInput}
+                    style={{
+                        ...TEXT_STYLES.textInput,
+                        flex: 1,
+                    }}
                     outlineStyle={TEXT_STYLES.textInputOutline}
                     value={input}
                     onChangeText={text => {
@@ -63,16 +64,19 @@ const AddLocation = ({ onAdd }) => {
                         setData(filterData())
                     }}
                 />
-                <TouchableOpacity style={{
+                {valid && <TouchableOpacity style={{
                     height: 50,
                     width: 50,
-                    backgroundColor: valid ? COLORS.mainTheme : COLORS.halfGrey,
+                    backgroundColor: valid ? COLORS.mainTheme : COLORS.neutralGrey,
                     borderRadius: 15,
                     marginHorizontal: 15,
-                    ...FLEX_CENTERED
+                    ...FLEX_CENTERED,
+                    marginBottom: 7
                 }}
+                    disabled={!valid}
+
                     onPress={() => {
-                        onAdd({ name: input, iso: isoCode })
+                        onAdd({ name: input, iso: COUNTRY_ISO_MAP[input] })
                         setData(null)
                         setInput('')
                         setIsoCode('')
@@ -83,22 +87,30 @@ const AddLocation = ({ onAdd }) => {
                         fontSize={27}
                         text="+"
                     />
-                </TouchableOpacity>
+                </TouchableOpacity>}
+
             </View>
             <FlatList
+                style={{ position: 'absolute', top: 70, backgroundColor: 'white' }}
                 data={data}
                 renderItem={(item, index) => (
                     <TouchableOpacity
+                        key={index}
                         style={{
+                            minWidth: "100%",
                             display: 'flex',
                             flexDirection: 'row',
-                            padding: 10,
-                            alignItems: 'center'
+                            padding: 20,
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: COLORS.neutralGrey,
                         }}
                         onPress={() => {
-                            setInput(item.item.name)
-                            setIsoCode(item.item.iso)
+                            setInput('')
+                            setIsoCode('')
+                            onAdd({ name: item.item.name, iso: item.item.iso })
                             setData(null)
+
                         }}>
                         <CountryFlag isoCode={item.item.iso} size={30}
                             style={{ borderRadius: 2, marginRight: 10 }} />

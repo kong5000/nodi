@@ -56,7 +56,7 @@ export const THEMES = {
 const TEXT_STYLES = {
     textInput: {
         color: 'black',
-        minWidth: "85%",
+        width: "100%",
         height: 55,
         backgroundColor: 'white',
         marginBottom: '4%',
