@@ -12,7 +12,7 @@ import StyleText from '../components/StyleText';
 import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
 import Interests from '../components/Interests';
 const { width, height } = Dimensions.get('window');
-
+import Footer from '../components/Footer'
 const SignupScreen = () => {
     const [step, setStep] = useState(2)
     const [firstName, setFirstName] = useState("")
@@ -442,6 +442,7 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
+            {step > 5 && <Footer />}
         </SafeAreaView >
     )
 }

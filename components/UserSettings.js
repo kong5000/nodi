@@ -1,4 +1,4 @@
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -11,6 +11,8 @@ import Interests from './Interests';
 import { COLORS, FLEX_CENTERED, FONT_SIZE } from '../style';
 import StyleText from './StyleText';
 import ProfilePicture from './ProfilePicture'
+import AddLocation from './AddLocation';
+import CountryFlag from 'react-native-country-flag';
 
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
@@ -26,6 +28,8 @@ const UserSettings = () => {
     const [occupation, setOccupation] = useState(userData.occupation)
     const [education, setEducation] = useState(userData.education)
     const [intro, setIntro] = useState(userData.intro)
+    const [futureLocations, setFutureLocations] = useState([])
+    const [favoritePlaces, setFavoritePlaces] = useState([])
 
     return (
         <>
@@ -179,6 +183,154 @@ const UserSettings = () => {
                     marginBottom: "2.5%",
                 }}
             />
+
+            <View style={{ marginVertical: "10%", width: "85%" }}>
+                <StyleText
+                    text="Next Stop"
+                    fontSize={FONT_SIZE.title}
+                    bold
+                />
+                <StyleText
+                    text="Prompt for users to add future trips"
+                    fontSize={FONT_SIZE.small}
+                    style={{ marginBottom: "5%" }}
+                />
+                <AddLocation
+                    onAdd={(newLocation) => {
+                        if (!futureLocations.find((location => location.name == newLocation.name))) {
+                            setFutureLocations(prev => [...prev, newLocation])
+                        }
+                    }}
+                />
+                {futureLocations.length > 0 && <StyleText
+                    text="Your next destinations: "
+                    fontSize={FONT_SIZE.small}
+                    style={{ zIndex: -1 }}
+
+                />}
+                {futureLocations && futureLocations.map(loc =>
+                    <View style={{
+                        display: 'flex',
+                        ...FLEX_CENTERED,
+                        zIndex: -1
+                    }}>
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            marginVertical: 10,
+                            width: "100%",
+                            borderWidth: 1,
+                            borderRadius: 15,
+                            borderColor: COLORS.neutralGrey,
+                            padding: 15,
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}>
+                                <CountryFlag isoCode={loc.iso} size={30}
+                                    style={{ borderRadius: 2, marginRight: 10 }} />
+                                <StyleText
+                                    fontSize={20}
+                                    text={loc.name} />
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setFutureLocations(prev => prev.filter((location) => location.name != loc.name))
+                                }}
+                            >
+                                <Ionicons
+                                    name="close-outline" size={30}
+                                    color={COLORS.neutralGrey}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>)
+                }
+            </View>
+            <View style={{ width: "85%", zIndex: -1 }}>
+                <StyleText
+                    text="Favorite Destinations"
+                    fontSize={FONT_SIZE.title}
+                    bold
+                />
+                <StyleText
+                    text="Prompt for users favorite countries"
+                    fontSize={FONT_SIZE.small}
+                    style={{ marginBottom: "5%" }}
+                />
+                <AddLocation
+                    onAdd={(newLocation) => {
+                        if (!favoritePlaces.find((location => location.name == newLocation.name))) {
+                            setFavoritePlaces(prev => [...prev, newLocation])
+                        }
+                    }}
+                />
+                {favoritePlaces.length > 0 && <StyleText
+                    text="Your favorite countries to visit: "
+                    fontSize={FONT_SIZE.small}
+                    style={{ zIndex: -1 }}
+
+                />}
+                {favoritePlaces && favoritePlaces.map(loc =>
+                    <View style={{
+                        display: 'flex',
+                        ...FLEX_CENTERED,
+                        zIndex: -1
+                    }}>
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            marginVertical: 10,
+                            width: "100%",
+                            borderWidth: 1,
+                            borderRadius: 15,
+                            borderColor: COLORS.neutralGrey,
+                            padding: 15,
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}>
+                                <CountryFlag isoCode={loc.iso} size={30}
+                                    style={{ borderRadius: 2, marginRight: 10 }} />
+                                <StyleText
+                                    fontSize={20}
+                                    text={loc.name} />
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setFavoritePlaces(prev => prev.filter((location) => location.name != loc.name))
+                                }}
+                            >
+                                <Ionicons
+                                    name="close-outline" size={30}
+                                    color={COLORS.neutralGrey}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>)
+                }
+            </View>
+            <View style={{
+                width: "85%",
+                marginTop: "10%"
+            }}>
+                <StyleText
+                    text="Link Instagram"
+                    fontSize={FONT_SIZE.title}
+                    bold
+                />
+                <StyleText
+                    text="Prompt for users to share instagram pictures"
+                    fontSize={FONT_SIZE.small}
+                />
+            </View>
+
             <TouchableOpacity style={{
                 ...FLEX_CENTERED,
                 width: "70%",
@@ -186,6 +338,8 @@ const UserSettings = () => {
                 borderRadius: 30,
                 paddingHorizontal: FONT_SIZE.small,
                 paddingVertical: 10,
+                zIndex: -2,
+                marginVertical: "10%"
             }}>
                 <View style={{
                     ...FLEX_CENTERED,

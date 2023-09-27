@@ -82,7 +82,12 @@ const ParallaxCarousel = ({ items }) => {
       })
       setInstagramImages(tempPictures.slice(0, 4))
     }
-    getInstagramMedia()
+    try {
+      getInstagramMedia()
+
+    } catch (err) {
+      console.log(err)
+    }
   }, [])
 
   const handleScroll = (event) => {
@@ -252,6 +257,15 @@ const ParallaxCarousel = ({ items }) => {
                           bold
                           fontSize={22}
                           style={{ marginBottom: "3%" }}
+                        />
+                        <NextDestinations
+                          destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
+                        />
+                        <StyleText
+                          text='Favorite Destinations'
+                          bold
+                          fontSize={22}
+                          style={{ marginTop: "10%", marginBottom: "3%" }}
                         />
                         <NextDestinations
                           destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
