@@ -14,7 +14,22 @@ import {
 } from 'firebase/firestore'
 import { database } from '../firebase'
 
-export const addNewConversation = async (data, userIds) => {
+export const addNewConversation = async (message,author, sender) => {
+
+    const newConversationData = {
+        lastActive: new Date(),
+        lastMesssage: {
+            author: "",
+            message: ""
+        },
+        members: [author.id, sender.id],
+        memberInfo: {
+            [author.id] : author,
+            [sender.id] : sender
+        }
+    }
+    await addNewConversation(newConversationData, [userData.id, likedCard.userInfo.id])
+
     const sortedIds = userIds.sort();
     const documentId = sortedIds.join("");
     const documentRef = doc(database, "conversations", documentId);
@@ -87,7 +102,7 @@ export const addChatMessage = async (text, image, conversationId, authorId) => {
     })
     const messsageId = docRef.id
     let lastMessage = text
-    if(image){
+    if (image) {
         lastMessage = 'sent an image'
     }
     await updateConversationLastMessage(conversationId, authorId, lastMessage, messsageId)

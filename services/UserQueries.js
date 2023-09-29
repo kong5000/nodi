@@ -32,3 +32,13 @@ export const addTripInfo = async (uid, location) => {
             console.error("Error updating document: ", error);
         });
 }
+// const newConversationData = {
+//     lastActive: new Date(),
+//     lastMesssage: {
+//         author: "",
+//         message: ""
+//     },
+//     members: [userData.id, likedCard.userInfo.id],
+//     memberInfo
+// }
+// await addNewConversation(newConversationData, [userData.id, likedCard.userInfo.id])

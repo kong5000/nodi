@@ -9,6 +9,7 @@ import StyleText from './StyleText';
 import { COLORS, FLEX_CENTERED } from '../style';
 import { calculateAge } from '../services/Utils';
 import { addNewRequest } from '../services/RequestQueries';
+import { addNewConversation } from '../services/ConversationQueries';
 const { width, height } = Dimensions.get('window');
 
 const ConnectModal = ({ visible, hideModal, currentProfile }) => {
@@ -78,7 +79,7 @@ const ConnectModal = ({ visible, hideModal, currentProfile }) => {
                     }}
                     onPress={async () => {
                         try {
-                            await addNewRequest(userData, currentProfile, text)
+                            await addNewConversation(text, userData, currentProfile)
                             // Check if person is already match?
                         } catch (err) {
                             console.log(err)
