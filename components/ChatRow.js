@@ -6,7 +6,7 @@ import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import StyleText from './StyleText';
 
-const ChatRow = ({  conversationDetails, onChatRowPressed }) => {
+const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
     const { user } = useAuth()
@@ -37,6 +37,12 @@ const ChatRow = ({  conversationDetails, onChatRowPressed }) => {
         setDate(formatDate(conversationDetails.lastActive.toDate()))
     }, [conversationDetails])
 
+
+    useEffect(() => {
+        console.log("YOUR PARTNER")
+        console.log(partnerInfo)
+
+    }, [partnerInfo])
     const onPress = async () => {
         onChatRowPressed(conversationDetails)
     }
@@ -45,7 +51,7 @@ const ChatRow = ({  conversationDetails, onChatRowPressed }) => {
         <TouchableOpacity style={styles.chatRow} key={conversationDetails.id} onPress={onPress}>
             {partnerInfo && <Image
                 style={styles.profilePicture}
-                source={{ uri: partnerInfo.profilePicture }} />}
+                source={{ uri: partnerInfo.picture }} />}
             <View>
                 <StyleText
                     semiBold

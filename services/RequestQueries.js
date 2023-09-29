@@ -19,10 +19,15 @@ export const addNewRequest = async (sender, receiver, message) => {
     const data = {
         sender: sender.id,
         receiver: receiver.id,
-        message,
+        lastMessage: message,
+        lastAuthor: sender.name,
         resolved: false,
         accepted: false,
-        sentOn: Timestamp.now()
+        lastActive: Timestamp.now(),
+        memberInfo: {
+            [sender.id]: sender,
+            [receiver.id]: receiver,
+        }
     }
     await setDoc(documentRef, data)
 }
@@ -32,7 +37,7 @@ export const subscribeToRequests = (uid, setRequests) => {
     const q = query(requestRef,
         where('receiver', '==', uid),
         where('resolved', '==', false),
-        orderBy('sentOn', 'desc'),
+        orderBy('lastActive', 'desc'),
         limit(30))
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -40,6 +45,9 @@ export const subscribeToRequests = (uid, setRequests) => {
             if (change.type === 'modified') {
                 const requestData = change.doc.data()
                 setRequests(prev => prev.map(request => {
+                    if (request.id == change.doc.id) {
+                        request = requestData
+                    }
                     return requestData
                 }))
             }

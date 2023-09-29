@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
 import getUserData from '../hooks/userData'
 import ChatRow from './ChatRow'
@@ -9,8 +9,7 @@ const ConversationList = ({ mode }) => {
     const { setActiveChat } = getUserData()
 
     const navigation = useNavigation()
-    const { conversations } = getUserData()
-    const { requests } = getUserData()
+    const { conversations, requests } = getUserData()
 
     const onChatRowPressed = async (conversationDetails) => {
         setActiveChat(conversationDetails)
@@ -20,6 +19,14 @@ const ConversationList = ({ mode }) => {
     if (mode == "requests") {
         items = requests
     }
+
+    useEffect(() => {
+        if(mode == "requests"){
+            console.log("GET YOUR REQUESTS")
+            console.log(items)
+
+        }
+    },[items])
     return (
         <>
             {items.length > 0 ?
