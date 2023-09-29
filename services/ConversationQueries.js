@@ -14,26 +14,26 @@ import {
 } from 'firebase/firestore'
 import { database } from '../firebase'
 
-export const addNewConversation = async (message,author, sender) => {
-
+export const addNewConversation = async (message, sender, receiver) => {
     const newConversationData = {
+        accepted: false,
+        resolved: false,
         lastActive: new Date(),
-        lastMesssage: {
-            author: "",
-            message: ""
-        },
-        members: [author.id, sender.id],
+        lastAuthor: sender.name,
+        lastMessage: message,
+        sender: sender.id,
+        receiver: receiver.id,
+        members: [sender.id, receiver.id],
         memberInfo: {
-            [author.id] : author,
-            [sender.id] : sender
+            [sender.id]: sender,
+            [receiver.id]: receiver
         }
     }
-    await addNewConversation(newConversationData, [userData.id, likedCard.userInfo.id])
-
+    const userIds = [sender.id, receiver.id]
     const sortedIds = userIds.sort();
     const documentId = sortedIds.join("");
     const documentRef = doc(database, "conversations", documentId);
-    await setDoc(documentRef, data)
+    await setDoc(documentRef, newConversationData)
 }
 
 export const getConversations = async (uid) => {
@@ -100,21 +100,21 @@ export const addChatMessage = async (text, image, conversationId, authorId) => {
         author: authorId,
         createdAt: new Date()
     })
-    const messsageId = docRef.id
+    const messageId = docRef.id
     let lastMessage = text
     if (image) {
         lastMessage = 'sent an image'
     }
-    await updateConversationLastMessage(conversationId, authorId, lastMessage, messsageId)
+    await updateConversationLastMessage(conversationId, authorId, lastMessage, messageId)
 }
 
-export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messsageId) => {
+export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messageId) => {
     const documentRef = doc(database, 'conversations', conversationId);
     await updateDoc(documentRef, {
         lastMessage,
         lastAuthor: authorId,
         lastActive: new Date(),
-        lastMessageId: messsageId
+        lastMessageId: messageId
     })
 }
 
@@ -122,6 +122,7 @@ export const subscribeToConversations = (uid, setConversations) => {
     const conversationRef = collection(database, 'conversations')
     const q = query(conversationRef,
         where('members', 'array-contains', uid),
+        where('accepted', '==', true),
         orderBy('lastActive', 'desc'),
         limit(20))
 

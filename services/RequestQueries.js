@@ -33,7 +33,7 @@ export const addNewRequest = async (sender, receiver, message) => {
 }
 
 export const subscribeToRequests = (uid, setRequests) => {
-    const requestRef = collection(database, 'requests')
+    const requestRef = collection(database, 'conversations')
     const q = query(requestRef,
         where('receiver', '==', uid),
         where('resolved', '==', false),
