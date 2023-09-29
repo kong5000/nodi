@@ -205,12 +205,12 @@ const SignupScreen = () => {
                         value={occupation}
                         onChangeText={text => setOccupation(text)}
                     />
-                    {/* <View style={{
+                    <View style={{
                         width: "100%",
                         marginTop: "10%"
                     }}>
                         <StyleText
-                            text="Where did you study?"
+                            text="Education or Training"
                             fontSize={FONT_SIZE.title}
                             bold
                             style={{ marginBottom: "5%" }}
@@ -229,7 +229,7 @@ const SignupScreen = () => {
                         outlineStyle={TEXT_STYLES.textInputOutline}
                         value={education}
                         onChangeText={text => setEducation(text)}
-                    /> */}
+                    />
                 </View>
             }
             {step == 2 &&

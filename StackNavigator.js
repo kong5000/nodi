@@ -7,6 +7,7 @@ import useAuth from './hooks/useAuth';
 import SettingsScreen from './screens/SettingsScreen';
 import ChatScreen from './screens/ChatScreen';
 import SignupScreen from './screens/SignupScreen';
+import RequestsScreen from './screens/RequestsScreen';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -22,6 +23,7 @@ const StackNavigator = () => {
                         <Stack.Screen name="Signup" component={SignupScreen}/>
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Conversations" component={ConversationScreen} />
+                        <Stack.Screen name="Requests" component={RequestsScreen} />
                         <Stack.Screen name="Chat" component={ChatScreen} />
                         <Stack.Screen name="Settings" component={SettingsScreen} />
                     </Stack.Group>

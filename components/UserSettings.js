@@ -186,7 +186,7 @@ const UserSettings = () => {
 
             <View style={{ marginVertical: "10%", width: "85%" }}>
                 <StyleText
-                    text="Next Stop"
+                    text="Going To"
                     fontSize={FONT_SIZE.title}
                     bold
                 />

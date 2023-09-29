@@ -77,8 +77,6 @@ const ConnectModal = ({ visible, hideModal, currentProfile }) => {
                         ...FLEX_CENTERED
                     }}
                     onPress={async () => {
-                        console.log(userData.id)
-                        console.log(currentProfile.id)
                         try {
                             await addNewRequest(userData, currentProfile, text)
                             // Check if person is already match?

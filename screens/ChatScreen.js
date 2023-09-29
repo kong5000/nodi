@@ -57,8 +57,6 @@ const ChatScreen = () => {
             activeChat.members.forEach(memberId => {
                 if (memberId !== user.uid) {
                     setPartner(activeChat.memberInfo[memberId])
-                    console.log("Partner Below")
-                    console.log(activeChat.memberInfo[memberId])
                 }
             })
         }

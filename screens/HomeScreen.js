@@ -29,7 +29,6 @@ const HomeScreen = () => {
 
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
-            console.log(location)
         })();
     }, []);
 

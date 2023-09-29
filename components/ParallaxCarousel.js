@@ -69,26 +69,26 @@ const ParallaxCarousel = ({ items }) => {
     setCurrentProfile(items[0])
   }, [items])
 
-  useEffect(() => {
-    const getInstagramMedia = async () => {
-      const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
+  // useEffect(() => {
+  //   const getInstagramMedia = async () => {
+  //     const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
 
-      setInstagramHandle(graphResponse.data.data[0].username)
-      let tempPictures = []
-      graphResponse.data.data.forEach(mediaObject => {
-        if (mediaObject.media_type != "VIDEO") {
-          tempPictures.push(mediaObject)
-        }
-      })
-      setInstagramImages(tempPictures.slice(0, 4))
-    }
-    try {
-      getInstagramMedia()
+  //     setInstagramHandle(graphResponse.data.data[0].username)
+  //     let tempPictures = []
+  //     graphResponse.data.data.forEach(mediaObject => {
+  //       if (mediaObject.media_type != "VIDEO") {
+  //         tempPictures.push(mediaObject)
+  //       }
+  //     })
+  //     setInstagramImages(tempPictures.slice(0, 4))
+  //   }
+  //   try {
+  //     getInstagramMedia()
 
-    } catch (err) {
-      console.log(err)
-    }
-  }, [])
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }, [])
 
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
@@ -253,7 +253,7 @@ const ParallaxCarousel = ({ items }) => {
                         }}
                       >
                         <StyleText
-                          text='Next Stop'
+                          text='Going To'
                           bold
                           fontSize={22}
                           style={{ marginBottom: "3%" }}

@@ -5,14 +5,17 @@ import { collection, onSnapshot, getDoc, doc, setDoc } from 'firebase/firestore'
 import { useNavigation } from '@react-navigation/core'
 import { Timestamp } from 'firebase/firestore';
 import { subscribeToConversations } from '../services/ConversationQueries';
+import { subscribeToRequests } from '../services/RequestQueries';
 
 export const UserDataContext = createContext({
     userData: null,
     setUserData: () => { },
     conversations: [],
     setConversations: () => { },
+    requests: [],
+    setRequests: () => { },
     activeChat: null,
-    setActiveChat: () => {}
+    setActiveChat: () => { }
 });
 
 export const UserDataProvider = ({ children }) => {
@@ -21,6 +24,7 @@ export const UserDataProvider = ({ children }) => {
     const { user } = useAuth()
     const [userData, setUserData] = useState(null);
     const [conversations, setConversations] = useState([])
+    const [requests, setRequests] = useState([])
     const [activeChat, setActiveChat] = useState(null)
     const value = { userData, setUserData };
 
@@ -93,11 +97,21 @@ export const UserDataProvider = ({ children }) => {
         return unsubscribe;
     }, [user])
 
+
+    useEffect(() => {
+        if (!user) return;
+        const unsubscribe = subscribeToRequests(user.uid, setRequests)
+        return unsubscribe;
+    }, [user])
+
+
     return <UserDataContext.Provider value={{
         userData,
         setUserData,
         conversations,
         setConversations,
+        requests,
+        setRequests,
         activeChat,
         setActiveChat
     }}>

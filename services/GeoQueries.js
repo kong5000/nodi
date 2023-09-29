@@ -8,13 +8,11 @@ import * as geofire from 'geofire-common'
 // Add the hash and the lat/lng to the document. We will use the hash
 // for queries and the lat/lng for distance comparisons.
 export const addGeoHash = async (data, userIds) => {
-    console.log("GEO HASH")
     try {
         // Compute the GeoHash for a lat/lng point
         const lat = 37.71766417911356;
         const lng = -122.40123808477317;
         const hash = geofire.geohashForLocation([lat, lng]);
-        console.log(hash)
         const locData = {
             location: 'San Francisco CA',
             geohash: hash,
@@ -59,8 +57,6 @@ export const radiusQuery = async (lastLocation) => {
     const matchingDocs = [];
     for (const snap of snapshots) {
         for (const doc of snap.docs) {
-            console.log(doc.data())
-
             const lastLocation = doc.get('lastLocation')
             if (lastLocation) {
                 const lat = lastLocation.latitude

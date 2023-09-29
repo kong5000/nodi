@@ -5,23 +5,27 @@ import getUserData from '../hooks/userData'
 import ChatRow from './ChatRow'
 import StyleText from './StyleText'
 
-const ConversationList = () => {
+const ConversationList = ({ mode }) => {
     const { setActiveChat } = getUserData()
 
     const navigation = useNavigation()
     const { conversations } = getUserData()
+    const { requests } = getUserData()
 
     const onChatRowPressed = async (conversationDetails) => {
         setActiveChat(conversationDetails)
         navigation.navigate('Chat')
     }
-
+    let items = conversations
+    if (mode == "requests") {
+        items = requests
+    }
     return (
         <>
-            {conversations.length > 0 ?
+            {items.length > 0 ?
                 <FlatList
                     style={{ width: "85%", height: "100%" }}
-                    data={conversations}
+                    data={items}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) =>
                         <ChatRow
