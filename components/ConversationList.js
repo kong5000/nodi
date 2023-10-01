@@ -20,13 +20,6 @@ const ConversationList = ({ mode }) => {
         items = requests
     }
 
-    useEffect(() => {
-        if(mode == "requests"){
-            console.log("GET YOUR REQUESTS")
-            console.log(items)
-
-        }
-    },[items])
     return (
         <>
             {items.length > 0 ?

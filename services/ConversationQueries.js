@@ -34,6 +34,20 @@ export const addNewConversation = async (message, sender, receiver) => {
     const documentId = sortedIds.join("");
     const documentRef = doc(database, "conversations", documentId);
     await setDoc(documentRef, newConversationData)
+    try {
+        await addChatMessage(message, null, documentId, sender.id)
+    } catch (err) {
+        console.log(err)
+    }
+}
+export const acceptConversationRequest = async (conversationId) => {
+    const conversationRef = doc(database, 'conversations', conversationId);
+    await updateDoc(conversationRef, { accepted: true, resolved: true })
+}
+export const declineConversationRequest = async (conversationId) => {
+    // @todo implement
+    const conversationRef = doc(database, 'conversations', conversationId);
+    await updateDoc(conversationRef, { accepted: false, resolved: true })
 }
 
 export const getConversations = async (uid) => {
@@ -124,17 +138,16 @@ export const subscribeToConversations = (uid, setConversations) => {
         where('members', 'array-contains', uid),
         where('accepted', '==', true),
         orderBy('lastActive', 'desc'),
-        limit(20))
+    )
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
             if (change.type === 'modified') {
+                console.log("HELLO MODIFIED")
                 const conversationData = change.doc.data()
                 setConversations(prev => prev.map(conv => {
                     if (conv.id == change.doc.id) {
-                        conv.lastMessage = conversationData.lastMessage
-                        conv.lastAuthor = conversationData.lastAuthor
-                        conv.lastActive = conversationData.lastActive
+                        return conversationData
                     }
                     return conv
                 }))

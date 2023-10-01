@@ -37,12 +37,7 @@ const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
         setDate(formatDate(conversationDetails.lastActive.toDate()))
     }, [conversationDetails])
 
-
-    useEffect(() => {
-        console.log("YOUR PARTNER")
-        console.log(partnerInfo)
-
-    }, [partnerInfo])
+ 
     const onPress = async () => {
         onChatRowPressed(conversationDetails)
     }

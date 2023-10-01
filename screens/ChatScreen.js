@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Dimensions } from 'react-native'
-import { where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
+import {  doc, where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
-import { getMessages } from '../services/ConversationQueries'
+import { acceptConversationRequest, declineConversationRequest, getMessages } from '../services/ConversationQueries'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BUTTON_STYLE, COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
 import { Menu, Portal, Modal, Button } from 'react-native-paper'
@@ -21,11 +21,10 @@ const { width, height } = Dimensions.get('window');
 import { useNavigation } from '@react-navigation/core'
 import { Bubble, Time } from 'react-native-gifted-chat'
 import CustomInputToolbar from '../components/CustomInputToolbar'
-import { color } from 'd3'
 
 const ChatScreen = () => {
     const navigation = useNavigation()
-    const { activeChat } = getUserData()
+    const { activeChat, setActiveChat } = getUserData()
     const { user } = useAuth()
     const [partner, setPartner] = useState(null)
     const [messages, setMessages] = useState([])
@@ -37,17 +36,36 @@ const ChatScreen = () => {
     const openMenu = () => setMenuVisible(true);
     const containerStyle = { backgroundColor: 'white', padding: 20 };
 
-    const isIntroduction = true
-
     const closeMenu = () => setMenuVisible(false);
+
+    const acceptRequest = async () => {
+        try {
+            await acceptConversationRequest(activeChat.id)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const declineRequest = async () =>{
+        try{
+            await declineConversationRequest(activeChat.id)
+        }catch(err){
+            // @todo error handling
+        }
+    }
+
     useEffect(() => {
         const initializeMessages = async () => {
-            // let latest = await getMessages(activeChat.id, user.uid)
-            let latest = await getMessages(activeChat.id, user.uid)
-            if (latest.length >= 15) {
-                setEnableLoadEarlier(true)
+            try {
+                let latest = await getMessages(activeChat.id, user.uid)
+                if (latest.length >= 15) {
+                    setEnableLoadEarlier(true)
+                }
+                setMessages(latest)
+            } catch (err) {
+                // @todo, handle messsage error
             }
-            setMessages(latest)
+
         }
         initializeMessages()
     }, [])
@@ -89,9 +107,29 @@ const ChatScreen = () => {
         return unsubscribe;
     }, [])
 
+    useLayoutEffect(() => {
+        const conversationRef = doc(database, 'conversations', activeChat.id);
+
+        const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
+            if (docSnapshot.exists()) {
+                // The document exists, and you can access its data
+                const data = docSnapshot.data();
+                setActiveChat({...data, id: activeChat.id})
+            } else {
+                // @todo handle
+                // The document does not exist
+                console.log('Document does not exist');
+            }
+        })
+
+        return unsubscribe;
+    }, [])
+
     const onSend = useCallback(async (messages = []) => {
-        const { text } = messages[0]
-        await addChatMessage(text, null, activeChat.id, user.uid)
+        if(activeChat.accepted){
+            const { text } = messages[0]
+            await addChatMessage(text, null, activeChat.id, user.uid)
+        }
     }, [])
 
     const unMatch = async () => {
@@ -178,6 +216,7 @@ const ChatScreen = () => {
                 </Menu>
             </View>
             <GiftedChat
+                inverted={false}
                 loadEarlier={enableLoadEarlier}
                 messages={messages}
                 onSend={messages => onSend(messages)}
@@ -207,9 +246,9 @@ const ChatScreen = () => {
                     )
                 }}
             />
-            <View style={{
+            {!activeChat.accepted && <View style={{
                 position: 'absolute',
-                bottom: SIZES.footerHeight, 
+                bottom: SIZES.footerHeight,
                 height: "33%",
                 width: "100%",
                 display: 'flex',
@@ -217,7 +256,9 @@ const ChatScreen = () => {
                 alignItems: 'center',
                 backgroundColor: 'white',
             }}>
-                <TouchableOpacity >
+                <TouchableOpacity
+                    onPress={() => acceptRequest()}
+                >
                     <View style={{
                         ...BUTTON_STYLE.button,
                         backgroundColor: COLORS.mainTheme,
@@ -236,7 +277,9 @@ const ChatScreen = () => {
                         />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity 
+                    onPress={declineRequest}
+                >
                     <View style={{
                         ...BUTTON_STYLE.button,
                         minWidth: "80%",
@@ -252,6 +295,8 @@ const ChatScreen = () => {
                     </View>
                 </TouchableOpacity>
             </View>
+            }
+
             <View style={{ marginVertical: 20 }}></View>
             <Footer />
         </SafeAreaView>

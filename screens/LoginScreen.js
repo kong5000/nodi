@@ -19,7 +19,18 @@ const LoginScreen = () => {
     const testLogin = () => {
         setEmail('a@a.com')
         setPassword('password')
+        handleLogin()
+
     }
+    const testLogin2 = () => {
+        setEmail('b@b.com')
+        setPassword('password')
+    }
+    useEffect(() => {
+        if(password == "password"){
+            handleLogin()
+        }
+    }, [email, password])
     useEffect(() => {
         if (userData) {
             setCreatingAccount(false)
@@ -103,6 +114,12 @@ const LoginScreen = () => {
                     // handleLogin()
                 }}>
                     <Text>DEBUG LOGIN</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    testLogin2()
+                    // handleLogin()
+                }}>
+                    <Text>DEBUG LOGIN 2</Text>
                 </TouchableOpacity>
             {/* </ImageBackground> */}
 

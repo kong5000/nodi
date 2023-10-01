@@ -10,6 +10,7 @@ import {
     where
 } from 'firebase/firestore';
 import { database } from '../firebase';
+import { addChatMessage } from './ConversationQueries';
 
 export const addNewRequest = async (sender, receiver, message) => {
     const userIds = [sender.id, receiver.id]
@@ -44,6 +45,14 @@ export const subscribeToRequests = (uid, setRequests) => {
         querySnapshot.docChanges().forEach((change) => {
             if (change.type === 'modified') {
                 const requestData = change.doc.data()
+                if(requestData.resolved){
+                    setRequests(prev => prev.filter(request => {
+                        if (request.id == change.doc.id) {
+                            false
+                        }
+                        return true
+                    }))
+                }
                 setRequests(prev => prev.map(request => {
                     if (request.id == change.doc.id) {
                         request = requestData
