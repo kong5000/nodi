@@ -8,7 +8,7 @@ import getUserData from '../hooks/userData';
 import PictureButton from './PictureButton';
 import { SIZES } from '../style';
 
-const ProfilePicture = () => {
+const ProfilePicture = ({setProfilePicture}) => {
     const { userData } = getUserData()
     const [imageLoading, setImageLoading] = useState(false)
 
@@ -40,7 +40,7 @@ const ProfilePicture = () => {
                 await updateDoc(userRef, {
                     picture: downloadURL,
                 })
-
+                setProfilePicture(downloadURL)
                 setImageLoading(false)
             }
         } catch (e) {

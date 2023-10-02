@@ -93,9 +93,7 @@ const thingsToDo = [
     },
 ]
 
-const Interests = () => {
-    const [interests, setInterests] = useState([])
-
+const Interests = ({interests, setInterests}) => {
     return (
         <View style={styles.container}>
             <SettingsButtonsGroup

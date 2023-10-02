@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import CountryFlag from "react-native-country-flag";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { TextInput } from 'react-native-paper';
+import { TextInput, HelperText } from 'react-native-paper';
 import AddLocation from '../components/AddLocation';
 import CustomButton from '../components/CustomButton';
 import LocationSearch from '../components/LocationSearch';
@@ -16,29 +16,77 @@ import Footer from '../components/Footer'
 
 const SignupScreen = () => {
     const [step, setStep] = useState(0)
+
+    // Step 0
+
+    const [profilePicture, setProfilePicture] = useState("")
+    const [profilePictureError, setProfilePictureError] = useState("")
+
+    const updatePicture = pictureUrl => {
+        setProfilePictureError(false)
+        setProfilePicture(pictureUrl)
+    }
+
     const [firstName, setFirstName] = useState("")
+    const [firstNameError, setFirstNameError] = useState(false)
     const [lastName, setLastName] = useState("")
+    const [lastNameError, setLastNameError] = useState(false)
+    const [date, setDate] = useState("")
+    const [dateError, setDateError] = useState(false)
+
+    // Step 1
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [intro, setIntro] = useState("")
     const [occupation, setOccupation] = useState("")
     const [education, setEducation] = useState("")
     const [futureLocations, setFutureLocations] = useState([])
     const [favoritePlaces, setFavoritePlaces] = useState([])
-    const [profilePicture, setProfilePicture] = useState("")
 
+    const [location, setLocation] = useState("")
+    const [interests, setInterests] = useState("")
 
     useEffect(() => {
-        console.log("profilePicture",profilePicture)
-        console.log("favoritePlaces",favoritePlaces)
-        console.log("futureLocations",futureLocations)
-        console.log("profilePicture",profilePicture)
-        console.log("occupation",occupation)
-        console.log("intro",intro)
-        console.log("lastName",lastName)
-        console.log("firstName",firstName)
+        console.log("profilePicture", profilePicture)
+        console.log("favoritePlaces", favoritePlaces)
+        console.log("futureLocations", futureLocations)
+        console.log("profilePicture", profilePicture)
+        console.log("occupation", occupation)
+        console.log("intro", intro)
+        console.log("lastName", lastName)
+        console.log("firstName", firstName)
+        console.log("location", location)
+        console.log("interests", interests)
+        console.log("date", date)
 
-    }, [profilePicture, favoritePlaces,futureLocations,education,occupation,intro,lastName,
-    firstName])
+    }, [profilePicture, favoritePlaces, futureLocations, education, occupation, intro, lastName,
+        firstName, location, interests, date])
+
+
+    const hasInputErrors = () => {
+        console.log(step)
+        let hasErrors = false
+        if (step == 0) {
+            console.log(!firstName)
+            if (!firstName) {
+                setFirstNameError(true)
+                hasErrors = true
+            }
+            if (!lastName) {
+                setLastNameError(true)
+                hasErrors = true
+            }
+            if (!date) {
+                setDateError(true)
+                hasErrors = true
+            }
+            if (!profilePicture) {
+                setProfilePictureError(true)
+                hasErrors = true
+            }
+        }
+        return hasErrors
+    }
+
 
     const stepBack = () => {
         if (step > 0) {
@@ -49,16 +97,21 @@ const SignupScreen = () => {
     const onContinue = () => {
         // Form validation
         // Error messages
-        setStep(prev => prev + 1)
+        if (!hasInputErrors()) {
+            setStep(prev => prev + 1)
+        }
     }
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
+    const showDatePicker = () => {
+        setDatePickerVisibility(true)
+    }
 
     const handleConfirm = (date) => {
-        console.warn("A date has been picked: ", date);
-        console.log(date)
+        setDate(date)
+        setDateError(false)
         hideDatePicker();
     };
     return (
@@ -101,8 +154,24 @@ const SignupScreen = () => {
                             marginHorizontal: "10%"
                         }}
                     />
-                    <ProfilePicture setProfilePicture={setProfilePicture} />
-
+                    <View style={{
+                        ...FLEX_CENTERED
+                    }}>
+                        <ProfilePicture
+                            setProfilePicture={updatePicture}
+                        />
+                        <HelperText
+                            style={{
+                                marginBottom: 15,
+                                // fontSize: 10
+                            }}
+                            type='error'
+                            visible={profilePictureError}
+                            theme={{ colors: { error: 'red' } }}
+                        >
+                            Profile PICTURE ERROR
+                        </HelperText>
+                    </View>
                     <View style={{
                         marginHorizontal: "10%"
 
@@ -116,11 +185,24 @@ const SignupScreen = () => {
                             label='First Name'
                             activeOutlineColor='black'
                             mode='outlined'
-                            style={TEXT_STYLES.textInput}
+                            style={{ ...TEXT_STYLES.textInput, marginBottom: 0 }}
                             outlineStyle={TEXT_STYLES.textInputOutline}
                             value={firstName}
-                            onChangeText={text => setFirstName(text)}
+                            onChangeText={text => {
+                                setFirstName(text)
+                                setFirstNameError(false)
+                            }}
                         />
+                        <HelperText
+                            style={{
+                                marginBottom: 15
+                            }}
+                            type='error'
+                            visible={firstNameError}
+                            theme={{ colors: { error: 'red' } }}
+                        >
+                            FIRST NAME ERROR
+                        </HelperText>
                         <TextInput
                             theme={{
                                 colors: {
@@ -133,9 +215,23 @@ const SignupScreen = () => {
                             style={TEXT_STYLES.textInput}
                             outlineStyle={TEXT_STYLES.textInputOutline}
                             value={lastName}
-                            onChangeText={text => setLastName(text)}
+                            onChangeText={text => {
+                                setLastName(text)
+                                setLastNameError(false)
+                            }}
                         />
+                        <HelperText
+                            style={{
+                                marginBottom: 15
+                            }}
+                            type='error'
+                            visible={lastNameError}
+                            theme={{ colors: { error: 'red' } }}
+                        >
+                            LAST NAME ERROR
+                        </HelperText>
                         <CustomButton
+                            onPress={showDatePicker}
                             label={"Date of birth"}
                             style={{
                                 width: "100%",
@@ -149,7 +245,19 @@ const SignupScreen = () => {
                             mode="date"
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
+
                         />
+                        {dateError && <HelperText
+                            style={{
+                                marginBottom: 15,
+                                // fontSize: 10
+                            }}
+                            type='error'
+                            visible={lastNameError}
+                            theme={{ colors: { error: 'red' } }}
+                        >
+                            Date of BIRTH ERROR MESSAGE
+                        </HelperText>}
                     </View>
                 </View>
             }
@@ -195,6 +303,7 @@ const SignupScreen = () => {
                         />
                     </View>
                     <LocationSearch
+                        setLocation={setLocation}
                         showIcon
                         placeholder="Search City"
                     />
@@ -434,7 +543,7 @@ const SignupScreen = () => {
                     <View style={{
                         minWidth: width
                     }}>
-                        <Interests />
+                        <Interests interests={interests} setInterests={setInterests} />
                     </View>
                 </View>
             }

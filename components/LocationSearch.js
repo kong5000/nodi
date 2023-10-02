@@ -7,7 +7,7 @@ import StyleText from './StyleText';
 import { COLORS } from '../style';
 const { width, height } = Dimensions.get('window');
 
-const LocationSearch = ({ style, showIcon, mode, placeholder }) => {
+const LocationSearch = ({ style, showIcon, mode, placeholder, setLocation }) => {
     return (
         <View style={{
             borderWidth: 1,
@@ -72,7 +72,7 @@ const LocationSearch = ({ style, showIcon, mode, placeholder }) => {
                 listViewDisplayed={false}
                 onPress={(data, details = null) => {
                     // setHideDates(false)
-                    // setLocation(data.description)
+                    setLocation(data.description)
                     // setSearchVisible(false)
                     // ref.current.setAddressText(data.description)
                     // updateDestination(data.description)
