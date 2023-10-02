@@ -13,10 +13,15 @@ import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
 import Interests from '../components/Interests';
 const { width, height } = Dimensions.get('window');
 import Footer from '../components/Footer'
+import moment from 'moment';
+import { updateUserDoc } from '../services/UserQueries';
+import getUserData from '../hooks/userData';
+import { Timestamp } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
     const [step, setStep] = useState(0)
-
+    const { userData } = getUserData()
     // Step 0
 
     const [profilePicture, setProfilePicture] = useState("")
@@ -31,35 +36,43 @@ const SignupScreen = () => {
     const [firstNameError, setFirstNameError] = useState(false)
     const [lastName, setLastName] = useState("")
     const [lastNameError, setLastNameError] = useState(false)
-    const [date, setDate] = useState("")
-    const [dateError, setDateError] = useState(false)
+    const [birthDate, setBirthDate] = useState("")
+    const [birthDateError, setBirthDateError] = useState("")
 
     // Step 1
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [intro, setIntro] = useState("")
+    const [home, setHome] = useState("")
     const [occupation, setOccupation] = useState("")
     const [education, setEducation] = useState("")
+
+    // Step 2
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [intro, setIntro] = useState("")
+
     const [futureLocations, setFutureLocations] = useState([])
     const [favoritePlaces, setFavoritePlaces] = useState([])
 
-    const [location, setLocation] = useState("")
     const [interests, setInterests] = useState("")
+    const navigation = useNavigation()
 
-    useEffect(() => {
-        console.log("profilePicture", profilePicture)
-        console.log("favoritePlaces", favoritePlaces)
-        console.log("futureLocations", futureLocations)
-        console.log("profilePicture", profilePicture)
-        console.log("occupation", occupation)
-        console.log("intro", intro)
-        console.log("lastName", lastName)
-        console.log("firstName", firstName)
-        console.log("location", location)
-        console.log("interests", interests)
-        console.log("date", date)
+    // useEffect(() => {
+    //     console.log("profilePicture", profilePicture)
+    //     console.log("lastName", lastName)
+    //     console.log("firstName", firstName)
 
-    }, [profilePicture, favoritePlaces, futureLocations, education, occupation, intro, lastName,
-        firstName, location, interests, date])
+    //     console.log("location", location)
+    //     console.log("occupation", occupation)
+    //     console.log("education", education)
+
+    //     console.log("favoritePlaces", favoritePlaces)
+    //     console.log("futureLocations", futureLocations)
+
+    //     console.log("intro", intro)
+
+    //     console.log("interests", interests)
+    //     console.log("date", birthDate)
+
+    // }, [profilePicture, favoritePlaces, futureLocations, education, occupation, intro, lastName,
+    //     firstName, location, interests, birthDate])
 
 
     const hasInputErrors = () => {
@@ -75,8 +88,14 @@ const SignupScreen = () => {
                 setLastNameError(true)
                 hasErrors = true
             }
-            if (!date) {
-                setDateError(true)
+            if (!birthDate) {
+                setBirthDateError("Select a birth date")
+                hasErrors = true
+            }
+            const age = moment().diff(birthDate, 'years');
+
+            if (age < 18) {
+                setBirthDateError("Must be at least 18")
                 hasErrors = true
             }
             if (!profilePicture) {
@@ -110,10 +129,38 @@ const SignupScreen = () => {
     }
 
     const handleConfirm = (date) => {
-        setDate(date)
-        setDateError(false)
+        console.log(moment().diff(date, 'years'))
+        if (moment().diff(date, 'years') < 18) {
+            setBirthDateError("Must be over 18")
+        } else {
+            setBirthDateError("")
+        }
+        setBirthDate(moment(date).format('YYYY-MM-DD'))
         hideDatePicker();
     };
+
+    useEffect(() => {
+        if (step > 5) {
+            const updateUserInfo = async () => {
+                await updateUserDoc(userData.id, {
+                    birthDate,
+                    education,
+                    home,
+                    interests,
+                    lastActive: Timestamp.now(),
+                    lastName: lastName,
+                    name: firstName,
+                    occupation,
+                    picture: profilePicture,
+                    intro
+                })
+                navigation.navigate("Home")
+            }
+            updateUserInfo()
+        }
+    }, [step])
+
+
     return (
         <SafeAreaView style={styles.screen}>
             {step != 0 && <View style={{
@@ -232,7 +279,8 @@ const SignupScreen = () => {
                         </HelperText>
                         <CustomButton
                             onPress={showDatePicker}
-                            label={"Date of birth"}
+
+                            label={birthDate ? moment(birthDate).format('YYYY-MM-DD') : "Date of birth"}
                             style={{
                                 width: "100%",
                                 backgroundColor: COLORS.lightBlue
@@ -247,17 +295,17 @@ const SignupScreen = () => {
                             onCancel={hideDatePicker}
 
                         />
-                        {dateError && <HelperText
+                        <HelperText
                             style={{
                                 marginBottom: 15,
                                 // fontSize: 10
                             }}
                             type='error'
-                            visible={lastNameError}
+                            visible={birthDateError}
                             theme={{ colors: { error: 'red' } }}
                         >
-                            Date of BIRTH ERROR MESSAGE
-                        </HelperText>}
+                            {birthDateError}
+                        </HelperText>
                     </View>
                 </View>
             }
@@ -303,7 +351,7 @@ const SignupScreen = () => {
                         />
                     </View>
                     <LocationSearch
-                        setLocation={setLocation}
+                        setLocation={setHome}
                         showIcon
                         placeholder="Search City"
                     />

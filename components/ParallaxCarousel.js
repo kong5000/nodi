@@ -209,9 +209,9 @@ const ParallaxCarousel = ({ items }) => {
                           icon="person-outline"
                           text={item.home}
                         />}
-                        {item.profession && <UserDetail
+                        {item.occupation && <UserDetail
                           icon="person-outline"
-                          text={item.profession}
+                          text={item.occupation}
                         />}
                         {item.education && <UserDetail
                           icon="person-outline"

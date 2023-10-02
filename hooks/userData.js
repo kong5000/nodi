@@ -39,7 +39,7 @@ export const UserDataProvider = ({ children }) => {
     }
 
     const checkUserDocumentComplete = (userDoc) => {
-        return userDoc.data().gender
+        return userDoc.data().birthDate
     }
 
     useEffect(() => {
