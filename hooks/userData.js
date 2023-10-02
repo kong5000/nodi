@@ -51,7 +51,7 @@ export const UserDataProvider = ({ children }) => {
                     setUserData(userDoc.data())
                     navigation.navigate('Home')
                 } else {
-                    navigation.navigate('Modal')
+                    navigation.navigate('Signup')
                 }
             } else {
 
@@ -66,7 +66,7 @@ export const UserDataProvider = ({ children }) => {
                     const docRef = doc(database, 'users', user.uid);
                     const docSnap = await getDoc(docRef);
                     setUserData(docSnap.data())
-                    navigation.navigate('Modal')
+                    navigation.navigate('Signup')
                 } catch (err) {
                     console.log(err)
                 }

@@ -1,5 +1,5 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import CountryFlag from "react-native-country-flag";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -13,8 +13,9 @@ import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
 import Interests from '../components/Interests';
 const { width, height } = Dimensions.get('window');
 import Footer from '../components/Footer'
+
 const SignupScreen = () => {
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(0)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -23,6 +24,21 @@ const SignupScreen = () => {
     const [education, setEducation] = useState("")
     const [futureLocations, setFutureLocations] = useState([])
     const [favoritePlaces, setFavoritePlaces] = useState([])
+    const [profilePicture, setProfilePicture] = useState("")
+
+
+    useEffect(() => {
+        console.log("profilePicture",profilePicture)
+        console.log("favoritePlaces",favoritePlaces)
+        console.log("futureLocations",futureLocations)
+        console.log("profilePicture",profilePicture)
+        console.log("occupation",occupation)
+        console.log("intro",intro)
+        console.log("lastName",lastName)
+        console.log("firstName",firstName)
+
+    }, [profilePicture, favoritePlaces,futureLocations,education,occupation,intro,lastName,
+    firstName])
 
     const stepBack = () => {
         if (step > 0) {
@@ -42,6 +58,7 @@ const SignupScreen = () => {
 
     const handleConfirm = (date) => {
         console.warn("A date has been picked: ", date);
+        console.log(date)
         hideDatePicker();
     };
     return (
@@ -84,7 +101,7 @@ const SignupScreen = () => {
                             marginHorizontal: "10%"
                         }}
                     />
-                    <ProfilePicture />
+                    <ProfilePicture setProfilePicture={setProfilePicture} />
 
                     <View style={{
                         marginHorizontal: "10%"

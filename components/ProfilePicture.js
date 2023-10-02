@@ -7,14 +7,10 @@ import { database, storage } from '../firebase';
 import getUserData from '../hooks/userData';
 import PictureButton from './PictureButton';
 import { SIZES } from '../style';
-const { width, height } = Dimensions.get('window');
-const BOTTOM_MARGIN = "7%"
 
-
-const ProfilePicture = ({}) => {
+const ProfilePicture = () => {
     const { userData } = getUserData()
     const [imageLoading, setImageLoading] = useState(false)
-    const [profilePicture, setProfilePicture] = useState("")
 
     const pickImage = async (index) => {
         try {
@@ -27,7 +23,6 @@ const ProfilePicture = ({}) => {
             });
             if (!result.canceled) {
                 setImageLoading(true)
-                setProfilePicture(result.uri)
 
                 const uid = userData.id;
                 const filename = `profile_picture_${index + "_" + uid}`;
@@ -45,6 +40,7 @@ const ProfilePicture = ({}) => {
                 await updateDoc(userRef, {
                     picture: downloadURL,
                 })
+
                 setImageLoading(false)
             }
         } catch (e) {

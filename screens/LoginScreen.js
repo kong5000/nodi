@@ -15,12 +15,13 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('')
     const { userData } = getUserData()
     const navigation = useNavigation()
-
+    const testSignup = () => {
+        setEmail('c@c.com')
+        setPassword('password')
+    }
     const testLogin = () => {
         setEmail('a@a.com')
         setPassword('password')
-        handleLogin()
-
     }
     const testLogin2 = () => {
         setEmail('b@b.com')
@@ -34,7 +35,6 @@ const LoginScreen = () => {
     useEffect(() => {
         if (userData) {
             setCreatingAccount(false)
-            navigation.navigate("Modal")
         }
     }, [userData])
 
@@ -42,7 +42,6 @@ const LoginScreen = () => {
         try {
             setCreatingAccount(true)
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
-            const user = userCredentials.user
         }
         catch (error) {
             setCreatingAccount(false)
@@ -120,6 +119,12 @@ const LoginScreen = () => {
                     // handleLogin()
                 }}>
                     <Text>DEBUG LOGIN 2</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    testSignup()
+                    // handleLogin()
+                }}>
+                    <Text>Creatre User Debug</Text>
                 </TouchableOpacity>
             {/* </ImageBackground> */}
 
