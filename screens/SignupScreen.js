@@ -49,7 +49,7 @@ const SignupScreen = () => {
     const [intro, setIntro] = useState("")
 
     const [futureLocations, setFutureLocations] = useState([])
-    const [favoritePlaces, setFavoritePlaces] = useState([])
+    const [favoriteLocations, setFavoriteLocations] = useState([])
 
     const [interests, setInterests] = useState("")
     const navigation = useNavigation()
@@ -63,7 +63,7 @@ const SignupScreen = () => {
     //     console.log("occupation", occupation)
     //     console.log("education", education)
 
-    //     console.log("favoritePlaces", favoritePlaces)
+    //     console.log("favoriteLocations", favoriteLocations)
     //     console.log("futureLocations", futureLocations)
 
     //     console.log("intro", intro)
@@ -71,7 +71,7 @@ const SignupScreen = () => {
     //     console.log("interests", interests)
     //     console.log("date", birthDate)
 
-    // }, [profilePicture, favoritePlaces, futureLocations, education, occupation, intro, lastName,
+    // }, [profilePicture, favoriteLocations, futureLocations, education, occupation, intro, lastName,
     //     firstName, location, interests, birthDate])
 
 
@@ -145,6 +145,8 @@ const SignupScreen = () => {
                 await updateUserDoc(userData.id, {
                     birthDate,
                     education,
+                    favoriteLocations,
+                    futureLocations,
                     home,
                     interests,
                     lastActive: Timestamp.now(),
@@ -487,19 +489,19 @@ const SignupScreen = () => {
                     <View style={{ marginBottom: "10%" }}>
                         <AddLocation
                             onAdd={(newLocation) => {
-                                if (!favoritePlaces.find((location => location.name == newLocation.name))) {
-                                    setFavoritePlaces(prev => [...prev, newLocation])
+                                if (!favoriteLocations.find((location => location.name == newLocation.name))) {
+                                    setFavoriteLocations(prev => [...prev, newLocation])
                                 }
                             }}
                         />
                     </View>
-                    {favoritePlaces.length > 0 && <StyleText
+                    {favoriteLocations.length > 0 && <StyleText
                         text="Your favorite countries to visit: "
                         fontSize={22}
                         style={{ zIndex: -1 }}
 
                     />}
-                    {favoritePlaces && favoritePlaces.map(loc =>
+                    {favoriteLocations && favoriteLocations.map(loc =>
                         <View style={{
                             display: 'flex',
                             ...FLEX_CENTERED,
@@ -529,7 +531,7 @@ const SignupScreen = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        setFavoritePlaces(prev => prev.filter((location) => location.name != loc.name))
+                                        setFavoriteLocations(prev => prev.filter((location) => location.name != loc.name))
                                     }}
                                 >
                                     <Ionicons
