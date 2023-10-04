@@ -14,7 +14,7 @@ const AddLocation = ({ onAdd }) => {
     const [valid, setValid] = useState(false)
     const filterData = () => {
         if (input && input != " ") {
-            return COUNTRIES.filter(country => country.name.includes(input)).slice(0, 5)
+            return COUNTRIES.filter(country => country.name.includes(input)).slice(0, 3)
         }
         return null
     }
@@ -36,6 +36,12 @@ const AddLocation = ({ onAdd }) => {
         setData(null)
     }, [valid])
 
+    const handleAdd = (input) => {
+        onAdd(input)
+        setData(null)
+        setInput('')
+        setIsoCode('')
+    }
 
     return (
         <View>
@@ -76,10 +82,7 @@ const AddLocation = ({ onAdd }) => {
                     disabled={!valid}
 
                     onPress={() => {
-                        onAdd({ name: input, iso: COUNTRY_ISO_MAP[input] })
-                        setData(null)
-                        setInput('')
-                        setIsoCode('')
+                        handleAdd(input)
                     }}
                 >
                     <StyleText
@@ -106,11 +109,7 @@ const AddLocation = ({ onAdd }) => {
                             borderColor: COLORS.neutralGrey,
                         }}
                         onPress={() => {
-                            setInput('')
-                            setIsoCode('')
-                            onAdd({ name: item.item.name, iso: item.item.iso })
-                            setData(null)
-
+                            handleAdd(item.item.name)
                         }}>
                         <CountryFlag isoCode={item.item.iso} size={30}
                             style={{ borderRadius: 2, marginRight: 10 }} />

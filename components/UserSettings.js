@@ -1,29 +1,22 @@
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { doc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { database, storage } from '../firebase';
-import getUserData from '../hooks/userData';
-import Interests from './Interests';
-import { COLORS, FLEX_CENTERED, FONT_SIZE } from '../style';
-import StyleText from './StyleText';
-import ProfilePicture from './ProfilePicture'
-import AddLocation from './AddLocation';
 import CountryFlag from 'react-native-country-flag';
+import { TextInput } from 'react-native-paper';
+import { COUNTRY_ISO_MAP } from '../data';
+import getUserData from '../hooks/userData';
 import { updateUserDoc } from '../services/UserQueries';
+import { COLORS, FLEX_CENTERED, FONT_SIZE } from '../style';
+import AddLocation from './AddLocation';
+import Interests from './Interests';
+import ProfilePicture from './ProfilePicture';
+import StyleText from './StyleText';
 
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
 
 const UserSettings = () => {
     const { userData } = getUserData()
-    const [profilePicture, setProfilePicture] = useState("")
-    const [imageLoading, setImageLoading] = useState(false)
-    const [showSaved, setShowSaved] = useState(true)
-    const [settingMenu, setSettingMenu] = useState("profile")
     const [firstName, setFirstName] = useState(userData.name)
     const [lastName, setLastName] = useState(userData.lastName)
     const [occupation, setOccupation] = useState(userData.occupation)
@@ -33,23 +26,26 @@ const UserSettings = () => {
     const [favoritePlaces, setFavoritePlaces] = useState([])
 
     useEffect(() => {
-        console.log("TRIGGE")
+        console.log("TRIGGER")
+        console.log(futureLocations)
+        console.log(favoritePlaces)
         const timer = setTimeout(() => {
-            console.log("SAVING")
             try {
                 updateUserDoc(userData.id, {
                     firstName,
                     lastName,
                     occupation,
                     education,
-                    intro
+                    intro,
+                    futureLocations,
+                    favoritePlaces
                 })
             } catch (err) {
                 console.log(err)
             }
         }, 2000);
         return () => clearTimeout(timer);
-    }, [firstName, lastName, occupation, education, intro]);
+    }, [firstName, lastName, occupation, education, intro, futureLocations, favoritePlaces]);
 
 
     return (
@@ -187,24 +183,6 @@ const UserSettings = () => {
                 <Interests />
             </View>
 
-            <StyleText
-                text="Connected Accounts"
-                fontSize={FONT_SIZE.title}
-                bold
-                style={{
-                    width: "85%",
-                    marginTop: "5%",
-                }}
-            />
-            <StyleText
-                text="Share your instagram account on your profile"
-                fontSize={FONT_SIZE.small}
-                style={{
-                    width: "84%",
-                    marginBottom: "2.5%",
-                }}
-            />
-
             <View style={{ marginVertical: "10%", width: "85%" }}>
                 <StyleText
                     text="Going To"
@@ -218,7 +196,8 @@ const UserSettings = () => {
                 />
                 <AddLocation
                     onAdd={(newLocation) => {
-                        if (!futureLocations.find((location => location.name == newLocation.name))) {
+                        console.log(newLocation)
+                        if (!futureLocations.find((location => location == newLocation))) {
                             setFutureLocations(prev => [...prev, newLocation])
                         }
                     }}
@@ -251,15 +230,15 @@ const UserSettings = () => {
                                 display: 'flex',
                                 flexDirection: 'row',
                             }}>
-                                <CountryFlag isoCode={loc.iso} size={30}
+                                <CountryFlag isoCode={COUNTRY_ISO_MAP[loc]} size={30}
                                     style={{ borderRadius: 2, marginRight: 10 }} />
                                 <StyleText
                                     fontSize={20}
-                                    text={loc.name} />
+                                    text={loc} />
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    setFutureLocations(prev => prev.filter((location) => location.name != loc.name))
+                                    setFutureLocations(prev => prev.filter((location) => location != loc))
                                 }}
                             >
                                 <Ionicons
@@ -284,7 +263,7 @@ const UserSettings = () => {
                 />
                 <AddLocation
                     onAdd={(newLocation) => {
-                        if (!favoritePlaces.find((location => location.name == newLocation.name))) {
+                        if (!favoritePlaces.find((location => location == newLocation))) {
                             setFavoritePlaces(prev => [...prev, newLocation])
                         }
                     }}
@@ -299,7 +278,7 @@ const UserSettings = () => {
                     <View style={{
                         display: 'flex',
                         ...FLEX_CENTERED,
-                        zIndex: -1
+                        zIndex: -1,
                     }}>
                         <View style={{
                             display: 'flex',
@@ -317,15 +296,15 @@ const UserSettings = () => {
                                 display: 'flex',
                                 flexDirection: 'row',
                             }}>
-                                <CountryFlag isoCode={loc.iso} size={30}
+                                <CountryFlag isoCode={COUNTRY_ISO_MAP[loc]} size={30}
                                     style={{ borderRadius: 2, marginRight: 10 }} />
                                 <StyleText
                                     fontSize={20}
-                                    text={loc.name} />
+                                    text={loc} />
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    setFavoritePlaces(prev => prev.filter((location) => location.name != loc.name))
+                                    setFavoritePlaces(prev => prev.filter((location) => location != loc))
                                 }}
                             >
                                 <Ionicons
@@ -337,7 +316,8 @@ const UserSettings = () => {
                     </View>)
                 }
             </View>
-            <View style={{
+            <View style={{marginBottom: 200}}/>
+            {/* <View style={{
                 width: "85%",
                 marginTop: "10%"
             }}>
@@ -350,9 +330,9 @@ const UserSettings = () => {
                     text="Prompt for users to share instagram pictures"
                     fontSize={FONT_SIZE.small}
                 />
-            </View>
+            </View> */}
 
-            <TouchableOpacity style={{
+            {/* <TouchableOpacity style={{
                 ...FLEX_CENTERED,
                 width: "70%",
                 backgroundColor: COLORS.mainTheme,
@@ -382,7 +362,7 @@ const UserSettings = () => {
                         text="Link Instagram"
                     />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </>
     )
 }
