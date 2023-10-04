@@ -12,6 +12,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomToggleButton from './CustomToggleButton'
 import SettingsButtonsGroup from './SettingsButtonsGroup'
+import { getSetting, storeSetting } from '../services/LocalStorage'
+import { getStorage } from 'firebase/storage'
+import { settings } from 'firebase/analytics'
 
 const thingsToDo = [
     {
@@ -93,14 +96,53 @@ const thingsToDo = [
     },
 ]
 
-const Interests = ({interests, setInterests}) => {
+const Interests = () => {
+    const [interests, setInterests] = useState([])
+
+    useEffect(() => {
+        const getStorageEffect = async () => {
+            const localStorageInterests = await getSetting(`interests`)
+            const interestsObj = JSON.parse(localStorageInterests)
+            setInterests(interestsObj)
+        }
+        getStorageEffect()
+    }, [])
+
+    useEffect(() => {
+        const getStorageEffect = async () => {
+            const setting = await getSetting(`interests`)
+            console.log(setting)
+        }
+        getStorageEffect()
+    }, [interests])
+
+
+
+
+    const toggleInterest = (activity) => {
+        if (interests.includes(activity)) {
+            const updatedArray = interests.filter((item) => item !== activity);
+            storeSetting(`interests`, JSON.stringify([updatedArray]))
+            setInterests(updatedArray)
+        } else {
+            storeSetting(`interests`, JSON.stringify([...interests, activity]))
+            setInterests([...interests, activity])
+        }
+    }
+
+
+
+
     return (
         <View style={styles.container}>
-            <SettingsButtonsGroup
-                activeButtons={interests}
-                setActiveButtons={setInterests}
-                list={thingsToDo}
-            />
+            {thingsToDo.map((item) =>
+                <CustomToggleButton
+                    text={item.text}
+                    onToggle={() => toggleInterest(item.text)}
+                    list={interests}
+                    icon={item.icon}
+                />
+            )}
         </View>
     )
 }

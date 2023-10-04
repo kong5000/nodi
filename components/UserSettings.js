@@ -163,7 +163,7 @@ const UserSettings = () => {
                 }}
             />
             <View >
-                <Interests />
+                <Interests/>
             </View>
 
             <StyleText

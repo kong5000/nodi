@@ -26,11 +26,6 @@ export const UserDataProvider = ({ children }) => {
     const [conversations, setConversations] = useState([])
     const [requests, setRequests] = useState([])
     const [activeChat, setActiveChat] = useState(null)
-    const value = { userData, setUserData };
-
-    const setData = (data) => {
-        setUserData(data)
-    }
 
     const getUserDoc = async (userId) => {
         const userRef = doc(database, 'users', userId);
@@ -54,13 +49,12 @@ export const UserDataProvider = ({ children }) => {
                     navigation.navigate('Signup')
                 }
             } else {
-
                 const userData = {
                     email: user.email,
                     joinDate: Timestamp.now(),
                     lastActive: Timestamp.now(),
                     id: user.uid
-                };
+                }
                 try {
                     await setDoc(doc(database, 'users', user.uid), userData)
                     const docRef = doc(database, 'users', user.uid);
