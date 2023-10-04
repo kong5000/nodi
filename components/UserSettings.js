@@ -2,7 +2,7 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { database, storage } from '../firebase';
@@ -13,6 +13,7 @@ import StyleText from './StyleText';
 import ProfilePicture from './ProfilePicture'
 import AddLocation from './AddLocation';
 import CountryFlag from 'react-native-country-flag';
+import { updateUserDoc } from '../services/UserQueries';
 
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
@@ -30,6 +31,26 @@ const UserSettings = () => {
     const [intro, setIntro] = useState(userData.intro)
     const [futureLocations, setFutureLocations] = useState([])
     const [favoritePlaces, setFavoritePlaces] = useState([])
+
+    useEffect(() => {
+        console.log("TRIGGE")
+        const timer = setTimeout(() => {
+            console.log("SAVING")
+            try {
+                updateUserDoc(userData.id, {
+                    firstName,
+                    lastName,
+                    occupation,
+                    education,
+                    intro
+                })
+            } catch (err) {
+                console.log(err)
+            }
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [firstName, lastName, occupation, education, intro]);
+
 
     return (
         <>
@@ -163,7 +184,7 @@ const UserSettings = () => {
                 }}
             />
             <View >
-                <Interests/>
+                <Interests />
             </View>
 
             <StyleText
