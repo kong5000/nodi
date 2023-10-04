@@ -15,6 +15,8 @@ import SettingsButtonsGroup from './SettingsButtonsGroup'
 import { getSetting, storeSetting } from '../services/LocalStorage'
 import { getStorage } from 'firebase/storage'
 import { settings } from 'firebase/analytics'
+import { updateUserDoc } from '../services/UserQueries'
+import getUserData from '../hooks/userData'
 
 const thingsToDo = [
     {
@@ -98,6 +100,18 @@ const thingsToDo = [
 
 const Interests = () => {
     const [interests, setInterests] = useState([])
+    const { userData } = getUserData()
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            try {
+                updateUserDoc(userData.id, { interests })
+            } catch (err) {
+                console.log(err)
+            }
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, [interests]);
 
     useEffect(() => {
         const getStorageEffect = async () => {
@@ -108,30 +122,16 @@ const Interests = () => {
         getStorageEffect()
     }, [])
 
-    useEffect(() => {
-        const getStorageEffect = async () => {
-            const setting = await getSetting(`interests`)
-            console.log(setting)
-        }
-        getStorageEffect()
-    }, [interests])
-
-
-
-
     const toggleInterest = (activity) => {
         if (interests.includes(activity)) {
             const updatedArray = interests.filter((item) => item !== activity);
-            storeSetting(`interests`, JSON.stringify([updatedArray]))
+            storeSetting(`interests`, JSON.stringify(updatedArray))
             setInterests(updatedArray)
         } else {
             storeSetting(`interests`, JSON.stringify([...interests, activity]))
             setInterests([...interests, activity])
         }
     }
-
-
-
 
     return (
         <View style={styles.container}>
