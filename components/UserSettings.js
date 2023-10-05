@@ -11,13 +11,14 @@ import AddLocation from './AddLocation';
 import Interests from './Interests';
 import ProfilePicture from './ProfilePicture';
 import StyleText from './StyleText';
+import { useNavigation } from '@react-navigation/core'
 import { getSetting, storeSetting } from '../services/LocalStorage';
 
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
 
 const UserSettings = () => {
-    const { userData } = getUserData()
+    const { setCurrentProfile, userData } = getUserData()
     const [firstName, setFirstName] = useState(userData.name)
     const [lastName, setLastName] = useState(userData.lastName)
     const [occupation, setOccupation] = useState(userData.occupation)
@@ -26,6 +27,7 @@ const UserSettings = () => {
     const [futureLocations, setFutureLocations] = useState(userData.futureLocations)
     const [favoritePlaces, setFavoritePlaces] = useState(userData.favoritePlaces)
 
+    const navigation = useNavigation()
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -61,14 +63,21 @@ const UserSettings = () => {
     return (
         <>
             <ProfilePicture />
-            <TouchableOpacity style={{
-                ...FLEX_CENTERED,
-                width: "50%",
-                backgroundColor: COLORS.mainTheme,
-                borderRadius: 30,
-                paddingHorizontal: FONT_SIZE.small,
-                paddingVertical: 10,
-            }}>
+            <TouchableOpacity
+                onPress={
+                    () => {
+                        setCurrentProfile(userData)
+                        navigation.navigate('Profile')
+                    }
+                }
+                style={{
+                    ...FLEX_CENTERED,
+                    width: "50%",
+                    backgroundColor: COLORS.mainTheme,
+                    borderRadius: 30,
+                    paddingHorizontal: FONT_SIZE.small,
+                    paddingVertical: 10,
+                }}>
                 <StyleText
                     style={{
                         ...styles.buttonText,

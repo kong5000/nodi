@@ -71,15 +71,13 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                 zIndex: 10,
                             }}
                             onPress={() => {
-                                if (viewMode) {
-                                    console.log("HHHHHHH")
-                                    console.log(conversations)
-                                    const chatId = [userData.id, currentProfile.id].sort().join('')
-
-                                    const activeChat = conversations.find(conv => conv.id == chatId)
-                                    setActiveChat(activeChat)
-                                    navigation.navigate('Chat')
-
+                                if (viewMode ) {
+                                    if(currentProfile.id != userData.id){
+                                        const chatId = [userData.id, currentProfile.id].sort().join('')
+                                        const activeChat = conversations.find(conv => conv.id == chatId)
+                                        setActiveChat(activeChat)
+                                        navigation.navigate('Chat')
+                                    }
                                 } else {
                                     setCurrentImage(item.picture)
                                     showConnectModal()
