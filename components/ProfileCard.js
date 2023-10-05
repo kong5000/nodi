@@ -114,7 +114,7 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                             </View>
                             <View style={{
                                 display: 'flex',
-                                alignItems: 'left',
+                                alignItems: "flex-start",
                                 marginLeft: '10%',
                                 marginTop: '2%',
                             }}>

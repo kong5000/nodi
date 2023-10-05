@@ -1,22 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native'
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
-import NextButton from './NextButton';
-import StyleText from './StyleText'
-const { width, height } = Dimensions.get('window');
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import CustomToggleButton from './CustomToggleButton'
-import SettingsButtonsGroup from './SettingsButtonsGroup'
-import { getSetting, storeSetting } from '../services/LocalStorage'
-import { getStorage } from 'firebase/storage'
-import { settings } from 'firebase/analytics'
-import { updateUserDoc } from '../services/UserQueries'
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import getUserData from '../hooks/userData'
+import { getSetting, storeSetting } from '../services/LocalStorage'
+import { updateUserDoc } from '../services/UserQueries'
+import { COLORS } from '../style'
+import CustomToggleButton from './CustomToggleButton'
+const { width, height } = Dimensions.get('window');
 
 const thingsToDo = [
     {
@@ -116,20 +106,30 @@ const Interests = () => {
     useEffect(() => {
         const getStorageEffect = async () => {
             const localStorageInterests = await getSetting(`interests`)
-            const interestsObj = JSON.parse(localStorageInterests)
-            setInterests(interestsObj)
+            if (!localStorageInterests) {
+                setInterests([])
+            } else {
+                const interestsObj = JSON.parse(localStorageInterests)
+                setInterests(interestsObj)
+            }
+
         }
         getStorageEffect()
     }, [])
 
     const toggleInterest = (activity) => {
-        if (interests.includes(activity)) {
+        console.log(activity)
+        console.log(interests)
+        if (interests && interests.includes(activity)) {
             const updatedArray = interests.filter((item) => item !== activity);
             storeSetting(`interests`, JSON.stringify(updatedArray))
             setInterests(updatedArray)
         } else {
-            storeSetting(`interests`, JSON.stringify([...interests, activity]))
-            setInterests([...interests, activity])
+            if (interests) {
+                storeSetting(`interests`, JSON.stringify([...interests, activity]))
+                setInterests([...interests, activity])
+            }
+
         }
     }
 

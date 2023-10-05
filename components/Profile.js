@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderRadius: 20,
         backgroundColor: "white",
-        justifyContent: "left",
-        alignItems: "left",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         marginRight: "5%"
     },
     profileText: {

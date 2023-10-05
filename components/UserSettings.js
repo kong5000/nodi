@@ -131,7 +131,7 @@ const UserSettings = () => {
             <View style={{
                 marginTop: '5%'
             }}>
-                <TextInput
+                {/* <TextInput
                     theme={{
                         colors: {
                             onSurfaceVariant: COLORS.halfGrey,
@@ -158,7 +158,7 @@ const UserSettings = () => {
                     outlineStyle={styles.textInputOutline}
                     value={lastName}
                     onChangeText={text => setLastName(text)}
-                />
+                /> */}
                 <TextInput
                     theme={{
                         colors: {
