@@ -5,11 +5,17 @@ import { SIZES, COLORS } from '../style'
 import moment from 'moment';
 import useAuth from '../hooks/useAuth';
 import StyleText from './StyleText';
+import getUserData from '../hooks/userData';
+import { useNavigation } from '@react-navigation/core'
 
 const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
     const [partnerInfo, setPartnerInfo] = useState(null)
     const [date, setDate] = useState("")
     const { user } = useAuth()
+    const { setCurrentProfile } = getUserData()
+    const navigation = useNavigation()
+
+
     const formatDate = (date) => {
         const now = moment();
         const sentDate = moment(date);
@@ -37,17 +43,29 @@ const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
         setDate(formatDate(conversationDetails.lastActive.toDate()))
     }, [conversationDetails])
 
- 
+
     const onPress = async () => {
         onChatRowPressed(conversationDetails)
     }
 
     return (
-        <TouchableOpacity style={styles.chatRow} key={conversationDetails.id} onPress={onPress}>
-            {partnerInfo && <Image
-                style={styles.profilePicture}
-                source={{ uri: partnerInfo.picture }} />}
-            <View>
+        <View style={styles.chatRow} key={conversationDetails.id} >
+            <TouchableOpacity onPress={() => {
+                console.log("CONVERSATIONS SAVED")
+                console.log(conversationDetails)
+                setCurrentProfile(partnerInfo)
+                navigation.navigate("Profile")
+            }}>
+                {partnerInfo && <Image
+                    style={styles.profilePicture}
+                    source={{ uri: partnerInfo.picture }} />}
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={onPress}
+                style={{
+                    width: "100%",
+                    height: SIZES.profilePicture,
+                }}>
                 <StyleText
                     semiBold
                     text={partnerInfo?.displayName}
@@ -65,9 +83,9 @@ const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
                         text={conversationDetails.lastMessage}
                     />
                 </View>
-            </View>
+            </TouchableOpacity>
             <Text style={styles.timestamp}>{date}</Text>
-        </TouchableOpacity>
+        </View>
     )
 }
 const styles = StyleSheet.create({

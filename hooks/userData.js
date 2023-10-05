@@ -15,7 +15,9 @@ export const UserDataContext = createContext({
     requests: [],
     setRequests: () => { },
     activeChat: null,
-    setActiveChat: () => { }
+    setActiveChat: () => { },
+    currentProfile: null,
+    setCurrentProfile: () => { }
 });
 
 export const UserDataProvider = ({ children }) => {
@@ -26,6 +28,7 @@ export const UserDataProvider = ({ children }) => {
     const [conversations, setConversations] = useState([])
     const [requests, setRequests] = useState([])
     const [activeChat, setActiveChat] = useState(null)
+    const [currentProfile, setCurrentProfile] = useState(null)
 
     const getUserDoc = async (userId) => {
         const userRef = doc(database, 'users', userId);
@@ -107,7 +110,9 @@ export const UserDataProvider = ({ children }) => {
         requests,
         setRequests,
         activeChat,
-        setActiveChat
+        setActiveChat,
+        currentProfile,
+        setCurrentProfile
     }}>
         {children}
     </UserDataContext.Provider>;

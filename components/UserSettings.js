@@ -11,6 +11,7 @@ import AddLocation from './AddLocation';
 import Interests from './Interests';
 import ProfilePicture from './ProfilePicture';
 import StyleText from './StyleText';
+import { getSetting, storeSetting } from '../services/LocalStorage';
 
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
@@ -22,13 +23,11 @@ const UserSettings = () => {
     const [occupation, setOccupation] = useState(userData.occupation)
     const [education, setEducation] = useState(userData.education)
     const [intro, setIntro] = useState(userData.intro)
-    const [futureLocations, setFutureLocations] = useState([])
-    const [favoritePlaces, setFavoritePlaces] = useState([])
+    const [futureLocations, setFutureLocations] = useState(userData.futureLocations)
+    const [favoritePlaces, setFavoritePlaces] = useState(userData.favoritePlaces)
+
 
     useEffect(() => {
-        console.log("TRIGGER")
-        console.log(futureLocations)
-        console.log(favoritePlaces)
         const timer = setTimeout(() => {
             try {
                 updateUserDoc(userData.id, {
@@ -40,6 +39,17 @@ const UserSettings = () => {
                     futureLocations,
                     favoritePlaces
                 })
+
+                storeSetting(`profile_settings`, JSON.stringify({
+                    firstName,
+                    lastName,
+                    occupation,
+                    education,
+                    intro,
+                    futureLocations,
+                    favoritePlaces
+                }))
+
             } catch (err) {
                 console.log(err)
             }
@@ -316,7 +326,7 @@ const UserSettings = () => {
                     </View>)
                 }
             </View>
-            <View style={{marginBottom: 200}}/>
+            <View style={{ marginBottom: 200 }} />
             {/* <View style={{
                 width: "85%",
                 marginTop: "10%"

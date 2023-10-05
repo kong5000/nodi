@@ -8,6 +8,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import ChatScreen from './screens/ChatScreen';
 import SignupScreen from './screens/SignupScreen';
 import RequestsScreen from './screens/RequestsScreen';
+import SingleProfileScreen from './screens/SingleProfileScreen';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
@@ -26,6 +27,7 @@ const StackNavigator = () => {
                         <Stack.Screen name="Requests" component={RequestsScreen} />
                         <Stack.Screen name="Chat" component={ChatScreen} />
                         <Stack.Screen name="Settings" component={SettingsScreen} />
+                        <Stack.Screen name="Profile" component={SingleProfileScreen} />
                     </Stack.Group>
                 </>
             ) : (

@@ -25,6 +25,7 @@ import Profile from './Profile';
 import StyleText from './StyleText';
 import InterestsProfile from './InterestsProfile';
 import ConnectModal from './ConnectModal';
+import ProfileCard from './ProfileCard';
 
 const ParallaxCarousel = ({ items }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
@@ -131,177 +132,16 @@ const ParallaxCarousel = ({ items }) => {
         }}
         renderItem={({ item, index }) => {
           return (
-            <View style={styles.item}>
-              {/* Image below just for caching for quick loading in modal */}
-              <Image style={{ height: 0, width: 0 }} uri={item.picture} />
-
-              <Animated.View
-                style={
-                  { flex: 1, backgroundColor: 'transparent' }
-                }
-              >
-                <Animated.Image
-                  onLoadEnd={() => {
-                    setImagesLoaded(prev => prev + 1)
-                  }}
-                  source={{ uri: item.picture }}
-                  style={[
-                    styles.image,
-                  ]}
-                />
-                <ScrollView
-                  contentContainerStyle={{
-                    width: width,
-                    paddingBottom: "10%"
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  ref={(element) => refsArray.current.push(element)}
-                  overScrollMode='never'
-                  bounces={false}>
-                  <View style={styles.slider} />
-                  <View style={styles.footer}>
-                    <TouchableOpacity
-                      style={{
-                        ...style.FLEX_CENTERED,
-                        height: 90,
-                        width: 90,
-                        borderRadius: 100,
-                        backgroundColor: COLORS.mainTheme,
-                        position: 'relative',
-                        top: 40,
-                        left: width - width / 3,
-                        zIndex: 10,
-                      }}
-                      onPress={() => {
-                        setCurrentImage(item.picture)
-                        showConnectModal()
-                      }}
-                    >
-                      <Ionicons
-                        name="paper-plane-outline"
-                        size={45} color="white"
-                      />
-                    </TouchableOpacity>
-                    <View style={{
-                      flex: 1,
-                      backgroundColor: "white",
-                      borderTopLeftRadius: 40,
-                      borderTopRightRadius: 40
-                    }}>
-                      <View style={{
-                        width: "63%",
-                        marginLeft: "10%",
-                        marginTop: "10%",
-                      }}>
-                        <StyleText
-                          text={`${item.name}, ${calculateAge(item.birthDate)}`}
-                          semiBold
-                          fontSize={FONT_SIZE.profileName}
-                        />
-                      </View>
-                      <View style={{
-                        display: 'flex',
-                        alignItems: 'left',
-                        marginLeft: '10%',
-                        marginTop: '2%',
-                      }}>
-                        {item.home && <UserDetail
-                          icon="person-outline"
-                          text={item.home}
-                        />}
-                        {item.occupation && <UserDetail
-                          icon="person-outline"
-                          text={item.occupation}
-                        />}
-                        {item.education && <UserDetail
-                          icon="person-outline"
-                          text={item.education}
-                        />}
-                      </View>
-
-                      <View style={{
-                        marginLeft: '10%',
-                        marginTop: '10%',
-                      }}>
-                        <StyleText
-                          text='About'
-                          bold
-                          fontSize={22}
-                          style={{ marginBottom: "3%" }}
-                        />
-                        <Profile />
-                      </View>
-                      <View
-                        style={{
-                          marginLeft: '10%',
-                          marginTop: '10%',
-                        }}
-                      >
-                        <StyleText
-                          text='Interests'
-                          bold
-                          fontSize={22}
-                          style={{ marginBottom: "3%" }}
-                        />
-                        <InterestsProfile interests={item.interests} />
-                      </View>
-
-                      <View
-                        style={{
-                          marginLeft: '10%',
-                          marginTop: '10%',
-                        }}
-                      >
-                        <StyleText
-                          text='Going To'
-                          bold
-                          fontSize={22}
-                          style={{ marginBottom: "3%" }}
-                        />
-                        <NextDestinations
-                          destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
-                        />
-                        <StyleText
-                          text='Favorite Destinations'
-                          bold
-                          fontSize={22}
-                          style={{ marginTop: "10%", marginBottom: "3%" }}
-                        />
-                        <NextDestinations
-                          destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
-                        />
-                      </View>
-                      <View style={{ marginHorizontal: "10%" }}>
-                        <View style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginTop: '10%'
-                        }}>
-                          <StyleText
-                            text={"Instagram"}
-                            bold
-                            fontSize={22}
-                          />
-                          <StyleText
-                            text={`@${instagramHandle}`}
-                            fontSize={20}
-                            style={{
-                              color: COLORS.mainTheme
-                            }}
-                          />
-                        </View>
-                        <InstagramPhotos
-                          images={instagramImages}
-                          handle={instagramHandle}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </ScrollView>
-              </Animated.View>
-            </View>
+            <ProfileCard
+              item={item}
+              instagramImages={instagramImages}
+              instagramHandle={instagramHandle}
+              setCurrentImage={setCurrentImage}
+              refsArray={refsArray}
+              setImagesLoaded={setImagesLoaded}
+              showConnectModal={showConnectModal}
+              currentProfile={currentProfile}
+            />
           );
         }}
       />
