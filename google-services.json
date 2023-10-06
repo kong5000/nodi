@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750477199673",
+    "project_id": "react-native-test-8d90d",
+    "storage_bucket": "react-native-test-8d90d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750477199673:android:19f1b23bfb1b349a6a40e8",
+        "android_client_info": {
+          "package_name": "com.kong5000.FirebaseAuth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750477199673-fqgjumuobsek3f1919d15luf4mofes7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZwiJR_hfJuApsYC3XZ-JsRvLt0qc81rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750477199673-fqgjumuobsek3f1919d15luf4mofes7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
