@@ -20,6 +20,7 @@ export const addNewConversation = async (message, sender, receiver) => {
         resolved: false,
         lastActive: new Date(),
         lastAuthor: sender.name,
+        lastAuthorId: sender.id,
         lastMessage: message,
         sender: sender.id,
         receiver: receiver.id,
@@ -78,13 +79,13 @@ export const getMessages = async (convId, uid) => {
         data.createdAt = data.createdAt.toDate()
         data._id = doc.id
         count += 1
-        if (data.author == uid) {
+        if (data.authorId == uid) {
             data.user = {
-                _id: 1,
+                _id: 2,
             }
         } else {
             data.user = {
-                _id: 2,
+                _id: 1,
             }
         }
         return data
@@ -106,12 +107,13 @@ export const deleteConversation = async (documentId) => {
     }
 }
 
-export const addChatMessage = async (text, image, conversationId, authorId) => {
+export const addChatMessage = async (text, image, conversationId, authorId, userData) => {
     const docRef = await addDoc(collection(database, 'conversations', conversationId, 'messages'), {
         conversationId: conversationId,
         text,
         image,
-        author: authorId,
+        author: userData.name,
+        authorId: userData.id,
         createdAt: new Date()
     })
     const messageId = docRef.id
@@ -119,14 +121,15 @@ export const addChatMessage = async (text, image, conversationId, authorId) => {
     if (image) {
         lastMessage = 'sent an image'
     }
-    await updateConversationLastMessage(conversationId, authorId, lastMessage, messageId)
+    await updateConversationLastMessage(conversationId, authorId, lastMessage, messageId, userData)
 }
 
-export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messageId) => {
+export const updateConversationLastMessage = async (conversationId, authorId, lastMessage, messageId, userData) => {
     const documentRef = doc(database, 'conversations', conversationId);
     await updateDoc(documentRef, {
         lastMessage,
-        lastAuthor: authorId,
+        lastAuthor: userData.name,
+        lastAuthorId: userData.id,
         lastActive: new Date(),
         lastMessageId: messageId
     })

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Dimensions } from 'react-native'
-import {  doc, where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
+import { doc, where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
 import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import { acceptConversationRequest, declineConversationRequest, getMessages } from '../services/ConversationQueries'
@@ -26,6 +26,7 @@ const ChatScreen = () => {
     const navigation = useNavigation()
     const { activeChat, setActiveChat } = getUserData()
     const { user } = useAuth()
+    const { userData } = getUserData()
     const [partner, setPartner] = useState(null)
     const [messages, setMessages] = useState([])
     const [enableLoadEarlier, setEnableLoadEarlier] = useState(false)
@@ -46,10 +47,10 @@ const ChatScreen = () => {
         }
     }
 
-    const declineRequest = async () =>{
-        try{
+    const declineRequest = async () => {
+        try {
             await declineConversationRequest(activeChat.id)
-        }catch(err){
+        } catch (err) {
             // @todo error handling
         }
     }
@@ -114,7 +115,7 @@ const ChatScreen = () => {
             if (docSnapshot.exists()) {
                 // The document exists, and you can access its data
                 const data = docSnapshot.data();
-                setActiveChat({...data, id: activeChat.id})
+                setActiveChat({ ...data, id: activeChat.id })
             } else {
                 // @todo handle
                 // The document does not exist
@@ -126,9 +127,9 @@ const ChatScreen = () => {
     }, [])
 
     const onSend = useCallback(async (messages = []) => {
-        if(activeChat.accepted){
+        if (activeChat.accepted) {
             const { text } = messages[0]
-            await addChatMessage(text, null, activeChat.id, user.uid)
+            await addChatMessage(text, null, activeChat.id, user.uid, userData)
         }
     }, [])
 
@@ -216,12 +217,12 @@ const ChatScreen = () => {
                 </Menu>
             </View>
             <GiftedChat
-                inverted={false}
+                inverted={messages.length <= 1 ? false : true}
                 loadEarlier={enableLoadEarlier}
                 messages={messages}
                 onSend={messages => onSend(messages)}
                 user={{
-                    _id: 1,
+                    _id: 2,
                 }}
                 renderTime={props => <Time
                     timeTextStyle={{
@@ -277,7 +278,7 @@ const ChatScreen = () => {
                         />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={declineRequest}
                 >
                     <View style={{

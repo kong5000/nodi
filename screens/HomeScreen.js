@@ -13,6 +13,8 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import StyleText from '../components/StyleText'
+import { getSetting, storeSetting } from '../services/LocalStorage'
+import { updateUserDoc } from '../services/UserQueries'
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -25,7 +27,7 @@ Notifications.setNotificationHandler({
 
 const HomeScreen = () => {
     const [token, setToken] = useState('')
-    
+
     // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
     async function sendPushNotification(expoPushToken) {
         const message = {
@@ -64,6 +66,8 @@ const HomeScreen = () => {
             token = await Notifications.getExpoPushTokenAsync({
                 projectId: Constants.expoConfig.extra.eas.projectId,
             });
+            // @todo
+            // If token is different from memory, update firebase
             setToken(JSON.stringify(token))
             console.log(token);
         } else {
@@ -94,16 +98,29 @@ const HomeScreen = () => {
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
+
     useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        const initPushNotifications = async () => {
+            const localTokenString = await getSetting('notificationToken')
+            registerForPushNotificationsAsync().then(async token => {
+                if (localTokenString != token.data) {
+                    console.log("NOT EQUAL")
+                    await storeSetting('notificationToken', token.data)
+                    await updateUserDoc(userData.id, {
+                        notificationToken: token.data
+                    })
+                }
+            });
 
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-        });
+            notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+                setNotification(notification);
+            });
 
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
+            responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response);
+            });
+        }
+        initPushNotifications()
 
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
@@ -169,9 +186,9 @@ const HomeScreen = () => {
                     }
                 }}
             />
-            {/* <ParallaxCarousel
+            <ParallaxCarousel
                 items={items}
-            /> */}
+            />
             <Footer />
         </View>
     )
