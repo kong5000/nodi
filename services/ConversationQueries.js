@@ -169,7 +169,7 @@ export const subscribeToConversations = (uid, setConversations) => {
                 const conversationData = change.doc.data()
                 setConversations(prev => prev.map(conv => {
                     if (conv.id == change.doc.id) {
-                        return conversationData
+                        return { id: change.doc.id, ...conversationData }
                     }
                     return conv
                 }))
