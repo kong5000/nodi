@@ -10,7 +10,9 @@ import {
     limit,
     orderBy,
     collection,
-    addDoc
+    addDoc,
+    endBefore,
+    Timestamp
 } from 'firebase/firestore'
 import { database } from '../firebase'
 
@@ -65,13 +67,29 @@ export const getConversations = async (uid) => {
     });
     return conversations
 }
+// @todo pagination, start at doc id of last local message
+export const getMessages = async (convId, uid, startAfterTimeStamp) => {
 
-export const getMessages = async (convId, uid) => {
+    const currentDate = new Date();
+    const yesterday = new Date(currentDate - 86400000);
     const messagesRef = collection(database, 'conversations', convId, 'messages');
-    const q = query(messagesRef,
+
+    let q = query(messagesRef,
         limit(15),
+        // where('createdAt', '>',Timestamp.fromDate(yesterday)),
         orderBy('createdAt', 'desc'),
     )
+
+    if(startAfterTimeStamp){
+        q = q = query(messagesRef,
+            limit(15),
+            where('createdAt', '>',startAfterTimeStamp),
+            orderBy('createdAt', 'desc'),
+        )
+    }
+
+
+
     const querySnapshot = await getDocs(q);
     let count = 1
     let messages = querySnapshot.docs.map((doc) => {
@@ -114,7 +132,8 @@ export const addChatMessage = async (text, image, conversationId, authorId, user
         image,
         author: userData.name,
         authorId: userData.id,
-        createdAt: new Date()
+        createdAt: new Date(),
+        negativeUnixTimeStamp: -Date.now(),
     })
     const messageId = docRef.id
     let lastMessage = text

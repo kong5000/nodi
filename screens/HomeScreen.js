@@ -157,35 +157,6 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <View style={{
-                backgroundColor: "green",
-                width: "100%",
-                padding: 10,
-            }}>
-                <StyleText
-                    text={notification ? JSON.stringify(notification) : "Notification Will be here"}
-                    fontSize={30}
-                />
-                <StyleText
-                    text={token ? token : "token Will be here"}
-                    fontSize={30}
-                />
-            </View>
-            <Button
-                style={{
-                    height: 100,
-                    width: 100,
-                    backgroundColor: 'red'
-                }}
-                title="Press to Send Notification"
-                onPress={async () => {
-                    try {
-                        await sendPushNotification(expoPushToken);
-                    } catch (err) {
-                        console.log(err)
-                    }
-                }}
-            />
             <ParallaxCarousel
                 items={items}
             />

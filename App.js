@@ -4,7 +4,7 @@ import { AuthProvider } from './hooks/useAuth';
 import { UserDataProvider } from './hooks/userData';
 import { PaperProvider } from 'react-native-paper';
 import StackNavigator from './StackNavigator';
-
+// eas build -p android --profile preview
 export default function App() {
 
   return (
