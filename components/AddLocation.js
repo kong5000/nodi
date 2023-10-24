@@ -93,12 +93,9 @@ const AddLocation = ({ onAdd }) => {
                 </TouchableOpacity>}
 
             </View>
-            <FlatList
-                style={{ position: 'absolute', top: 70, backgroundColor: 'white' }}
-                data={data}
-                renderItem={(item, index) => (
+            <View style={{ position: 'absolute', top: 70, backgroundColor: 'white' }}>
+                {data && data.map(item =>
                     <TouchableOpacity
-                        key={index}
                         style={{
                             minWidth: "100%",
                             display: 'flex',
@@ -109,17 +106,16 @@ const AddLocation = ({ onAdd }) => {
                             borderColor: COLORS.neutralGrey,
                         }}
                         onPress={() => {
-                            handleAdd(item.item.name)
+                            handleAdd(item.name)
                         }}>
-                        <CountryFlag isoCode={item.item.iso} size={30}
+                        <CountryFlag isoCode={item.iso} size={30}
                             style={{ borderRadius: 2, marginRight: 10 }} />
                         <StyleText
                             fontSize={20}
-                            text={item.item.name} />
-                    </TouchableOpacity>
-                )}
-                keyExtractor={item => item.id}
-            />
+                            text={item.name} />
+                    </TouchableOpacity>)
+                }
+            </View>
         </View>
     )
 }

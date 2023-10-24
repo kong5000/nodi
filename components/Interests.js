@@ -137,6 +137,7 @@ const Interests = () => {
         <View style={styles.container}>
             {thingsToDo.map((item) =>
                 <CustomToggleButton
+                    key={item.text}
                     text={item.text}
                     onToggle={() => toggleInterest(item.text)}
                     list={interests}
