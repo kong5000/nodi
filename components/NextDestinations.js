@@ -12,23 +12,25 @@ const NextDestinations = ({ destinations }) => {
             flexWrap: 'wrap',
         }}>
             {destinations.map(destination =>
-
-                <View style={{
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    borderColor: COLORS.neutralGrey,
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
-                    marginRight: '2.5%',
-                    marginBottom: '2.5%'
-                }}>
+                <View
+                    key={destination}
+                    style={{
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        borderColor: COLORS.neutralGrey,
+                        paddingHorizontal: 15,
+                        paddingVertical: 10,
+                        marginRight: '2.5%',
+                        marginBottom: '2.5%'
+                    }}>
                     <StyleText
                         text={destination}
                         fontSize={19}
                     />
                 </View>
-            )}
-        </View>
+            )
+            }
+        </View >
     )
 }
 

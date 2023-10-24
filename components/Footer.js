@@ -4,10 +4,12 @@ import { useNavigation } from '@react-navigation/core'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { COLORS, SIZES } from '../style'
 import { FontAwesome5 } from '@expo/vector-icons';
+import getUserData from '../hooks/userData'
 
 const Footer = () => {
     const navigation = useNavigation()
-
+    const { userData } = getUserData()
+    if(userData)
     return (
         <View style={styles.footer}>
             <TouchableOpacity onPress={() => {
@@ -32,6 +34,7 @@ const Footer = () => {
             </TouchableOpacity>
         </View>
     )
+    return <></>
 }
 
 export default Footer

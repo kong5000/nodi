@@ -56,7 +56,6 @@ const ConversationScreen = () => {
                     />
                     <ConversationList />
                 </View>
-            <Footer />
         </SafeAreaView>
     )
 }

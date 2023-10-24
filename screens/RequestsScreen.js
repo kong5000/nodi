@@ -56,7 +56,6 @@ const RequestsScreen = () => {
                     />
                     <ConversationList mode="requests"/>
                 </View>
-            <Footer />
         </SafeAreaView>
     )
 }

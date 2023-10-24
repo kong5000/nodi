@@ -299,7 +299,6 @@ const ChatScreen = () => {
             }
 
             <View style={{ marginVertical: 20 }}></View>
-            <Footer />
         </SafeAreaView>
     )
 }

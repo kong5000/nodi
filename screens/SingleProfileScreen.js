@@ -17,7 +17,6 @@ const SingleProfileScreen = () => {
                 setImagesLoaded={setImagesLoaded}
                 viewMode
             />
-            <Footer/>
         </View>
     )
 }

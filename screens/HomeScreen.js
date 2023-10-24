@@ -160,7 +160,6 @@ const HomeScreen = () => {
             <ParallaxCarousel
                 items={items}
             />
-            <Footer />
         </View>
     )
 }

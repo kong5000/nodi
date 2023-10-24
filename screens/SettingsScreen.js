@@ -115,7 +115,6 @@ const SettingsScreen = () => {
                     {settingMenu == 'account' && <AccountSettings />}
                 </View>
             </ScrollView>
-            <Footer />
         </SafeAreaView>
     )
 }
