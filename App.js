@@ -14,14 +14,8 @@ export default function App() {
       <NavigationContainer>
         <AuthProvider>
           <UserDataProvider>
-            <KeyboardAvoidingView
-              // keyboardVerticalOffset = {00}
-
-              style={{ flex: 1 }} behavior="padding"
-            >
-              <StackNavigator />
-            </KeyboardAvoidingView>
-            <Footer/>
+            <StackNavigator />
+            <Footer />
           </UserDataProvider>
         </AuthProvider>
       </NavigationContainer>

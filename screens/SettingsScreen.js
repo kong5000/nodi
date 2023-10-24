@@ -1,5 +1,5 @@
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
-import React, { useState } from 'react'
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
+import React, { useRef, useState } from 'react'
 import Footer from '../components/Footer'
 import { ToggleButton } from 'react-native-paper';
 import StyleText from '../components/StyleText';
@@ -12,9 +12,24 @@ const SettingsScreen = () => {
     const [showSaved, setShowSaved] = useState(true)
     const [settingMenu, setSettingMenu] = useState("profile")
 
+    const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 });
+
+    const handleScroll = (event) => {
+      const { x, y } = event.nativeEvent.contentOffset;
+      setScrollPosition({ x, y });
+    };
+
+    const scrollViewRef = useRef()
+
+    const scrollTo = (coordinates) => {
+        console.log(coordinates.y)
+        console.log(scrollPosition.y)
+        scrollViewRef.current.scrollTo({ y: scrollPosition.y -110 + coordinates.y })
+    }
+
     return (
         <SafeAreaView style={styles.screen}>
-            <ScrollView>
+            <ScrollView ref={scrollViewRef} onScroll={handleScroll} scrollEventThrottle={5}>
                 <View style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -111,7 +126,7 @@ const SettingsScreen = () => {
                             value="account" >
                         </ToggleButton>
                     </ToggleButton.Row>
-                    {settingMenu == 'profile' && <UserSettings />}
+                    {settingMenu == 'profile' && <UserSettings scrollTo={scrollTo} />}
                     {settingMenu == 'account' && <AccountSettings />}
                 </View>
             </ScrollView>

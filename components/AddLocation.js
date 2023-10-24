@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Keyboard, StyleSheet, TouchableWithoutFeedback, View, Text, FlatList, TouchableOpacity } from 'react-native'
 import CustomButton from './CustomButton'
 import { TextInput } from 'react-native-paper'
@@ -7,11 +7,14 @@ import StyleText from './StyleText'
 import CountryFlag from "react-native-country-flag";
 import { COUNTRIES, COUNTRY_NAMES, COUNTRY_ISO_MAP } from '../data'
 
-const AddLocation = ({ onAdd }) => {
+const AddLocation = ({ onAdd, scrollTo }) => {
     const [input, setInput] = useState(null);
     const [isoCode, setIsoCode] = useState('')
     const [data, setData] = useState(null);
     const [valid, setValid] = useState(false)
+
+    const inputRef = useRef()
+
     const filterData = () => {
         if (input && input != " ") {
             return COUNTRIES.filter(country => country.name.includes(input)).slice(0, 3)
@@ -45,12 +48,35 @@ const AddLocation = ({ onAdd }) => {
 
     return (
         <View>
-            <View style={{
-                display: "flex",
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}>
+            <View
+                ref={inputRef}
+
+                style={{
+                    display: "flex",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
                 <TextInput
+                    onFocus={() => {
+                        if (inputRef.current) {
+                            inputRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                console.log('Element coordinates:', {
+                                    x,
+                                    y,
+                                    width,
+                                    height,
+                                    pageX,
+                                    pageY,
+                                });
+                                scrollTo({x:0, y:pageY})
+                            });
+                        }
+
+                        // const rect = inputRef.getBoundingClientRect();
+                        // console.log(rect)
+                        // scrollTo({ x: 0, y: 0 })
+                    }
+                    }
                     theme={{
                         colors: {
                             onSurfaceVariant: COLORS.halfGrey,

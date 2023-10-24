@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 import { TextInput } from 'react-native-paper';
@@ -17,7 +17,7 @@ import { getSetting, storeSetting } from '../services/LocalStorage';
 const { width, height } = Dimensions.get('window');
 const BOTTOM_MARGIN = "7%"
 
-const UserSettings = () => {
+const UserSettings = ({ scrollTo }) => {
     const { setCurrentProfile, userData } = getUserData()
     const [firstName, setFirstName] = useState(userData.name)
     const [lastName, setLastName] = useState(userData.lastName)
@@ -28,6 +28,7 @@ const UserSettings = () => {
     const [favoritePlaces, setFavoritePlaces] = useState(userData.favoritePlaces)
 
     const navigation = useNavigation()
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -107,8 +108,10 @@ const UserSettings = () => {
             />
             <TextInput
                 multiline
+                scrollEnabled={false}
                 activeOutlineColor='black'
                 style={{
+                    // flex: 1,
                     width: "85%",
                     height: 125,
                     marginBottom: "7.5%",
@@ -214,6 +217,7 @@ const UserSettings = () => {
                     style={{ marginBottom: "5%" }}
                 />
                 <AddLocation
+                    scrollTo={scrollTo}
                     onAdd={(newLocation) => {
                         console.log(newLocation)
                         if (!futureLocations.find((location => location == newLocation))) {
