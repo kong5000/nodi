@@ -1,33 +1,19 @@
 import {
-    Button,
     StyleSheet, View,
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import { getCards } from '../services/Utils'
-import Footer from '../components/Footer'
 import ParallaxCarousel from '../components/ParallaxCarousel'
 import getUserData from '../hooks/userData'
 import * as Location from 'expo-location';
-import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-import StyleText from '../components/StyleText'
 import { getSetting, storeSetting } from '../services/LocalStorage'
 import { updateUserDoc } from '../services/UserQueries'
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
-    }),
-});
-
-
 
 const HomeScreen = () => {
     const [token, setToken] = useState('')
-
     // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
     async function sendPushNotification(expoPushToken) {
         const message = {
@@ -98,6 +84,24 @@ const HomeScreen = () => {
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
+
+    useEffect(() => {
+        const enableDisableNotifications = async () => {
+            let notificationEnabled = await getSetting('notifcations_enabled');
+
+            if (notificationEnabled) {
+                Notifications.setNotificationHandler({
+                    handleNotification: async () => ({
+                        shouldShowAlert: true,
+                        shouldPlaySound: false,
+                        shouldSetBadge: false,
+                    }),
+                });
+            }
+
+        }
+        enableDisableNotifications()
+    }, [])
 
     useEffect(() => {
         const initPushNotifications = async () => {

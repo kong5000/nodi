@@ -1,0 +1,96 @@
+Date : 2023-10-27 09:14:16
+Directory : /Users/keith/Nodi
+Total : 62 files,  39813 codes, 160 comments, 386 blanks, all 40359 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          5 |     34,278 |         24 |          4 |     34,306 |
+| JavaScript |         54 |      5,525 |        135 |        382 |      6,042 |
+| XML        |          2 |          7 |          0 |          0 |          7 |
+| Markdown   |          1 |          3 |          1 |          0 |          4 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                 | files      | code       | comment    | blank      | total      |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                    |         62 |     39,813 |        160 |        386 |     40,359 |
+| . (Files)                                            |         16 |     35,235 |         52 |         41 |     35,328 |
+| assets                                               |          2 |          7 |          0 |          0 |          7 |
+| components                                           |         27 |      2,307 |         50 |        174 |      2,531 |
+| hooks                                                |          2 |        134 |          1 |         16 |        151 |
+| screens                                              |          8 |      1,538 |         38 |        110 |      1,686 |
+| services                                             |          6 |        361 |         19 |         43 |        423 |
+| test                                                 |          1 |        231 |          0 |          2 |        233 |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                             | language   | code       | comment    | blank      | total      |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/keith/Nodi/App.js                             | JavaScript |         30 |          1 |          3 |         34 |
+| /Users/keith/Nodi/InstagramTest.js                   | JavaScript |         65 |         11 |          9 |         85 |
+| /Users/keith/Nodi/README.md                          | Markdown   |          3 |          1 |          0 |          4 |
+| /Users/keith/Nodi/StackNavigator.js                  | JavaScript |         37 |          0 |          3 |         40 |
+| /Users/keith/Nodi/app.json                           | JSON       |         15 |         24 |          0 |         39 |
+| /Users/keith/Nodi/assets/network.svg                 | XML        |          6 |          0 |          0 |          6 |
+| /Users/keith/Nodi/assets/thumbs.svg                  | XML        |          1 |          0 |          0 |          1 |
+| /Users/keith/Nodi/babel.config.js                    | JavaScript |         12 |          0 |          1 |         13 |
+| /Users/keith/Nodi/components/AccountSettings.js      | JavaScript |        202 |          1 |          6 |        209 |
+| /Users/keith/Nodi/components/AddLocation.js          | JavaScript |        125 |          0 |         12 |        137 |
+| /Users/keith/Nodi/components/ChatRow.js              | JavaScript |        113 |          1 |          8 |        122 |
+| /Users/keith/Nodi/components/ConnectModal.js         | JavaScript |        114 |          3 |          5 |        122 |
+| /Users/keith/Nodi/components/ConversationList.js     | JavaScript |         41 |          0 |          5 |         46 |
+| /Users/keith/Nodi/components/CustomButton.js         | JavaScript |         36 |          0 |          3 |         39 |
+| /Users/keith/Nodi/components/CustomInputToolbar.js   | JavaScript |         13 |          1 |          4 |         18 |
+| /Users/keith/Nodi/components/CustomToggleButton.js   | JavaScript |         22 |          0 |          2 |         24 |
+| /Users/keith/Nodi/components/Footer.js               | JavaScript |         54 |          0 |          3 |         57 |
+| /Users/keith/Nodi/components/InstagramPhotos.js      | JavaScript |         58 |          0 |          4 |         62 |
+| /Users/keith/Nodi/components/Interests.js            | JavaScript |        149 |          0 |         12 |        161 |
+| /Users/keith/Nodi/components/InterestsProfile.js     | JavaScript |         37 |          0 |          4 |         41 |
+| /Users/keith/Nodi/components/LocationContainer.js    | JavaScript |         19 |          0 |          4 |         23 |
+| /Users/keith/Nodi/components/LocationSearch.js       | JavaScript |         79 |          8 |          8 |         95 |
+| /Users/keith/Nodi/components/NextButton.js           | JavaScript |         44 |          0 |          4 |         48 |
+| /Users/keith/Nodi/components/NextDestinations.js     | JavaScript |         36 |          0 |          3 |         39 |
+| /Users/keith/Nodi/components/Pagination.js           | JavaScript |         83 |          6 |          5 |         94 |
+| /Users/keith/Nodi/components/ParallaxCarousel.js     | JavaScript |        150 |         22 |         17 |        189 |
+| /Users/keith/Nodi/components/PictureButton.js        | JavaScript |         71 |          0 |          8 |         79 |
+| /Users/keith/Nodi/components/Profile.js              | JavaScript |         30 |          4 |          2 |         36 |
+| /Users/keith/Nodi/components/ProfileCard.js          | JavaScript |        242 |          4 |         11 |        257 |
+| /Users/keith/Nodi/components/ProfilePicture.js       | JavaScript |         64 |          0 |         10 |         74 |
+| /Users/keith/Nodi/components/ScrollToTextInput.js    | JavaScript |         47 |          0 |          4 |         51 |
+| /Users/keith/Nodi/components/SettingsButtonsGroup.js | JavaScript |         34 |          0 |          4 |         38 |
+| /Users/keith/Nodi/components/StyleText.js            | JavaScript |         55 |          0 |          6 |         61 |
+| /Users/keith/Nodi/components/UserDetail.js           | JavaScript |         31 |          0 |          3 |         34 |
+| /Users/keith/Nodi/components/UserSettings.js         | JavaScript |        358 |          0 |         17 |        375 |
+| /Users/keith/Nodi/data.js                            | JavaScript |        597 |          0 |          1 |        598 |
+| /Users/keith/Nodi/eas.json                           | JSON       |         21 |          0 |          2 |         23 |
+| /Users/keith/Nodi/firebase.js                        | JavaScript |         27 |          7 |          4 |         38 |
+| /Users/keith/Nodi/google-services.json               | JSON       |         39 |          0 |          0 |         39 |
+| /Users/keith/Nodi/hooks/useAuth.js                   | JavaScript |         26 |          0 |          2 |         28 |
+| /Users/keith/Nodi/hooks/userData.js                  | JavaScript |        108 |          1 |         14 |        123 |
+| /Users/keith/Nodi/index.js                           | JavaScript |          3 |          3 |          3 |          9 |
+| /Users/keith/Nodi/metro.config.js                    | JavaScript |         15 |          0 |          4 |         19 |
+| /Users/keith/Nodi/package-lock.json                  | JSON       |     34,116 |          0 |          1 |     34,117 |
+| /Users/keith/Nodi/package.json                       | JSON       |         87 |          0 |          1 |         88 |
+| /Users/keith/Nodi/screens/ChatScreen.js              | JavaScript |        306 |          7 |         23 |        336 |
+| /Users/keith/Nodi/screens/ConversationsScreen.js     | JavaScript |         66 |          0 |          4 |         70 |
+| /Users/keith/Nodi/screens/HomeScreen.js              | JavaScript |        179 |          5 |         22 |        206 |
+| /Users/keith/Nodi/screens/LoginScreen.js             | JavaScript |        171 |          4 |          8 |        183 |
+| /Users/keith/Nodi/screens/RequestsScreen.js          | JavaScript |         66 |          0 |          4 |         70 |
+| /Users/keith/Nodi/screens/SettingsScreen.js          | JavaScript |        145 |          0 |          9 |        154 |
+| /Users/keith/Nodi/screens/SignupScreen.js            | JavaScript |        577 |         22 |         36 |        635 |
+| /Users/keith/Nodi/screens/SingleProfileScreen.js     | JavaScript |         28 |          0 |          4 |         32 |
+| /Users/keith/Nodi/services/ConversationQueries.js    | JavaScript |        172 |          5 |         16 |        193 |
+| /Users/keith/Nodi/services/GeoQueries.js             | JavaScript |         52 |         10 |         13 |         75 |
+| /Users/keith/Nodi/services/LocalStorage.js           | JavaScript |         29 |          4 |          4 |         37 |
+| /Users/keith/Nodi/services/RequestQueries.js         | JavaScript |         76 |          0 |          3 |         79 |
+| /Users/keith/Nodi/services/UserQueries.js            | JavaScript |         14 |          0 |          2 |         16 |
+| /Users/keith/Nodi/services/Utils.js                  | JavaScript |         18 |          0 |          5 |         23 |
+| /Users/keith/Nodi/style.js                           | JavaScript |        168 |          5 |          8 |        181 |
+| /Users/keith/Nodi/test.js                            | JavaScript |          0 |          0 |          1 |          1 |
+| /Users/keith/Nodi/test/dummy_data.js                 | JavaScript |        231 |          0 |          2 |        233 |
+| Total                                                |            |     39,813 |        160 |        386 |     40,359 |
++------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { BUTTON_STYLE, COLORS, FONT_SIZE } from '../style';
@@ -10,34 +10,47 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { getSetting, storeSetting } from '../services/LocalStorage';
+import CustomToggleButton from './CustomToggleButton';
+import * as Notifications from 'expo-notifications';
+import getUserData from '../hooks/userData';
 const notifications = [
     {
-        text: "Requests",
+        text: "Enable",
         icon:
             <Ionicons
                 name="paper-plane-outline" size={24}
                 color={COLORS.mainTheme}
                 style={{ marginRight: '10%' }}
             />
-    },
-    {
-        text: "Messages",
-        icon:
-            <Ionicons
-                name="chatbubbles" size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    },
-    {
-        text: "Updates",
-        icon:
-            <MaterialIcons
-                name="system-update" size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    },
+    }
+    // {
+    //     text: "Requests",
+    //     icon:
+    //         <Ionicons
+    //             name="paper-plane-outline" size={24}
+    //             color={COLORS.mainTheme}
+    //             style={{ marginRight: '10%' }}
+    //         />
+    // },
+    // {
+    //     text: "Messages",
+    //     icon:
+    //         <Ionicons
+    //             name="chatbubbles" size={24}
+    //             color={COLORS.mainTheme}
+    //             style={{ marginRight: '10%' }}
+    //         />
+    // },
+    // {
+    //     text: "Updates",
+    //     icon:
+    //         <MaterialIcons
+    //             name="system-update" size={24}
+    //             color={COLORS.mainTheme}
+    //             style={{ marginRight: '10%' }}
+    //         />
+    // },
 ]
 
 const accountActions = [
@@ -76,7 +89,52 @@ const accountActions = [
 const AccountSettings = () => {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-    const [activeNotifications, setActiveNotifications] = useState([])
+    const [notifcationsEnabled, setNotificationsEnabled] = useState(true)
+    const { userData } = getUserData()
+    useEffect(() => {
+        const setNotifications = async () => {
+            // Only one global notifcation setting for now
+            if (notifcationsEnabled) {
+                storeSetting('notifcations_enabled', "true")
+                await updateUserDoc(userData.id, {
+                    notifcationsEnabled: true
+                })
+                Notifications.setNotificationHandler({
+                    handleNotification: async () => ({
+                        shouldShowAlert: true,
+                        shouldPlaySound: false,
+                        shouldSetBadge: false,
+                    }),
+                });
+            } else {
+                storeSetting('notifcations_enabled', "false")
+                await updateUserDoc(userData.id, {
+                    notifcationsEnabled: false
+                })
+                Notifications.setNotificationHandler({
+                    handleNotification: async () => ({
+                        shouldShowAlert: false,
+                        shouldPlaySound: false,
+                        shouldSetBadge: false,
+                    }),
+                });
+            }
+        }
+
+    }, [notifcationsEnabled])
+
+    useEffect(() => {
+        const initializeSettings = async () => {
+            let notificationsEnabled = await getSetting('notifcations_enabled')
+            if (notificationsEnabled == "true") {
+                setNotificationsEnabled(true)
+            } else {
+                setNotificationsEnabled(false)
+            }
+        }
+        initializeSettings
+    }, [])
+
     return (
         <View style={{
             // backgroundColor:'red',
@@ -99,10 +157,17 @@ const AccountSettings = () => {
                 }}
             />
             <View style={styles.container}>
-                <SettingsButtonsGroup
-                    activeButtons={activeNotifications}
-                    setActiveButtons={setActiveNotifications}
-                    list={notifications}
+                <CustomToggleButton
+                    enabled={notifcationsEnabled}
+                    setEnabled={setNotificationsEnabled}
+                    icon={
+                        <Ionicons
+                            name="paper-plane-outline" size={24}
+                            color={COLORS.mainTheme}
+                            style={{ marginRight: '10%' }}
+                        />
+                    }
+                    text={notifcationsEnabled ? "Enabled" : "Disabled"}
                 />
             </View>
             <StyleText
@@ -175,10 +240,43 @@ const AccountSettings = () => {
                 }}
             />
             <View style={styles.container}>
-                <SettingsButtonsGroup
-                    activeButtons={activeNotifications}
-                    setActiveButtons={setActiveNotifications}
-                    list={accountActions}
+                <CustomToggleButton
+                    enabled={notifcationsEnabled}
+                    setEnabled={setNotificationsEnabled}
+                    icon={
+                        <MaterialCommunityIcons
+                            name="sleep"
+                            size={24}
+                            color={COLORS.mainTheme}
+                            style={{ marginRight: '10%' }}
+                        />
+                    }
+                    text="Deactivate"
+                />
+                <CustomToggleButton
+                    enabled={notifcationsEnabled}
+                    setEnabled={setNotificationsEnabled}
+                    icon={
+                        <MaterialCommunityIcons
+                            name="logout"
+                            size={24}
+                            color={COLORS.mainTheme}
+                            style={{ marginRight: '10%' }}
+                        />
+                    }
+                    text="Logout"
+                />
+                <CustomToggleButton
+                    enabled={notifcationsEnabled}
+                    setEnabled={setNotificationsEnabled}
+                    icon={
+                        <MaterialIcons
+                            name="delete" size={24}
+                            color={COLORS.mainTheme}
+                            style={{ marginRight: '10%' }}
+                        />
+                    }
+                    text="Delete"
                 />
             </View>
         </View>

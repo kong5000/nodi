@@ -4,12 +4,11 @@ import StyleText from './StyleText'
 import { BUTTON_STYLE, COLORS, FLEX_CENTERED } from '../style'
 const { width, height } = Dimensions.get('window');
 
-const CustomToggleButton = ({ text, enabled, setEnabled, icon }) => {
+const ListCustomToggleButton = ({ onToggle, text, list, icon }) => {
     return (
-        <TouchableOpacity onPress={() =>
-            setEnabled(prev => !prev)
-        }>
-            <View style={[BUTTON_STYLE.button, enabled ? BUTTON_STYLE.enabledButton
+        <TouchableOpacity onPress={() => onToggle()}>
+            <View style={[BUTTON_STYLE.button, (list && list.includes(text))
+                ? BUTTON_STYLE.enabledButton
                 : BUTTON_STYLE.disabledButton]
             }>
                 {icon}
@@ -22,4 +21,4 @@ const CustomToggleButton = ({ text, enabled, setEnabled, icon }) => {
     )
 }
 
-export default CustomToggleButton
+export default ListCustomToggleButton

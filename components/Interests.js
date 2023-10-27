@@ -5,7 +5,7 @@ import getUserData from '../hooks/userData'
 import { getSetting, storeSetting } from '../services/LocalStorage'
 import { updateUserDoc } from '../services/UserQueries'
 import { COLORS } from '../style'
-import CustomToggleButton from './CustomToggleButton'
+import CustomToggleButton from './ListCustomToggleButton'
 const { width, height } = Dimensions.get('window');
 
 const thingsToDo = [
