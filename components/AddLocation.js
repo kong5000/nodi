@@ -60,23 +60,10 @@ const AddLocation = ({ onAdd, scrollTo }) => {
                     onFocus={() => {
                         if (inputRef.current) {
                             inputRef.current.measure((x, y, width, height, pageX, pageY) => {
-                                console.log('Element coordinates:', {
-                                    x,
-                                    y,
-                                    width,
-                                    height,
-                                    pageX,
-                                    pageY,
-                                });
-                                scrollTo({x:0, y:pageY})
+                                scrollTo({ x: 0, y: pageY })
                             });
                         }
-
-                        // const rect = inputRef.getBoundingClientRect();
-                        // console.log(rect)
-                        // scrollTo({ x: 0, y: 0 })
-                    }
-                    }
+                    }}
                     theme={{
                         colors: {
                             onSurfaceVariant: COLORS.halfGrey,

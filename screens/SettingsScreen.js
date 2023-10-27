@@ -22,9 +22,7 @@ const SettingsScreen = () => {
     const scrollViewRef = useRef()
 
     const scrollTo = (coordinates) => {
-        console.log(coordinates.y)
-        console.log(scrollPosition.y)
-        scrollViewRef.current.scrollTo({ y: scrollPosition.y -110 + coordinates.y })
+        scrollViewRef.current.scrollTo({ y: scrollPosition.y -200 + coordinates.y })
     }
 
     return (

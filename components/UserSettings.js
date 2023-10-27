@@ -27,6 +27,12 @@ const UserSettings = ({ scrollTo }) => {
     const [futureLocations, setFutureLocations] = useState(userData.futureLocations)
     const [favoritePlaces, setFavoritePlaces] = useState(userData.favoritePlaces)
 
+
+
+    const occupationRef = useRef()
+    const educationRef = useRef()
+    const introRef = useRef()
+
     const navigation = useNavigation()
 
 
@@ -106,23 +112,36 @@ const UserSettings = ({ scrollTo }) => {
                     marginBottom: "2.5%",
                 }}
             />
-            <TextInput
-                multiline
-                scrollEnabled={false}
-                activeOutlineColor='black'
+            <View
+                ref={introRef}
                 style={{
-                    // flex: 1,
                     width: "85%",
-                    height: 125,
-                    marginBottom: "7.5%",
-                    fontWeight: '700'
-
                 }}
-                outlineStyle={styles.textInputOutline}
-                mode='outlined'
-                value={intro}
-                onChangeText={text => setIntro(text)}
-            />
+            >
+
+                <TextInput
+                    style={{
+                        height: 125,
+                        marginBottom: "7.5%",
+                        fontWeight: '700'
+                    }}
+                    onFocus={() => {
+                        if (introRef.current) {
+                            introRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                scrollTo({ x: 0, y: pageY })
+                            });
+                        }
+                    }}
+                    multiline
+                    scrollEnabled={false}
+                    activeOutlineColor='black'
+                    outlineStyle={styles.textInputOutline}
+                    mode='outlined'
+                    value={intro}
+                    onChangeText={text => setIntro(text)}
+                />
+            </View>
+
             <StyleText
                 text="Your Details"
                 fontSize={FONT_SIZE.title}
@@ -162,34 +181,56 @@ const UserSettings = ({ scrollTo }) => {
                     value={lastName}
                     onChangeText={text => setLastName(text)}
                 /> */}
-                <TextInput
-                    theme={{
-                        colors: {
-                            onSurfaceVariant: COLORS.halfGrey,
-                        }
-                    }}
-                    label='Occupation'
-                    activeOutlineColor='black'
-                    mode='outlined'
-                    style={styles.textInput}
-                    outlineStyle={styles.textInputOutline}
-                    value={occupation}
-                    onChangeText={text => setOccupation(text)}
-                />
-                <TextInput
-                    theme={{
-                        colors: {
-                            onSurfaceVariant: COLORS.halfGrey,
-                        }
-                    }}
-                    label='Education (Institution)'
-                    activeOutlineColor='black'
-                    mode='outlined'
-                    style={styles.textInput}
-                    outlineStyle={styles.textInputOutline}
-                    value={education}
-                    onChangeText={text => setEducation(text)}
-                />
+                <View ref={occupationRef} >
+                    <TextInput
+                        onFocus={() => {
+                            console.log(occupationRef)
+                            if (occupationRef.current) {
+                                console.log("OFUC")
+
+                                occupationRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                    scrollTo({ x: 0, y: pageY })
+                                });
+                            }
+                        }}
+                        theme={{
+                            colors: {
+                                onSurfaceVariant: COLORS.halfGrey,
+                            }
+                        }}
+                        label='Occupation'
+                        activeOutlineColor='black'
+                        mode='outlined'
+                        style={styles.textInput}
+                        outlineStyle={styles.textInputOutline}
+                        value={occupation}
+                        onChangeText={text => setOccupation(text)}
+                    />
+                </View>
+                <View ref={educationRef}>
+                    <TextInput
+                        onFocus={() => {
+                            if (educationRef.current) {
+                                educationRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                    scrollTo({ x: 0, y: pageY })
+                                });
+                            }
+                        }}
+                        theme={{
+                            colors: {
+                                onSurfaceVariant: COLORS.halfGrey,
+                            }
+                        }}
+                        label='Education (Institution)'
+                        activeOutlineColor='black'
+                        mode='outlined'
+                        style={styles.textInput}
+                        outlineStyle={styles.textInputOutline}
+                        value={education}
+                        onChangeText={text => setEducation(text)}
+                    />
+                </View>
+
             </View>
             <StyleText
                 text="Your Interests"
@@ -254,6 +295,7 @@ const UserSettings = ({ scrollTo }) => {
                             <View style={{
                                 display: 'flex',
                                 flexDirection: 'row',
+                                flexWrap: 'wrap',
                             }}>
                                 <CountryFlag isoCode={COUNTRY_ISO_MAP[loc]} size={30}
                                     style={{ borderRadius: 2, marginRight: 10 }} />
@@ -287,6 +329,7 @@ const UserSettings = ({ scrollTo }) => {
                     style={{ marginBottom: "5%" }}
                 />
                 <AddLocation
+                    scrollTo={scrollTo}
                     onAdd={(newLocation) => {
                         if (!favoritePlaces.find((location => location == newLocation))) {
                             setFavoritePlaces(prev => [...prev, newLocation])
@@ -300,13 +343,14 @@ const UserSettings = ({ scrollTo }) => {
 
                 />}
                 {favoritePlaces && favoritePlaces.map(loc =>
-                    <View 
-                    key={loc}
-                    style={{
-                        display: 'flex',
-                        ...FLEX_CENTERED,
-                        zIndex: -1,
-                    }}>
+                    <View
+                        key={loc}
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            ...FLEX_CENTERED,
+                            zIndex: -1,
+                        }}>
                         <View style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -343,7 +387,7 @@ const UserSettings = ({ scrollTo }) => {
                     </View>)
                 }
             </View>
-            <View style={{ marginBottom: 200 }} />
+            <View style={{ marginBottom: 400 }} />
             {/* <View style={{
                 width: "85%",
                 marginTop: "10%"
