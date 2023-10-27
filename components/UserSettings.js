@@ -232,11 +232,13 @@ const UserSettings = ({ scrollTo }) => {
 
                 />}
                 {futureLocations && futureLocations.map(loc =>
-                    <View style={{
-                        display: 'flex',
-                        ...FLEX_CENTERED,
-                        zIndex: -1
-                    }}>
+                    <View
+                        key={loc}
+                        style={{
+                            display: 'flex',
+                            ...FLEX_CENTERED,
+                            zIndex: -1
+                        }}>
                         <View style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -298,7 +300,9 @@ const UserSettings = ({ scrollTo }) => {
 
                 />}
                 {favoritePlaces && favoritePlaces.map(loc =>
-                    <View style={{
+                    <View 
+                    key={loc}
+                    style={{
                         display: 'flex',
                         ...FLEX_CENTERED,
                         zIndex: -1,
