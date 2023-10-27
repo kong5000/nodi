@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 import { TextInput } from 'react-native-paper';
 import { COUNTRY_ISO_MAP } from '../data';
@@ -12,13 +12,13 @@ import Interests from './Interests';
 import ProfilePicture from './ProfilePicture';
 import StyleText from './StyleText';
 import { useNavigation } from '@react-navigation/core'
-import { getSetting, storeSetting } from '../services/LocalStorage';
-
-const { width, height } = Dimensions.get('window');
+import { storeSetting } from '../services/LocalStorage';
+import ScrollToTextInput from './ScrollToTextInput';
 const BOTTOM_MARGIN = "7%"
 
 const UserSettings = ({ scrollTo }) => {
     const { setCurrentProfile, userData } = getUserData()
+
     const [firstName, setFirstName] = useState(userData.name)
     const [lastName, setLastName] = useState(userData.lastName)
     const [occupation, setOccupation] = useState(userData.occupation)
@@ -27,12 +27,7 @@ const UserSettings = ({ scrollTo }) => {
     const [futureLocations, setFutureLocations] = useState(userData.futureLocations)
     const [favoritePlaces, setFavoritePlaces] = useState(userData.favoritePlaces)
 
-
-
-    const occupationRef = useRef()
-    const educationRef = useRef()
     const introRef = useRef()
-
     const navigation = useNavigation()
 
 
@@ -153,84 +148,30 @@ const UserSettings = ({ scrollTo }) => {
             <View style={{
                 marginTop: '5%'
             }}>
-                {/* <TextInput
-                    theme={{
-                        colors: {
-                            onSurfaceVariant: COLORS.halfGrey,
-                        }
-                    }}
-                    label='First Name'
-                    activeOutlineColor='black'
-                    mode='outlined'
-                    style={styles.textInput}
-                    outlineStyle={styles.textInputOutline}
+                <ScrollToTextInput
                     value={firstName}
-                    onChangeText={text => setFirstName(text)}
+                    setValue={setFirstName}
+                    label="First Name"
+                    scrollTo={scrollTo}
                 />
-                <TextInput
-                    theme={{
-                        colors: {
-                            onSurfaceVariant: COLORS.halfGrey,
-                        }
-                    }}
-                    label='Last Name'
-                    activeOutlineColor='black'
-                    mode='outlined'
-                    style={styles.textInput}
-                    outlineStyle={styles.textInputOutline}
+                <ScrollToTextInput
                     value={lastName}
-                    onChangeText={text => setLastName(text)}
-                /> */}
-                <View ref={occupationRef} >
-                    <TextInput
-                        onFocus={() => {
-                            console.log(occupationRef)
-                            if (occupationRef.current) {
-                                console.log("OFUC")
-
-                                occupationRef.current.measure((x, y, width, height, pageX, pageY) => {
-                                    scrollTo({ x: 0, y: pageY })
-                                });
-                            }
-                        }}
-                        theme={{
-                            colors: {
-                                onSurfaceVariant: COLORS.halfGrey,
-                            }
-                        }}
-                        label='Occupation'
-                        activeOutlineColor='black'
-                        mode='outlined'
-                        style={styles.textInput}
-                        outlineStyle={styles.textInputOutline}
-                        value={occupation}
-                        onChangeText={text => setOccupation(text)}
-                    />
-                </View>
-                <View ref={educationRef}>
-                    <TextInput
-                        onFocus={() => {
-                            if (educationRef.current) {
-                                educationRef.current.measure((x, y, width, height, pageX, pageY) => {
-                                    scrollTo({ x: 0, y: pageY })
-                                });
-                            }
-                        }}
-                        theme={{
-                            colors: {
-                                onSurfaceVariant: COLORS.halfGrey,
-                            }
-                        }}
-                        label='Education (Institution)'
-                        activeOutlineColor='black'
-                        mode='outlined'
-                        style={styles.textInput}
-                        outlineStyle={styles.textInputOutline}
-                        value={education}
-                        onChangeText={text => setEducation(text)}
-                    />
-                </View>
-
+                    setValue={setLastName}
+                    label="Last Name"
+                    scrollTo={scrollTo}
+                />
+                <ScrollToTextInput
+                    value={occupation}
+                    setValue={setOccupation}
+                    label="Occupation"
+                    scrollTo={scrollTo}
+                />
+                <ScrollToTextInput
+                    value={education}
+                    setValue={setEducation}
+                    label="Education"
+                    scrollTo={scrollTo}
+                />
             </View>
             <StyleText
                 text="Your Interests"
@@ -388,52 +329,6 @@ const UserSettings = ({ scrollTo }) => {
                 }
             </View>
             <View style={{ marginBottom: 400 }} />
-            {/* <View style={{
-                width: "85%",
-                marginTop: "10%"
-            }}>
-                <StyleText
-                    text="Link Instagram"
-                    fontSize={FONT_SIZE.title}
-                    bold
-                />
-                <StyleText
-                    text="Prompt for users to share instagram pictures"
-                    fontSize={FONT_SIZE.small}
-                />
-            </View> */}
-
-            {/* <TouchableOpacity style={{
-                ...FLEX_CENTERED,
-                width: "70%",
-                backgroundColor: COLORS.mainTheme,
-                borderRadius: 30,
-                paddingHorizontal: FONT_SIZE.small,
-                paddingVertical: 10,
-                zIndex: -2,
-                marginVertical: "10%"
-            }}>
-                <View style={{
-                    ...FLEX_CENTERED,
-                    flexDirection: 'row',
-                }}>
-                    <FontAwesome5
-                        name="instagram"
-                        size={30}
-                        color="white"
-                        style={{ marginRight: "5%" }}
-                    />
-                    <StyleText
-                        style={{
-                            ...styles.buttonText,
-                            color: "white"
-                        }}
-                        fontSize={20}
-                        bold
-                        text="Link Instagram"
-                    />
-                </View>
-            </TouchableOpacity> */}
         </>
     )
 }

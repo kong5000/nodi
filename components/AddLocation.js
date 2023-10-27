@@ -50,7 +50,6 @@ const AddLocation = ({ onAdd, scrollTo }) => {
         <View>
             <View
                 ref={inputRef}
-
                 style={{
                     display: "flex",
                     flexDirection: 'row',
