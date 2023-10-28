@@ -54,32 +54,9 @@ const SignupScreen = () => {
     const [interests, setInterests] = useState("")
     const navigation = useNavigation()
 
-    // useEffect(() => {
-    //     console.log("profilePicture", profilePicture)
-    //     console.log("lastName", lastName)
-    //     console.log("firstName", firstName)
-
-    //     console.log("location", location)
-    //     console.log("occupation", occupation)
-    //     console.log("education", education)
-
-    //     console.log("favoriteLocations", favoriteLocations)
-    //     console.log("futureLocations", futureLocations)
-
-    //     console.log("intro", intro)
-
-    //     console.log("interests", interests)
-    //     console.log("date", birthDate)
-
-    // }, [profilePicture, favoriteLocations, futureLocations, education, occupation, intro, lastName,
-    //     firstName, location, interests, birthDate])
-
-
     const hasInputErrors = () => {
-        console.log(step)
         let hasErrors = false
         if (step == 0) {
-            console.log(!firstName)
             if (!firstName) {
                 setFirstNameError(true)
                 hasErrors = true
@@ -129,7 +106,6 @@ const SignupScreen = () => {
     }
 
     const handleConfirm = (date) => {
-        console.log(moment().diff(date, 'years'))
         if (moment().diff(date, 'years') < 18) {
             setBirthDateError("Must be over 18")
         } else {

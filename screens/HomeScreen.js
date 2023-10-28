@@ -132,7 +132,6 @@ const HomeScreen = () => {
         };
     }, []);
 
-
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();

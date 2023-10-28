@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Touchable, TouchableOpacity, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { BUTTON_STYLE, COLORS, FONT_SIZE } from '../style';
+import { StyleSheet, View } from 'react-native';
+import { COLORS, FONT_SIZE } from '../style';
 import StyleText from './StyleText';
-import SettingsButtonsGroup from './SettingsButtonsGroup';
-const { width, height } = Dimensions.get('window');
-const BOTTOM_MARGIN = "7%"
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { getSetting, storeSetting } from '../services/LocalStorage';
 import CustomToggleButton from './CustomToggleButton';
 import * as Notifications from 'expo-notifications';
+import { getAuth, signOut } from 'firebase/auth';
+
 import getUserData from '../hooks/userData';
+import CustomButton from './CustomButton';
+import StyledButton from './StyledButton';
 const notifications = [
     {
         text: "Enable",
@@ -87,10 +86,10 @@ const accountActions = [
 
 
 const AccountSettings = () => {
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
     const [notifcationsEnabled, setNotificationsEnabled] = useState(true)
     const { userData } = getUserData()
+    const auth = getAuth()
+
     useEffect(() => {
         const setNotifications = async () => {
             // Only one global notifcation setting for now
@@ -120,7 +119,7 @@ const AccountSettings = () => {
                 });
             }
         }
-
+        setNotifications()
     }, [notifcationsEnabled])
 
     useEffect(() => {
@@ -171,58 +170,6 @@ const AccountSettings = () => {
                 />
             </View>
             <StyleText
-                text="Authentication"
-                fontSize={FONT_SIZE.title}
-                bold
-                style={{
-                    width: "85%",
-                    marginTop: "7.5%"
-                }}
-            />
-            <StyleText
-                text="Change your email or password"
-                fontSize={FONT_SIZE.small}
-                style={{
-                    width: "84%",
-                    marginBottom: "2.5%",
-                }}
-            />
-            <TextInput
-                theme={{
-                    colors: {
-                        onSurfaceVariant: COLORS.halfGrey,
-                    }
-                }}
-                label='Email'
-                activeOutlineColor='black'
-                mode='outlined'
-                style={styles.textInput}
-                outlineStyle={styles.textInputOutline}
-                value={email}
-                onChangeText={text => setEmail(text)}
-            />
-
-            <TouchableOpacity style={{
-                ...BUTTON_STYLE.button,
-                ...BUTTON_STYLE.disabledButton,
-                width: "100%",
-                marginHorizontal: 0,
-                marginTop: 0
-            }}>
-                <FontAwesome5
-                    name="lock"
-                    size={FONT_SIZE.title}
-                    color={COLORS.mainTheme}
-                    style={{
-                        marginRight: '3%'
-                    }}
-                />
-                <StyleText
-                    text="Change Password"
-                    fontSize={FONT_SIZE.small}
-                />
-            </TouchableOpacity>
-            <StyleText
                 text="Account"
                 fontSize={FONT_SIZE.title}
                 bold
@@ -240,9 +187,7 @@ const AccountSettings = () => {
                 }}
             />
             <View style={styles.container}>
-                <CustomToggleButton
-                    enabled={notifcationsEnabled}
-                    setEnabled={setNotificationsEnabled}
+                <StyledButton
                     icon={
                         <MaterialCommunityIcons
                             name="sleep"
@@ -253,9 +198,12 @@ const AccountSettings = () => {
                     }
                     text="Deactivate"
                 />
-                <CustomToggleButton
-                    enabled={notifcationsEnabled}
-                    setEnabled={setNotificationsEnabled}
+                <StyledButton
+                    onPress={() => {
+                        signOut(auth)
+                            .then()
+                            .catch((err) => console.log(err))
+                    }}
                     icon={
                         <MaterialCommunityIcons
                             name="logout"
@@ -266,9 +214,7 @@ const AccountSettings = () => {
                     }
                     text="Logout"
                 />
-                <CustomToggleButton
-                    enabled={notifcationsEnabled}
-                    setEnabled={setNotificationsEnabled}
+                <StyledButton
                     icon={
                         <MaterialIcons
                             name="delete" size={24}
@@ -278,6 +224,7 @@ const AccountSettings = () => {
                     }
                     text="Delete"
                 />
+
             </View>
         </View>
     )

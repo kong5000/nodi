@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Keyboard, StyleSheet, TouchableWithoutFeedback, View, Text, FlatList, TouchableOpacity } from 'react-native'
-import CustomButton from './CustomButton'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import CountryFlag from "react-native-country-flag"
 import { TextInput } from 'react-native-paper'
+import { COUNTRIES, COUNTRY_NAMES } from '../data'
 import { COLORS, FLEX_CENTERED, TEXT_STYLES } from '../style'
 import StyleText from './StyleText'
-import CountryFlag from "react-native-country-flag";
-import { COUNTRIES, COUNTRY_NAMES, COUNTRY_ISO_MAP } from '../data'
 
 const AddLocation = ({ onAdd, scrollTo }) => {
     const [input, setInput] = useState(null);
