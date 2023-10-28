@@ -77,6 +77,14 @@ const HomeScreen = () => {
                         shouldSetBadge: false,
                     }),
                 });
+            } else {
+                Notifications.setNotificationHandler({
+                    handleNotification: async () => ({
+                        shouldShowAlert: false,
+                        shouldPlaySound: false,
+                        shouldSetBadge: false,
+                    }),
+                });
             }
 
         }
