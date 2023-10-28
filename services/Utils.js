@@ -7,7 +7,9 @@ const filterRequested = (requested) => {
 export const getCards = async (userData) => {
     const { geohash, lastLocation } = userData
     const distanceMatches = await radiusQuery(lastLocation)
-    return distanceMatches
+    // @todo also filter out blocked users
+    const filteredMatches = distanceMatches.filter(match => match.id != userData.id)
+    return filteredMatches
 }
 export const calculateAge = (dateOfBirth) => {
     var today = new Date();

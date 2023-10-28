@@ -1,89 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { COLORS, FONT_SIZE } from '../style';
-import StyleText from './StyleText';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { getSetting, storeSetting } from '../services/LocalStorage';
-import CustomToggleButton from './CustomToggleButton';
 import * as Notifications from 'expo-notifications';
 import { getAuth, signOut } from 'firebase/auth';
-
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { getSetting, storeSetting } from '../services/LocalStorage';
+import { COLORS, FONT_SIZE } from '../style';
+import CustomToggleButton from './CustomToggleButton';
+import StyleText from './StyleText';
 import getUserData from '../hooks/userData';
-import CustomButton from './CustomButton';
 import StyledButton from './StyledButton';
-const notifications = [
-    {
-        text: "Enable",
-        icon:
-            <Ionicons
-                name="paper-plane-outline" size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    }
-    // {
-    //     text: "Requests",
-    //     icon:
-    //         <Ionicons
-    //             name="paper-plane-outline" size={24}
-    //             color={COLORS.mainTheme}
-    //             style={{ marginRight: '10%' }}
-    //         />
-    // },
-    // {
-    //     text: "Messages",
-    //     icon:
-    //         <Ionicons
-    //             name="chatbubbles" size={24}
-    //             color={COLORS.mainTheme}
-    //             style={{ marginRight: '10%' }}
-    //         />
-    // },
-    // {
-    //     text: "Updates",
-    //     icon:
-    //         <MaterialIcons
-    //             name="system-update" size={24}
-    //             color={COLORS.mainTheme}
-    //             style={{ marginRight: '10%' }}
-    //         />
-    // },
-]
-
-const accountActions = [
-    {
-        text: "Deactivate",
-        icon:
-            <MaterialCommunityIcons
-                name="sleep"
-                size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    },
-    {
-        text: "Delete",
-        icon:
-            <MaterialIcons
-                name="delete" size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    },
-    {
-        text: "Logout",
-        icon:
-            <MaterialCommunityIcons
-                name="logout"
-                size={24}
-                color={COLORS.mainTheme}
-                style={{ marginRight: '10%' }}
-            />
-    },
-]
-
 
 const AccountSettings = () => {
     const [notifcationsEnabled, setNotificationsEnabled] = useState(true)
