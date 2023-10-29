@@ -130,7 +130,8 @@ const SignupScreen = () => {
                     name: firstName,
                     occupation,
                     picture: profilePicture,
-                    intro
+                    intro,
+                    active: true
                 })
                 navigation.navigate("Home")
             }

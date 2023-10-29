@@ -1,4 +1,4 @@
-import { doc, updateDoc, addDoc, collection, query, orderBy, startAt, endAt, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, addDoc, collection, query, orderBy, startAt, endAt, getDocs, where } from 'firebase/firestore';
 
 import { database } from '../firebase'
 import * as geofire from 'geofire-common'
@@ -45,6 +45,7 @@ export const radiusQuery = async (lastLocation) => {
     for (const b of bounds) {
         const q = query(
             collection(database, 'users'),
+            where('active', '==', true),
             orderBy('geohash'),
             startAt(b[0]),
             endAt(b[1]));
