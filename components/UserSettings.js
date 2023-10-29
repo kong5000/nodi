@@ -201,13 +201,12 @@ const UserSettings = ({ scrollTo }) => {
                 <AddLocation
                     scrollTo={scrollTo}
                     onAdd={(newLocation) => {
-                        console.log(newLocation)
                         if (!futureLocations.find((location => location == newLocation))) {
                             setFutureLocations(prev => [...prev, newLocation])
                         }
                     }}
                 />
-                {futureLocations.length > 0 && <StyleText
+                {futureLocations && futureLocations.length > 0 && <StyleText
                     text="Your next destinations: "
                     fontSize={FONT_SIZE.small}
                     style={{ zIndex: -1 }}
@@ -277,7 +276,7 @@ const UserSettings = ({ scrollTo }) => {
                         }
                     }}
                 />
-                {favoritePlaces.length > 0 && <StyleText
+                {favoritePlaces && favoritePlaces.length > 0 && <StyleText
                     text="Your favorite countries to visit: "
                     fontSize={FONT_SIZE.small}
                     style={{ zIndex: -1 }}

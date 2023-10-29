@@ -38,7 +38,7 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
             >
                 <Animated.Image
                     onLoadEnd={() => {
-                        if(!viewMode){
+                        if (!viewMode) {
                             setImagesLoaded(prev => prev + 1)
                         }
                     }}
@@ -71,8 +71,8 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                 zIndex: 10,
                             }}
                             onPress={() => {
-                                if (viewMode ) {
-                                    if(currentProfile.id != userData.id){
+                                if (viewMode) {
+                                    if (currentProfile.id != userData.id) {
                                         const chatId = [userData.id, currentProfile.id].sort().join('')
                                         const activeChat = conversations.find(conv => conv.id == chatId)
                                         setActiveChat(activeChat)
@@ -165,23 +165,24 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                     marginTop: '10%',
                                 }}
                             >
-                                <StyleText
+                                {item.futureLocations && <StyleText
                                     text='Going To'
                                     bold
                                     fontSize={22}
                                     style={{ marginBottom: "3%" }}
-                                />
+                                />}
                                 <NextDestinations
-                                    destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
+                                    destinations={item.futureLocations}
                                 />
-                                <StyleText
+                                {item.futureLocations && <StyleText
                                     text='Favorite Destinations'
                                     bold
                                     fontSize={22}
                                     style={{ marginTop: "10%", marginBottom: "3%" }}
-                                />
+                                />}
+
                                 <NextDestinations
-                                    destinations={["🇵🇭 Philippines", "🇯🇵 Japan"]}
+                                    destinations={item.favoriteLocations}
                                 />
                             </View>
                             <View style={{ marginHorizontal: "10%" }}>
@@ -192,23 +193,7 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                     justifyContent: 'space-between',
                                     marginTop: '10%'
                                 }}>
-                                    <StyleText
-                                        text={"Instagram"}
-                                        bold
-                                        fontSize={22}
-                                    />
-                                    <StyleText
-                                        text={`@${instagramHandle}`}
-                                        fontSize={20}
-                                        style={{
-                                            color: COLORS.mainTheme
-                                        }}
-                                    />
                                 </View>
-                                <InstagramPhotos
-                                    images={instagramImages}
-                                    handle={instagramHandle}
-                                />
                             </View>
                         </View>
                     </View>

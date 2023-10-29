@@ -15,18 +15,24 @@ const SettingsScreen = () => {
     const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 });
 
     const handleScroll = (event) => {
-      const { x, y } = event.nativeEvent.contentOffset;
-      setScrollPosition({ x, y });
+        const { x, y } = event.nativeEvent.contentOffset;
+        setScrollPosition({ x, y });
     };
 
     const scrollViewRef = useRef()
 
     const scrollTo = (coordinates) => {
-        scrollViewRef.current.scrollTo({ y: scrollPosition.y -200 + coordinates.y })
+        scrollViewRef.current.scrollTo({ y: scrollPosition.y - 200 + coordinates.y })
     }
 
     return (
         <SafeAreaView style={styles.screen}>
+            <StyleText
+                text={`X ${scrollPosition.x} Y ${scrollPosition.y}`}
+            />
+            <StyleText
+                text={`X ${scrollPosition.x} Y ${scrollPosition.y}`}
+            />
             <ScrollView ref={scrollViewRef} onScroll={handleScroll} scrollEventThrottle={5}>
                 <View style={{
                     display: 'flex',

@@ -1,31 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
-import UserDetail from './UserDetail';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import axios from 'axios';
-import { calculateAge } from '../services/Utils'
-import * as style from '../style'
-import NextDestinations from './NextDestinations';
-import { Image } from "react-native-expo-image-cache";
+import React, { useEffect, useRef, useState } from 'react';
 import { CacheManager } from "react-native-expo-image-cache";
 
-import InstagramPhotos from './InstagramPhotos';
 import {
   Animated,
   Dimensions,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import { COLORS, FONT_SIZE } from '../style';
-const { width, height } = Dimensions.get('window');
-import Profile from './Profile';
-import StyleText from './StyleText';
-import InterestsProfile from './InterestsProfile';
 import ConnectModal from './ConnectModal';
 import ProfileCard from './ProfileCard';
+const { width, height } = Dimensions.get('window');
 
 const ParallaxCarousel = ({ items }) => {
   const [imagesLoaded, setImagesLoaded] = useState(0)
@@ -69,27 +53,6 @@ const ParallaxCarousel = ({ items }) => {
   useEffect(() => {
     setCurrentProfile(items[0])
   }, [items])
-
-  // useEffect(() => {
-  //   const getInstagramMedia = async () => {
-  //     const graphResponse = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`)
-
-  //     setInstagramHandle(graphResponse.data.data[0].username)
-  //     let tempPictures = []
-  //     graphResponse.data.data.forEach(mediaObject => {
-  //       if (mediaObject.media_type != "VIDEO") {
-  //         tempPictures.push(mediaObject)
-  //       }
-  //     })
-  //     setInstagramImages(tempPictures.slice(0, 4))
-  //   }
-  //   try {
-  //     getInstagramMedia()
-
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }, [])
 
   const handleScroll = (event) => {
     const { contentOffset } = event.nativeEvent;
