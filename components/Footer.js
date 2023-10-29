@@ -5,35 +5,37 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { COLORS, SIZES } from '../style'
 import { FontAwesome5 } from '@expo/vector-icons';
 import getUserData from '../hooks/userData'
+import { Dimensions } from 'react-native'
+const { width, height } = Dimensions.get('window');
 
 const Footer = () => {
     const navigation = useNavigation()
     const { userData } = getUserData()
-    if(userData)
-    return (
-        <View style={styles.footer}>
-            <TouchableOpacity onPress={() => {
-                navigation.navigate('Home')
-            }}>
-                <Ionicons name="person-outline" size={33} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                navigation.navigate('Conversations')
-            }}>
-                <Ionicons name="chatbubbles-sharp" size={33} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                navigation.navigate('Requests')
-            }}>
-                <Ionicons name="paper-plane-outline" size={33} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={async () => {
-                navigation.navigate('Settings')
-            }}>
-                <FontAwesome5 name="cog" size={33} color="white" />
-            </TouchableOpacity>
-        </View>
-    )
+    if (userData)
+        return (
+            <View style={styles.footer}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Home')
+                }}>
+                    <Ionicons name="person-outline" size={33} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Conversations')
+                }}>
+                    <Ionicons name="chatbubbles-sharp" size={33} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Requests')
+                }}>
+                    <Ionicons name="paper-plane-outline" size={33} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={async () => {
+                    navigation.navigate('Settings')
+                }}>
+                    <FontAwesome5 name="cog" size={33} color="white" />
+                </TouchableOpacity>
+            </View>
+        )
     return <></>
 }
 
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 0,
+        top: height - SIZES.footerHeight,
         height: SIZES.footerHeight,
         width: "100%",
         backgroundColor: COLORS.darkBlue,
