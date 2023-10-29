@@ -1,11 +1,10 @@
-import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native'
-import React, { useRef, useState } from 'react'
-import Footer from '../components/Footer'
+import React, { useRef, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { ToggleButton } from 'react-native-paper';
-import StyleText from '../components/StyleText';
-import { COLORS, FLEX_CENTERED } from '../style';
 import AccountSettings from '../components/AccountSettings';
+import StyleText from '../components/StyleText';
 import UserSettings from '../components/UserSettings';
+import { COLORS, FLEX_CENTERED } from '../style';
 
 const BOTTOM_MARGIN = "7%"
 const SettingsScreen = () => {

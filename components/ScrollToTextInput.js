@@ -6,7 +6,7 @@ import { TextInput } from 'react-native-paper'
 const ScrollToTextInput = ({ scrollTo, value, setValue, label }) => {
     const componentRef = useRef()
     return (
-        <View ref={componentRef} >
+        <View ref={componentRef} collapsable={false}>
             <TextInput
                 onFocus={() => {
                     if (componentRef.current) {

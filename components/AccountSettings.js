@@ -104,14 +104,6 @@ const AccountSettings = () => {
                     marginTop: "7.5%"
                 }}
             />
-            <StyleText
-                text="Deactivate your account or signout"
-                fontSize={FONT_SIZE.small}
-                style={{
-                    width: "84%",
-                    marginBottom: "2.5%",
-                }}
-            />
             <View style={styles.container}>
                 <StyledButton
                     icon={

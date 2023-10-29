@@ -115,6 +115,7 @@ const UserSettings = ({ scrollTo }) => {
             >
 
                 <TextInput
+                    collapsable={false}
                     style={{
                         height: 125,
                         marginBottom: "7.5%",

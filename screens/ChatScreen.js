@@ -1,26 +1,20 @@
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Dimensions } from 'react-native'
-import { doc, where, limit, orderBy, collection, onSnapshot, query } from 'firebase/firestore'
-import { database } from '../firebase'
-import useAuth from '../hooks/useAuth'
-import { acceptConversationRequest, declineConversationRequest, getMessages } from '../services/ConversationQueries'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { BUTTON_STYLE, COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
-import { Menu, Portal, Modal, Button } from 'react-native-paper'
-import { deleteConversation } from '../services/ConversationQueries'
-import { addChatMessage } from '../services/ConversationQueries'
-import { storage } from '../firebase'
-import * as ImagePicker from 'expo-image-picker';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useRoute } from '@react-navigation/core';
-import StyleText from '../components/StyleText'
-import getUserData from '../hooks/userData'
-import Footer from '../components/Footer'
-const { width, height } = Dimensions.get('window');
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
-import { Bubble, Time } from 'react-native-gifted-chat'
+import * as ImagePicker from 'expo-image-picker'
+import { collection, doc, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Bubble, GiftedChat, Time } from 'react-native-gifted-chat'
+import { Button, Menu, Modal, Portal } from 'react-native-paper'
 import CustomInputToolbar from '../components/CustomInputToolbar'
+import StyleText from '../components/StyleText'
+import { database, storage } from '../firebase'
+import useAuth from '../hooks/useAuth'
+import getUserData from '../hooks/userData'
+import { acceptConversationRequest, addChatMessage, declineConversationRequest, deleteConversation, getMessages } from '../services/ConversationQueries'
+import { BUTTON_STYLE, COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
+const { width, height } = Dimensions.get('window');
 
 const ChatScreen = () => {
     const navigation = useNavigation()

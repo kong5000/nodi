@@ -48,6 +48,7 @@ const AddLocation = ({ onAdd, scrollTo }) => {
     return (
         <View>
             <View
+                collapsable={false}
                 ref={inputRef}
                 style={{
                     display: "flex",
@@ -58,6 +59,8 @@ const AddLocation = ({ onAdd, scrollTo }) => {
                     onFocus={() => {
                         if (inputRef.current) {
                             inputRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                console.log(pageY)
+
                                 scrollTo({ x: 0, y: pageY })
                             });
                         }
