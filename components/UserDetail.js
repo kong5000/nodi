@@ -9,11 +9,7 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse'
 const UserDetail = ({ text, icon }) => {
     return (
         <View style={styles.container}>
-            <Ionicons
-                name={icon}
-                size={32}
-                style={{marginRight: "2%"}}
-            />
+            {icon}
             <StyleText
                 text={text}
                 fontSize={18}

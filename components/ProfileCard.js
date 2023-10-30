@@ -7,6 +7,7 @@ import NextDestinations from './NextDestinations';
 import UserDetail from './UserDetail';
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'
+import { FontAwesome } from '@expo/vector-icons';
 
 import {
     Animated,
@@ -119,15 +120,31 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                 marginTop: '2%',
                             }}>
                                 {item.home && <UserDetail
-                                    icon="person-outline"
+                                    icon={<Ionicons
+                                        color={COLORS.neutralGrey}
+                                        name="home"
+                                        size={30}
+                                        style={{ marginRight: "4%" }}
+                                    />}
                                     text={item.home}
                                 />}
                                 {item.occupation && <UserDetail
-                                    icon="person-outline"
+                                    icon={<Ionicons
+                                        color={COLORS.neutralGrey}
+                                        name="briefcase"
+                                        size={30}
+                                        style={{ marginRight: "4%" }}
+                                    />}
                                     text={item.occupation}
                                 />}
                                 {item.education && <UserDetail
-                                    icon="person-outline"
+                                    icon={
+                                        <Ionicons
+                                            color={COLORS.neutralGrey}
+                                            name="book"
+                                            size={30}
+                                            style={{ marginRight: "4%" }}
+                                        />}
                                     text={item.education}
                                 />}
                             </View>
@@ -150,12 +167,14 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                     marginTop: '10%',
                                 }}
                             >
-                                <StyleText
-                                    text='Interests'
-                                    bold
-                                    fontSize={22}
-                                    style={{ marginBottom: "3%" }}
-                                />
+                                {(item.interests && item.interests.length > 0)
+                                    && <StyleText
+                                        text='Interests'
+                                        bold
+                                        fontSize={22}
+                                        style={{ marginBottom: "3%" }}
+                                    />}
+
                                 <InterestsProfile interests={item.interests} />
                             </View>
 

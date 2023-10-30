@@ -10,6 +10,7 @@ import CustomToggleButton from './CustomToggleButton';
 import StyleText from './StyleText';
 import getUserData from '../hooks/userData';
 import StyledButton from './StyledButton';
+import { updateUserDoc } from '../services/UserQueries';
 
 const AccountSettings = () => {
     const [notifcationsEnabled, setNotificationsEnabled] = useState(true)
