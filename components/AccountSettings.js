@@ -142,7 +142,33 @@ const AccountSettings = () => {
                     }
                     text="Delete"
                 />
+            </View>
+            <View style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                maxWidth: "84%",
+                marginTop: "10%",
+            }}>
+                <StyleText
+                    text="About Nodi"
+                    fontSize={FONT_SIZE.title}
+                    bold
+                    style={{
+                        width: "85%",
+                        marginTop: "7.5%",
+                        color: 'grey'
+                    }}
+                />
+                <StyleText
 
+                    text="Front end styling and design inspired by dating app https://www.figma.com/community/file/1101242232924573128 by Ch Ali Designs licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/"
+                    fontSize={FONT_SIZE.small}
+                    style={{
+                        width: "84%",
+                        marginBottom: "2.5%",
+                        color: 'grey'
+                    }}
+                />
             </View>
         </View>
     )

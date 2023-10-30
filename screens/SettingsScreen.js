@@ -26,12 +26,6 @@ const SettingsScreen = () => {
 
     return (
         <SafeAreaView style={styles.screen}>
-            <StyleText
-                text={`X ${scrollPosition.x} Y ${scrollPosition.y}`}
-            />
-            <StyleText
-                text={`X ${scrollPosition.x} Y ${scrollPosition.y}`}
-            />
             <ScrollView ref={scrollViewRef} onScroll={handleScroll} scrollEventThrottle={5}>
                 <View style={{
                     display: 'flex',

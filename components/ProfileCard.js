@@ -182,7 +182,7 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                 />}
 
                                 <NextDestinations
-                                    destinations={item.favoriteLocations}
+                                    destinations={item.favoritePlaces}
                                 />
                             </View>
                             <View style={{ marginHorizontal: "10%" }}>
