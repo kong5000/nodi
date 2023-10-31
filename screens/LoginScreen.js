@@ -1,13 +1,28 @@
 import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { auth } from '../firebase'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
+import * as Google from "expo-auth-session/providers/google"
+import * as WebBrowser from "expo-web-browser"
+import {
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    signinWithCredential
+} from "firebase/auth"
 import { COLORS, TEXT_STYLES } from '../style'
 import { Asset, useAssets } from 'expo-asset';
 import { addGeoHash } from '../services/GeoQueries'
+
+WebBrowser.maybeCompleteAuthSession()
+
 const LoginScreen = () => {
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+        iosClientId: '750477199673-9h0k4rolp66ob945jqm5a58q2u18c148.apps.googleusercontent.com',
+        androidClientId: '750477199673-m14r747trb3haoip3v2dg50egvflt9bu.apps.googleusercontent.com',
+        expoClientId: '750477199673-j7qb940cs6ohvmq1b6vhhh6m6aocvevv.apps.googleusercontent.com'
+    })
     const [assets, error] = useAssets([require('../assets/gradient.png')]);
     const [email, setEmail] = useState('')
     const [creatingAccount, setCreatingAccount] = useState(false)
@@ -28,10 +43,21 @@ const LoginScreen = () => {
         setPassword('password')
     }
     useEffect(() => {
-        if(password == "password"){
+        if (password == "password") {
             handleLogin()
         }
     }, [email, password])
+
+    useEffect(() => {
+        if (response?.type == "success") {
+            const { id_token } = response.params
+            console.log(response.params)
+            console.log("tokentoken", id_token)
+            const credential = GoogleAuthProvider.credential(id_token)
+            signInWithCredential(auth, credential)
+        }
+    }, [response])
+
     useEffect(() => {
         if (userData) {
             setCreatingAccount(false)
@@ -69,63 +95,68 @@ const LoginScreen = () => {
         >
             {/* <ImageBackground source={{ uri: Asset.fromModule(require("../assets/gradient.png")).uri }} resizeMode="cover" style={styles.image}> */}
 
-                <View style={styles.inputContainer}>
-                    {creatingAccount && <Text>Creating Your Account</Text>}
-                    {loggingIn && <Text>Logging in </Text>}
-                    <ActivityIndicator animating={creatingAccount} size="large" color="#ff0000" />
-                    <ActivityIndicator animating={loggingIn} size="large" color="#00ff00" />
-                    <TextInput
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={text => {
-                            setEmail(text)
-                        }}
-                        style={TEXT_STYLES.input}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={text => {
-                            setPassword(text)
-                        }}
-                        style={TEXT_STYLES.input}
-                    />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        onPress={handleLogin}
-                        style={[styles.button]}
-                    >
-                        <Text style={styles.buttonText}>Login</Text>
-                    </TouchableOpacity>
+            <View style={styles.inputContainer}>
+                {creatingAccount && <Text>Creating Your Account</Text>}
+                {loggingIn && <Text>Logging in </Text>}
+                <ActivityIndicator animating={creatingAccount} size="large" color="#ff0000" />
+                <ActivityIndicator animating={loggingIn} size="large" color="#00ff00" />
+                <TextInput
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={text => {
+                        setEmail(text)
+                    }}
+                    style={TEXT_STYLES.input}
+                />
+                <TextInput
+                    placeholder="Password"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={text => {
+                        setPassword(text)
+                    }}
+                    style={TEXT_STYLES.input}
+                />
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    onPress={handleLogin}
+                    style={[styles.button]}
+                >
+                    <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={handleSignUp}
-                        style={[styles.button, styles.buttonOutline]}
-                    >
-                        <Text style={styles.buttonOutlineText}>Register</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={handleSignUp}
+                    style={[styles.button, styles.buttonOutline]}
+                >
+                    <Text style={styles.buttonOutlineText}>Register</Text>
+                </TouchableOpacity>
 
-                </View>
-                <TouchableOpacity onPress={() => {
-                    testLogin()
-                    // handleLogin()
-                }}>
-                    <Text>DEBUG LOGIN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    testLogin2()
-                    // handleLogin()
-                }}>
-                    <Text>DEBUG LOGIN 2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    testSignup()
-                    // handleLogin()
-                }}>
-                    <Text>Creatre User Debug</Text>
-                </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={() => {
+                testLogin()
+                // handleLogin()
+            }}>
+                <Text>DEBUG LOGIN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                testLogin2()
+                // handleLogin()
+            }}>
+                <Text>DEBUG LOGIN 2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                testSignup()
+                // handleLogin()
+            }}>
+                <Text>Creatre User Debug</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => promptAsync()}
+            >
+                <Text> Sign in with google</Text>
+            </TouchableOpacity>
             {/* </ImageBackground> */}
 
         </KeyboardAvoidingView >

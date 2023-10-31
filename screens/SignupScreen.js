@@ -18,6 +18,7 @@ import { updateUserDoc } from '../services/UserQueries';
 import getUserData from '../hooks/userData';
 import { Timestamp } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import { COUNTRY_ISO_MAP } from '../data';
 
 const SignupScreen = () => {
     const [step, setStep] = useState(0)
@@ -404,13 +405,13 @@ const SignupScreen = () => {
                             }}
                         />
                     </View>
-                    {futureLocations.length > 0 && <StyleText
+                    {futureLocations?.length > 0 && <StyleText
                         text="Your next destinations: "
                         fontSize={22}
                         style={{ zIndex: -1 }}
 
                     />}
-                    {futureLocations && futureLocations.map(loc =>
+                    {futureLocations?.map(loc =>
                         <View style={{
                             display: 'flex',
                             ...FLEX_CENTERED,
@@ -432,11 +433,11 @@ const SignupScreen = () => {
                                     display: 'flex',
                                     flexDirection: 'row',
                                 }}>
-                                    <CountryFlag isoCode={loc.iso} size={30}
+                                    <CountryFlag isoCode={COUNTRY_ISO_MAP[loc]} size={30}
                                         style={{ borderRadius: 2, marginRight: 10 }} />
                                     <StyleText
                                         fontSize={20}
-                                        text={loc.name} />
+                                        text={loc} />
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
@@ -480,6 +481,7 @@ const SignupScreen = () => {
                     />}
                     {favoriteLocations && favoriteLocations.map(loc =>
                         <View style={{
+                            key: { loc },
                             display: 'flex',
                             ...FLEX_CENTERED,
                             zIndex: -1
@@ -499,12 +501,13 @@ const SignupScreen = () => {
                                 <View style={{
                                     display: 'flex',
                                     flexDirection: 'row',
+                                    flexWrap: 'wrap',
                                 }}>
-                                    <CountryFlag isoCode={loc.iso} size={30}
+                                    <CountryFlag isoCode={COUNTRY_ISO_MAP[loc]} size={30}
                                         style={{ borderRadius: 2, marginRight: 10 }} />
                                     <StyleText
                                         fontSize={20}
-                                        text={loc.name} />
+                                        text={loc} />
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {

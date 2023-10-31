@@ -39,6 +39,7 @@ const AddLocation = ({ onAdd, scrollTo }) => {
     }, [valid])
 
     const handleAdd = (input) => {
+        console.log("Country here", input)
         onAdd(input)
         setData(null)
         setInput('')
@@ -60,8 +61,10 @@ const AddLocation = ({ onAdd, scrollTo }) => {
                         if (inputRef.current) {
                             inputRef.current.measure((x, y, width, height, pageX, pageY) => {
                                 console.log(pageY)
+                                if (scrollTo) {
+                                    scrollTo({ x: 0, y: pageY })
 
-                                scrollTo({ x: 0, y: pageY })
+                                }
                             });
                         }
                     }}

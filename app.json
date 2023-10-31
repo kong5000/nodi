@@ -34,5 +34,6 @@
         "projectId": "9ba0f8fc-902e-4772-8cb3-b61864eeffee"
       }
     }
-  }
+  },
+  "scheme": "FirebaseAuth"
 }

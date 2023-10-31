@@ -1,10 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth,signInWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
-import { getStorage} from "firebase/storage"
-import { getFunctions, httpsCallable } from "firebase/functions"
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { getStorage } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,10 +28,10 @@ if (getApps().length == 0) {
     app = getApp()
 }
 // const analytics = getAnalytics(app);
-const auth = getAuth()
+const auth = getAuth(app)
 const database = getFirestore(app)
 const storage = getStorage()
 const functions = getFunctions(app, 'us-central1')
 const getMessagesFunction = httpsCallable(functions, 'getMessages');
 
-export { auth, database, storage, getMessagesFunction }
+export { auth, database, getMessagesFunction, storage };
