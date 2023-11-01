@@ -1,6 +1,6 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator, Button } from 'react-native';
 import CountryFlag from "react-native-country-flag";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TextInput, HelperText } from 'react-native-paper';
@@ -19,8 +19,31 @@ import getUserData from '../hooks/userData';
 import { Timestamp } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { COUNTRY_ISO_MAP } from '../data';
+import { auth } from '../firebase'
+import { sendEmailVerification } from 'firebase/auth'
 
 const SignupScreen = () => {
+    const [checkingVerification, setCheckingVerificaiton] = useState(false)
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const handleButtonClick = () => {
+        if (!isButtonDisabled) {
+            // Perform the action you want when the button is clicked
+
+            // Disable the button
+            setIsButtonDisabled(true);
+
+            console.log("sending verification email")
+            sendEmailVerification(auth.currentUser, {
+                handleCodeInApp: true,
+                url: 'https://react-native-test-8d90d.firebaseapp.com'
+            })
+
+            // Enable the button after 5 seconds
+            setTimeout(() => {
+                setIsButtonDisabled(false);
+            }, 5000); // 5000 milliseconds (5 seconds)
+        }
+    };
     const [step, setStep] = useState(0)
     const { userData } = getUserData()
     // Step 0
@@ -57,7 +80,7 @@ const SignupScreen = () => {
 
     const hasInputErrors = () => {
         let hasErrors = false
-        if (step == 0) {
+        if (step == 1) {
             if (!firstName) {
                 setFirstNameError(true)
                 hasErrors = true
@@ -117,7 +140,7 @@ const SignupScreen = () => {
     };
 
     useEffect(() => {
-        if (step > 5) {
+        if (step > 6) {
             const updateUserInfo = async () => {
                 await updateUserDoc(userData.id, {
                     birthDate,
@@ -140,6 +163,45 @@ const SignupScreen = () => {
         }
     }, [step])
 
+    useEffect(() => {
+        if (!auth.currentUser.emailVerified) {
+            console.log("sending verification email")
+            sendEmailVerification(auth.currentUser, {
+                handleCodeInApp: true,
+                url: 'https://react-native-test-8d90d.firebaseapp.com'
+            })
+        }
+    }, [])
+
+    const handleVerificationButtonClick = () => {
+        if (checkingVerification) {
+            return
+        }
+        setCheckingVerificaiton(true)
+
+        const verificationTimeout = setTimeout(async () => {
+            const isVerified = await checkVerification();
+            if (isVerified) {
+                onContinue()
+            } else {
+                alert("Sorry your email is still unverified, please check your spam folder")
+            }
+            setCheckingVerificaiton(false)
+            clearTimeout(verificationTimeout)
+        }, 4000);
+    };
+
+    useEffect(() => {
+        if (auth.currentUser.emailVerified) {
+            setStep(1)
+        }
+    }, [])
+
+    const checkVerification = async () => {
+        await auth.currentUser.reload()
+        console.log(auth.currentUser.emailVerified)
+        return auth.currentUser.emailVerified
+    }
 
     return (
         <SafeAreaView style={styles.screen}>
@@ -170,7 +232,53 @@ const SignupScreen = () => {
                     onPress={() => setStep(prev => prev + 1)}
                 />
             </View>}
-            {step == 0 &&
+            {step == 0 && <View style={{
+                marginTop: "5%",
+                width: "100%",
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'space-around',
+                alignItems: "center",
+            }}>
+                <StyleText
+                    bold
+                    text="Email Sent, please verify and then continue"
+                    fontSize={34}
+                    style={{
+                        marginBottom: "25%",
+                        marginHorizontal: "5%"
+                    }}
+                />
+                {checkingVerification
+                    ?
+                    <View style={{
+                        position: 'absolute',
+                        width: '50%',
+                        bottom: "50%"
+                    }}>
+                        <ActivityIndicator
+                            animating={true} size="large" color={COLORS.mainTheme} />
+                    </View>
+                    :
+                    <View style={{
+                        position: 'absolute',
+                        width: '50%',
+                        bottom: "50%"
+                    }}>
+                        <CustomButton
+                            onPress={handleVerificationButtonClick}
+                            label={"Continue"}
+                        />
+                    </View>
+                }
+
+                < Button
+                    title={isButtonDisabled ? 'Please wait...' : 'Resend Verification Email'}
+                    onPress={handleButtonClick}
+                    disabled={isButtonDisabled}
+                />
+            </View>}
+            {step == 1 &&
                 <View style={{ marginTop: "5%", width: "100%" }}>
                     <StyleText
                         bold
@@ -289,7 +397,7 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
-            {step < 6 && <View style={{
+            {(step < 7 && step > 0) && <View style={{
                 position: 'absolute',
                 width: '80%',
                 bottom: SIZES.footerHeight
@@ -300,7 +408,7 @@ const SignupScreen = () => {
                     label={"Continue"}
                 />
             </View>}
-            {step == 1 &&
+            {step == 2 &&
                 <View style={{ width: "80%", display: 'flex' }}>
                     <View
                         style={{
@@ -386,7 +494,7 @@ const SignupScreen = () => {
                     />
                 </View>
             }
-            {step == 2 &&
+            {step == 3 &&
                 <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText text="Next Stops"
                         bold
@@ -454,7 +562,7 @@ const SignupScreen = () => {
                     }
                 </View>
             }
-            {step == 3 &&
+            {step == 4 &&
                 <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText text="Favorite Destinations"
                         bold
@@ -525,7 +633,7 @@ const SignupScreen = () => {
                 </View>
             }
             {
-                step == 4 && <View style={{ width: "80%", display: 'flex' }}>
+                step == 5 && <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText
                         text="Write your intro"
                         fontSize={34}
@@ -558,7 +666,7 @@ const SignupScreen = () => {
                 </View>
             }
             {
-                step == 5 && <View style={{ width: "80%", display: 'flex' }}>
+                step == 6 && <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText
                         text="Interests"
                         fontSize={34}
@@ -578,7 +686,7 @@ const SignupScreen = () => {
                 </View>
             }
             {
-                step == 6 && <View style={{
+                step == 7 && <View style={{
                     display: 'flex',
                     height: "75%",
                     ...FLEX_CENTERED

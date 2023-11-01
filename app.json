@@ -35,5 +35,5 @@
       }
     }
   },
-  "scheme": "FirebaseAuth"
+  "scheme": "com.kong5000.FirebaseAuth"
 }

@@ -14,7 +14,6 @@ export default function App() {
         <AuthProvider>
           <UserDataProvider>
             <StackNavigator />
-            <Footer />
           </UserDataProvider>
         </AuthProvider>
       </NavigationContainer>

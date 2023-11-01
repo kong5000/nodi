@@ -1,7 +1,7 @@
 import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { auth } from '../firebase'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential } from 'firebase/auth'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential, sendEmailVerification } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
 import getUserData from '../hooks/userData'
 import * as Google from "expo-auth-session/providers/google"
@@ -11,6 +11,7 @@ import {
     onAuthStateChanged,
     signinWithCredential
 } from "firebase/auth"
+import * as AuthSession from 'expo-auth-session';
 import { COLORS, TEXT_STYLES } from '../style'
 import { Asset, useAssets } from 'expo-asset';
 import { addGeoHash } from '../services/GeoQueries'
@@ -21,7 +22,7 @@ const LoginScreen = () => {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         iosClientId: '750477199673-9h0k4rolp66ob945jqm5a58q2u18c148.apps.googleusercontent.com',
         androidClientId: '750477199673-m14r747trb3haoip3v2dg50egvflt9bu.apps.googleusercontent.com',
-        expoClientId: '750477199673-j7qb940cs6ohvmq1b6vhhh6m6aocvevv.apps.googleusercontent.com'
+        expoClientId: '750477199673-j7qb940cs6ohvmq1b6vhhh6m6aocvevv.apps.googleusercontent.com',
     })
     const [assets, error] = useAssets([require('../assets/gradient.png')]);
     const [email, setEmail] = useState('')
@@ -42,8 +43,12 @@ const LoginScreen = () => {
         setEmail('b@b.com')
         setPassword('password')
     }
+    const testLogin3 = () => {
+        setEmail('keith.ong5000@gmail.com')
+        setPassword('password')
+    }
     useEffect(() => {
-        if (password == "password") {
+        if (password == "password" && email != "keith.ong5000@gmail.com") {
             handleLogin()
         }
     }, [email, password])
@@ -68,12 +73,15 @@ const LoginScreen = () => {
         try {
             setCreatingAccount(true)
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+            console.log("user created")
+
         }
         catch (error) {
             setCreatingAccount(false)
             alert(error.message)
         }
     }
+
 
     const handleLogin = () => {
         setloggingIn(true)
@@ -145,6 +153,12 @@ const LoginScreen = () => {
                 // handleLogin()
             }}>
                 <Text>DEBUG LOGIN 2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                testLogin3()
+                // handleLogin()
+            }}>
+                <Text>DEBUG LOGIN 3 GMAIL</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 testSignup()
