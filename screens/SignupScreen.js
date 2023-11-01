@@ -205,7 +205,7 @@ const SignupScreen = () => {
 
     return (
         <SafeAreaView style={styles.screen}>
-            {step != 0 && <View style={{
+            {step > 1 && <View style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
