@@ -1,20 +1,13 @@
-import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { auth } from '../firebase'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential, sendEmailVerification } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/core'
-import getUserData from '../hooks/userData'
+import { useAssets } from 'expo-asset'
 import * as Google from "expo-auth-session/providers/google"
 import * as WebBrowser from "expo-web-browser"
-import {
-    GoogleAuthProvider,
-    onAuthStateChanged,
-    signinWithCredential
-} from "firebase/auth"
-import * as AuthSession from 'expo-auth-session';
-import { COLORS, TEXT_STYLES } from '../style'
-import { Asset, useAssets } from 'expo-asset';
-import { addGeoHash } from '../services/GeoQueries'
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { auth } from '../firebase'
+import getUserData from '../hooks/userData'
+import { TEXT_STYLES } from '../style'
 
 WebBrowser.maybeCompleteAuthSession()
 

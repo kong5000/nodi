@@ -11,6 +11,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { getSetting, storeSetting } from '../services/LocalStorage'
 import { updateUserDoc } from '../services/UserQueries'
+import { getGeoHash } from '../services/GeoQueries'
 
 const HomeScreen = () => {
     const [token, setToken] = useState('')
@@ -122,20 +123,31 @@ const HomeScreen = () => {
 
     useEffect(() => {
         (async () => {
+            console.log("REQUEST LOC")
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
+                console.log("DENIED")
+
                 setErrorMsg('Permission to access location was denied');
                 return;
             }
 
             let location = await Location.getCurrentPositionAsync({});
+            console.log(location)
+            const geohash = getGeoHash(location)
+            await updateUserDoc(userData.id, {
+                lastLocation: location,
+                geohash
+            })
             setLocation(location);
         })();
     }, []);
 
     useEffect(() => {
+        console.log("HELLO WORLD")
         const queryData = async () => {
-            if (!userData) return
+            if (!userData || !location) return
+            console.log(location)
             try {
                 let potentialMatches = await getCards(userData)
                 setItems(potentialMatches)
@@ -144,7 +156,9 @@ const HomeScreen = () => {
             }
         }
         queryData()
-    }, [userData])
+    }, [userData, location])
+
+
 
     return (
         <View style={styles.screen}>

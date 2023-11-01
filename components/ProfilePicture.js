@@ -6,7 +6,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { database, storage } from '../firebase';
 import getUserData from '../hooks/userData';
 import PictureButton from './PictureButton';
-import { SIZES } from '../style';
+import { COLORS, SIZES } from '../style';
 
 const ProfilePicture = ({setProfilePicture}) => {
     const { userData } = getUserData()
@@ -69,6 +69,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginBottom: SIZES.marginVertical
+        marginBottom: SIZES.marginVertical,
+        backgroundColor: COLORS.neutralBlueGrey,
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: COLORS.mainTheme
     }
 })

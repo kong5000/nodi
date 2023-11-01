@@ -3,37 +3,21 @@ import { doc, updateDoc, addDoc, collection, query, orderBy, startAt, endAt, get
 import { database } from '../firebase'
 import * as geofire from 'geofire-common'
 
-
-
-// Add the hash and the lat/lng to the document. We will use the hash
-// for queries and the lat/lng for distance comparisons.
-export const addGeoHash = async (data, userIds) => {
+export const getGeoHash = (location) => {
     try {
         // Compute the GeoHash for a lat/lng point
-        const lat = 37.71766417911356;
-        const lng = -122.40123808477317;
-        const hash = geofire.geohashForLocation([lat, lng]);
-        const locData = {
-            location: 'San Francisco CA',
-            geohash: hash,
-            lat: lat,
-            lng: lng
-        }
-        const locationRef = collection(database, "locations");
-        await addDoc(locationRef, locData);
+        const { latitude, longitude } = location.coords
 
-
-
+        const hash = geofire.geohashForLocation([latitude, longitude]);
+        return hash
     } catch (err) {
         console.log(err)
     }
-
 }
-
 
 export const radiusQuery = async (lastLocation) => {
     // Find cities within 50km of London
-    const { latitude, longitude } = lastLocation
+    const { latitude, longitude } = lastLocation.coords
     const center = [latitude, longitude];
     const radiusInM = 90 * 100000;
 
@@ -60,8 +44,8 @@ export const radiusQuery = async (lastLocation) => {
         for (const doc of snap.docs) {
             const lastLocation = doc.get('lastLocation')
             if (lastLocation) {
-                const lat = lastLocation.latitude
-                const lng = lastLocation.longitude
+                const lat = lastLocation.coords.latitude
+                const lng = lastLocation.coords.longitude
                 // We have to filter out a few false positives due to GeoHash
                 // accuracy, but most will match
                 const distanceInKm = geofire.distanceBetween([lat, lng], center);
@@ -72,5 +56,6 @@ export const radiusQuery = async (lastLocation) => {
             }
         }
     }
+    console.log(matchingDocs)
     return matchingDocs
 }

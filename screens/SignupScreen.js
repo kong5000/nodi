@@ -1,26 +1,26 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import React, { useState, useEffect } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View, ActivityIndicator, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { sendEmailVerification } from 'firebase/auth';
+import { Timestamp } from 'firebase/firestore';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Button, Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import CountryFlag from "react-native-country-flag";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { TextInput, HelperText } from 'react-native-paper';
+import { HelperText, TextInput } from 'react-native-paper';
 import AddLocation from '../components/AddLocation';
 import CustomButton from '../components/CustomButton';
+import Footer from '../components/Footer';
+import Interests from '../components/Interests';
 import LocationSearch from '../components/LocationSearch';
 import ProfilePicture from '../components/ProfilePicture';
 import StyleText from '../components/StyleText';
-import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
-import Interests from '../components/Interests';
-const { width, height } = Dimensions.get('window');
-import Footer from '../components/Footer'
-import moment from 'moment';
-import { updateUserDoc } from '../services/UserQueries';
-import getUserData from '../hooks/userData';
-import { Timestamp } from 'firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
 import { COUNTRY_ISO_MAP } from '../data';
-import { auth } from '../firebase'
-import { sendEmailVerification } from 'firebase/auth'
+import { auth } from '../firebase';
+import getUserData from '../hooks/userData';
+import { updateUserDoc } from '../services/UserQueries';
+import { COLORS, FLEX_CENTERED, FONT_SIZE, SIZES, TEXT_STYLES } from '../style';
+const { width, height } = Dimensions.get('window');
 
 const SignupScreen = () => {
     const [checkingVerification, setCheckingVerificaiton] = useState(false)
@@ -397,7 +397,7 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
-            {(step < 7 && step > 0) && <View style={{
+            {(step < 8 && step > 0) && <View style={{
                 position: 'absolute',
                 width: '80%',
                 bottom: SIZES.footerHeight
@@ -685,8 +685,28 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
+            {step == 7 && <View style={{
+                display: 'flex',
+                height: "75%",
+                ...FLEX_CENTERED
+            }}>
+                <StyleText
+                    text="Creating your profile"
+                    bold
+                    fontSize={34}
+                    style={{
+                        flex: 1
+                    }}
+                />
+                <View style={{
+                    flex: 1
+                }}>
+                    <ActivityIndicator size="large" color={COLORS.mainTheme} />
+                </View>
+            </View>
+            }
             {
-                step == 7 && <View style={{
+                step == 8 && <View style={{
                     display: 'flex',
                     height: "75%",
                     ...FLEX_CENTERED
@@ -706,7 +726,6 @@ const SignupScreen = () => {
                     </View>
                 </View>
             }
-            {step > 5 && <Footer />}
         </SafeAreaView >
     )
 }

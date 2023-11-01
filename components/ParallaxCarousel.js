@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ConnectModal from './ConnectModal';
 import ProfileCard from './ProfileCard';
+import StyleText from './StyleText';
 const { width, height } = Dimensions.get('window');
 
 const ParallaxCarousel = ({ items }) => {
@@ -69,6 +70,11 @@ const ParallaxCarousel = ({ items }) => {
 
   return (
     <View style={styles.screen}>
+      {items?.length == 0 && <StyleText
+        fontSize={50}
+        style={{ marginTop: 100 }}
+        text={"Sorry no matches"}
+      />}
       <ConnectModal
         visible={connectModalVisible}
         hideModal={hideConnectModal}
