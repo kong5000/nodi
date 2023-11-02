@@ -507,7 +507,8 @@ const SignupScreen = () => {
                     <View style={{ marginBottom: "10%" }}>
                         <AddLocation
                             onAdd={(newLocation) => {
-                                if (!futureLocations.find((location => location.name == newLocation.name))) {
+                                if (!futureLocations.find((location => location == newLocation))) {
+                                    console.log(newLocation)
                                     setFutureLocations(prev => [...prev, newLocation])
                                 }
                             }}
@@ -575,7 +576,7 @@ const SignupScreen = () => {
                     <View style={{ marginBottom: "10%" }}>
                         <AddLocation
                             onAdd={(newLocation) => {
-                                if (!favoriteLocations.find((location => location.name == newLocation.name))) {
+                                if (!favoriteLocations.find((location => location == newLocation))) {
                                     setFavoriteLocations(prev => [...prev, newLocation])
                                 }
                             }}
