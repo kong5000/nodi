@@ -49,8 +49,6 @@ const LoginScreen = () => {
     useEffect(() => {
         if (response?.type == "success") {
             const { id_token } = response.params
-            console.log(response.params)
-            console.log("tokentoken", id_token)
             const credential = GoogleAuthProvider.credential(id_token)
             signInWithCredential(auth, credential)
         }

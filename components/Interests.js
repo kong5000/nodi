@@ -117,8 +117,6 @@ const Interests = () => {
     }, [])
 
     const toggleInterest = (activity) => {
-        console.log(activity)
-        console.log(interests)
         if (interests && interests.includes(activity)) {
             const updatedArray = interests.filter((item) => item !== activity);
             storeSetting(`interests`, JSON.stringify(updatedArray))

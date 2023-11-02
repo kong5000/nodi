@@ -198,7 +198,6 @@ const SignupScreen = () => {
 
     const checkVerification = async () => {
         await auth.currentUser.reload()
-        console.log(auth.currentUser.emailVerified)
         return auth.currentUser.emailVerified
     }
 
@@ -507,7 +506,6 @@ const SignupScreen = () => {
                         <AddLocation
                             onAdd={(newLocation) => {
                                 if (!futureLocations.find((location => location == newLocation))) {
-                                    console.log(newLocation)
                                     setFutureLocations(prev => [...prev, newLocation])
                                 }
                             }}

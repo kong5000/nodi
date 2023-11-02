@@ -51,8 +51,6 @@ const ChatRow = ({ conversationDetails, onChatRowPressed }) => {
     return (
         <View style={styles.chatRow} key={conversationDetails.id} >
             <TouchableOpacity onPress={() => {
-                console.log("CONVERSATIONS SAVED")
-                console.log(conversationDetails)
                 setCurrentProfile(partnerInfo)
                 navigation.navigate("Profile")
             }}>

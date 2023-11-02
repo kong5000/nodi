@@ -47,7 +47,6 @@ const HomeScreen = () => {
             // @todo
             // If token is different from memory, update firebase
             setToken(JSON.stringify(token))
-            console.log(token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
@@ -95,7 +94,6 @@ const HomeScreen = () => {
             const localTokenString = await getSetting('notificationToken')
             registerForPushNotificationsAsync().then(async token => {
                 if (localTokenString != token.data) {
-                    console.log("NOT EQUAL")
                     await storeSetting('notificationToken', token.data)
                     await updateUserDoc(userData.id, {
                         notificationToken: token.data
@@ -121,7 +119,6 @@ const HomeScreen = () => {
 
     useEffect(() => {
         (async () => {
-            console.log("REQUEST LOC")
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
@@ -131,7 +128,7 @@ const HomeScreen = () => {
             setShowLocationPrompt(false)
 
             let location = await Location.getCurrentPositionAsync({});
-            console.log(location)
+
             const geohash = getGeoHash(location)
             await updateUserDoc(userData.id, {
                 lastLocation: location,
@@ -142,10 +139,8 @@ const HomeScreen = () => {
     }, []);
 
     useEffect(() => {
-        console.log("HELLO WORLD")
         const queryData = async () => {
             if (!userData || !location) return
-            console.log(location)
             try {
                 let potentialMatches = await getCards(userData)
                 setItems(potentialMatches)

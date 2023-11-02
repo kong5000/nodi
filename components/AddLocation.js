@@ -39,7 +39,6 @@ const AddLocation = ({ onAdd, scrollTo }) => {
     }, [valid])
 
     const handleAdd = (input) => {
-        console.log("Country here", input)
         onAdd(input)
         setData(null)
         setInput('')

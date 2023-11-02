@@ -155,7 +155,6 @@ export const subscribeToConversations = (uid, setConversations) => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
             if (change.type === 'modified') {
-                console.log("HELLO MODIFIED")
                 const conversationData = change.doc.data()
                 setConversations(prev => prev.map(conv => {
                     if (conv.id == change.doc.id) {
