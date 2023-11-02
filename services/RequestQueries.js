@@ -10,7 +10,6 @@ import {
     where
 } from 'firebase/firestore';
 import { database } from '../firebase';
-import { addChatMessage } from './ConversationQueries';
 
 export const addNewRequest = async (sender, receiver, message) => {
     const userIds = [sender.id, receiver.id]

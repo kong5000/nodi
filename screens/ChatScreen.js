@@ -131,39 +131,6 @@ const ChatScreen = () => {
         await deleteConversation(activeChat.id)
     }
 
-    const pickImage = async (index) => {
-        try {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [4, 4],
-                quality: 0,
-                allowsMultipleSelection: false,
-            });
-            if (!result.canceled) {
-                const uid = user.uid;
-                var date = new Date();
-
-                var unixTimestamp = Math.floor(date.getTime() / 1000);
-                const filename = `chat_pic${"_" + uid + "_" + unixTimestamp}`;
-                const response = await fetch(result.uri);
-
-                const blob = await response.blob();
-                const storageRef = ref(storage, filename);
-
-                await uploadBytes(storageRef, blob);
-
-                const downloadURL = await getDownloadURL(storageRef);
-                await addChatMessage('', downloadURL, activeChat.id, user.uid)
-
-                return downloadURL
-            }
-        } catch (e) {
-            console.log(e)
-            alert(e)
-        }
-    }
-
     return (
 
         <SafeAreaView style={styles.screen}>

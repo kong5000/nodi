@@ -12,10 +12,11 @@ import Constants from 'expo-constants';
 import { getSetting, storeSetting } from '../services/LocalStorage'
 import { updateUserDoc } from '../services/UserQueries'
 import { getGeoHash } from '../services/GeoQueries'
+import StyleText from '../components/StyleText'
 
 const HomeScreen = () => {
     const [token, setToken] = useState('')
-
+    const [showLocationPrompt, setShowLocationPrompt] = useState()
     async function registerForPushNotificationsAsync() {
         let token;
         // if (Device.isDevice) {
@@ -126,11 +127,11 @@ const HomeScreen = () => {
             console.log("REQUEST LOC")
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                console.log("DENIED")
-
                 setErrorMsg('Permission to access location was denied');
+                setShowLocationPrompt(true)
                 return;
             }
+            setShowLocationPrompt(false)
 
             let location = await Location.getCurrentPositionAsync({});
             console.log(location)
@@ -162,9 +163,18 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <ParallaxCarousel
-                items={items}
-            />
+            {showLocationPrompt ?
+                <StyleText
+                    text="Location sharing is required to use Nodi"
+                    fontSize={40}
+                    style={{ marginTop: "25%" }}
+                />
+                :
+                <ParallaxCarousel
+                    items={items}
+                />
+            }
+
         </View>
     )
 }

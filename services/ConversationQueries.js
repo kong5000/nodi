@@ -38,7 +38,7 @@ export const addNewConversation = async (message, sender, receiver) => {
     const documentRef = doc(database, "conversations", documentId);
     await setDoc(documentRef, newConversationData)
     try {
-        await addChatMessage(message, null, documentId, sender.id)
+        await addChatMessage(message, null, documentId, sender.id, sender)
     } catch (err) {
         console.log(err)
     }
