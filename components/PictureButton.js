@@ -7,13 +7,15 @@ import { Image } from "react-native-expo-image-cache";
 const PictureButton = ({ onPress, image, size, loading }) => {
     return (
         <TouchableOpacity onPress={() => onPress()} style={styles.imageContainer}>
-            {loading ?
+            {loading
+                ?
                 <ActivityIndicator animating={true} size="large" color={COLORS.darkContrast} />
                 :
-                image ?
+                image
+                    ?
                     <Image
                         style={styles.image}
-                        uri={image} 
+                        uri={image}
                     />
                     :
                     <Ionicons name="camera-outline" size={size == "large" ? 60 : 35} style={{ color: COLORS.brightContrast }} />

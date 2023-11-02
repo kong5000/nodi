@@ -24,7 +24,6 @@ const SingleProfileScreen = () => {
 export default SingleProfileScreen
 
 const styles = StyleSheet.create({
-
     screen: {
         flex: 1,
         backgroundColor: "white"

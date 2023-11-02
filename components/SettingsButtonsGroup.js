@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
-import CustomToggleButton from './ListCustomToggleButton'
-const { width, height } = Dimensions.get('window');
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import CustomToggleButton from './ListCustomToggleButton';
 
 const SettingsButtonsGroup = ({ activeButtons, setActiveButtons, list }) => {
     const toggleInterest = (activity) => {

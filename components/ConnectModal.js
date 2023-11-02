@@ -1,15 +1,13 @@
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native'
-import { Modal, Portal, TextInput } from 'react-native-paper';
-import { Image } from "react-native-expo-image-cache";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import getUserData from '../hooks/userData'
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Modal, Portal, TextInput } from 'react-native-paper';
+import getUserData from '../hooks/userData';
 
-import React, { useEffect, useState } from 'react'
-import StyleText from './StyleText';
-import { COLORS, FLEX_CENTERED } from '../style';
-import { calculateAge } from '../services/Utils';
-import { addNewRequest } from '../services/RequestQueries';
+import React, { useState } from 'react';
 import { addNewConversation } from '../services/ConversationQueries';
+import { calculateAge } from '../services/Utils';
+import { COLORS, FLEX_CENTERED } from '../style';
+import StyleText from './StyleText';
 const { width, height } = Dimensions.get('window');
 
 const ConnectModal = ({ visible, hideModal, currentProfile }) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import StyleText from '../components/StyleText'
-import { BUTTON_STYLE, COLORS, FLEX_CENTERED } from '../style'
+import { COLORS, FLEX_CENTERED } from '../style'
 
 const CustomButton = ({ onPress, label, style, icon, textColor }) => {
     return (

@@ -1,20 +1,17 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/core'
-import * as ImagePicker from 'expo-image-picker'
 import { collection, doc, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Bubble, GiftedChat, Time } from 'react-native-gifted-chat'
 import { Button, Menu, Modal, Portal } from 'react-native-paper'
 import CustomInputToolbar from '../components/CustomInputToolbar'
 import StyleText from '../components/StyleText'
-import { database, storage } from '../firebase'
+import { database } from '../firebase'
 import useAuth from '../hooks/useAuth'
 import getUserData from '../hooks/userData'
 import { acceptConversationRequest, addChatMessage, declineConversationRequest, deleteConversation, getMessages } from '../services/ConversationQueries'
 import { BUTTON_STYLE, COLORS, FLEX_CENTERED, SIZES, TEXT_STYLES } from '../style'
-const { width, height } = Dimensions.get('window');
 
 const ChatScreen = () => {
     const navigation = useNavigation()
@@ -116,7 +113,6 @@ const ChatScreen = () => {
                 console.log('Document does not exist');
             }
         })
-
         return unsubscribe;
     }, [])
 
@@ -132,7 +128,6 @@ const ChatScreen = () => {
     }
 
     return (
-
         <SafeAreaView style={styles.screen}>
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>

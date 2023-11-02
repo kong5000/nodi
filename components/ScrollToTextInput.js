@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React, { useRef } from 'react'
-import { COLORS, FONT_SIZE } from '../style'
+import { StyleSheet, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
+import { COLORS, FONT_SIZE } from '../style'
 
 const ScrollToTextInput = ({ scrollTo, value, setValue, label }) => {
     const componentRef = useRef()

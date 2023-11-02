@@ -1,13 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/core';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from "react-native-expo-image-cache";
 import { calculateAge } from '../services/Utils';
 import * as style from '../style';
 import NextDestinations from './NextDestinations';
 import UserDetail from './UserDetail';
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core'
-import { FontAwesome } from '@expo/vector-icons';
 
 import {
     Animated,
@@ -15,12 +14,11 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
+import getUserData from '../hooks/userData';
 import { COLORS, FONT_SIZE } from '../style';
-import InstagramPhotos from './InstagramPhotos';
 import InterestsProfile from './InterestsProfile';
 import Profile from './Profile';
 import StyleText from './StyleText';
-import getUserData from '../hooks/userData';
 const { width, height } = Dimensions.get('window');
 
 const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle, setImagesLoaded, setCurrentImage, refsArray, viewMode }) => {

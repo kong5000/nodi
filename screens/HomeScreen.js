@@ -15,8 +15,18 @@ import { getGeoHash } from '../services/GeoQueries'
 import StyleText from '../components/StyleText'
 
 const HomeScreen = () => {
+    const { userData } = getUserData()
+
     const [token, setToken] = useState('')
     const [showLocationPrompt, setShowLocationPrompt] = useState()
+    const [items, setItems] = useState([])
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [notification, setNotification] = useState(false);
+
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
     async function registerForPushNotificationsAsync() {
         let token;
         // if (Device.isDevice) {
@@ -53,19 +63,6 @@ const HomeScreen = () => {
 
         return token;
     }
-
-    const { user } = useAuth()
-    const { userData } = getUserData()
-    // const [trips, setTrips] = useState([])
-    const [items, setItems] = useState([])
-
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
-
-    const [expoPushToken, setExpoPushToken] = useState('');
-    const [notification, setNotification] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
 
     useEffect(() => {
         const enableDisableNotifications = async () => {
@@ -159,22 +156,18 @@ const HomeScreen = () => {
         queryData()
     }, [userData, location])
 
-
-
     return (
         <View style={styles.screen}>
-            {showLocationPrompt ?
+            {showLocationPrompt
+                ?
                 <StyleText
                     text="Location sharing is required to use Nodi"
                     fontSize={40}
                     style={{ marginTop: "25%" }}
                 />
                 :
-                <ParallaxCarousel
-                    items={items}
-                />
+                <ParallaxCarousel items={items} />
             }
-
         </View>
     )
 }

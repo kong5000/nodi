@@ -1,11 +1,14 @@
 import { radiusQuery } from './GeoQueries'
 
+// @Todo 
 const filterRequested = (requested) => {
-
+// Filter by already requested?
+// Filter by blocked (and blocked by?)
+// Filter the current users id
 }
 
 export const getCards = async (userData) => {
-    const { geohash, lastLocation } = userData
+    const { lastLocation } = userData
     const distanceMatches = await radiusQuery(lastLocation)
     // @todo also filter out blocked users
     const filteredMatches = distanceMatches.filter(match => match.id != userData.id)

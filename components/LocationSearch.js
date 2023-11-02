@@ -71,11 +71,7 @@ const LocationSearch = ({ style, showIcon, mode, placeholder, setLocation }) => 
                 }
                 listViewDisplayed={false}
                 onPress={(data, details = null) => {
-                    // setHideDates(false)
                     setLocation(data.description)
-                    // setSearchVisible(false)
-                    // ref.current.setAddressText(data.description)
-                    // updateDestination(data.description)
                 }}
                 query={{
                     key: PLACES_API_KEY,

@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { InputToolbar } from 'react-native-gifted-chat';
-import React from 'react'
 
 // @Todo style input text box here
 

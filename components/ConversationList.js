@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FlatList, View } from 'react-native'
 import getUserData from '../hooks/userData'
 import ChatRow from './ChatRow'

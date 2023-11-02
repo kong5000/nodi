@@ -2,11 +2,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { database, storage } from '../firebase';
 import getUserData from '../hooks/userData';
-import PictureButton from './PictureButton';
 import { COLORS, SIZES } from '../style';
+import PictureButton from './PictureButton';
 
 const ProfilePicture = ({setProfilePicture}) => {
     const { userData } = getUserData()

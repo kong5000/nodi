@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import ConversationList from '../components/ConversationList';
-import Footer from '../components/Footer';
 import StyleText from '../components/StyleText';
 import { COLORS, SIZES } from '../style';
 

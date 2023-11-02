@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { width } from '@fortawesome/free-solid-svg-icons/faHouse'
-import StyleText from './StyleText'
+import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../style'
+import StyleText from './StyleText'
 
 const InterestsProfile = ({ interests }) => {
     return (

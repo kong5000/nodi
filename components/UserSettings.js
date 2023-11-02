@@ -30,7 +30,6 @@ const UserSettings = ({ scrollTo }) => {
     const introRef = useRef()
     const navigation = useNavigation()
 
-
     useEffect(() => {
         const timer = setTimeout(() => {
             try {
@@ -53,7 +52,6 @@ const UserSettings = ({ scrollTo }) => {
                     futureLocations,
                     favoritePlaces
                 }))
-
             } catch (err) {
                 console.log(err)
             }
@@ -137,7 +135,6 @@ const UserSettings = ({ scrollTo }) => {
                     onChangeText={text => setIntro(text)}
                 />
             </View>
-
             <StyleText
                 text="Your Details"
                 fontSize={FONT_SIZE.title}
@@ -146,9 +143,7 @@ const UserSettings = ({ scrollTo }) => {
                     width: "85%",
                 }}
             />
-            <View style={{
-                marginTop: '5%'
-            }}>
+            <View style={{ marginTop: '5%' }}>
                 <ScrollToTextInput
                     value={firstName}
                     setValue={setFirstName}
@@ -184,10 +179,9 @@ const UserSettings = ({ scrollTo }) => {
                     marginBottom: "5%"
                 }}
             />
-            <View >
+            <View>
                 <Interests />
             </View>
-
             <View style={{ marginVertical: "10%", width: "85%" }}>
                 <StyleText
                     text="Going To"

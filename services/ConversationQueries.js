@@ -1,18 +1,16 @@
 import {
-    onSnapshot,
-    doc,
-    updateDoc,
-    setDoc,
-    deleteDoc,
-    query,
-    getDocs,
-    where,
-    limit,
-    orderBy,
-    collection,
     addDoc,
-    endBefore,
-    Timestamp
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+    limit,
+    onSnapshot,
+    orderBy,
+    query,
+    setDoc,
+    updateDoc,
+    where
 } from 'firebase/firestore'
 import { database } from '../firebase'
 
@@ -69,14 +67,10 @@ export const getConversations = async (uid) => {
 }
 // @todo pagination, start at doc id of last local message
 export const getMessages = async (convId, uid, startAfterTimeStamp) => {
-
-    const currentDate = new Date();
-    const yesterday = new Date(currentDate - 86400000);
     const messagesRef = collection(database, 'conversations', convId, 'messages');
 
     let q = query(messagesRef,
         limit(15),
-        // where('createdAt', '>',Timestamp.fromDate(yesterday)),
         orderBy('createdAt', 'desc'),
     )
 
@@ -87,8 +81,6 @@ export const getMessages = async (convId, uid, startAfterTimeStamp) => {
             orderBy('createdAt', 'desc'),
         )
     }
-
-
 
     const querySnapshot = await getDocs(q);
     let count = 1
@@ -112,7 +104,6 @@ export const getMessages = async (convId, uid, startAfterTimeStamp) => {
 }
 
 export const deleteConversation = async (documentId) => {
-
     // Create a reference to the document
     const documentRef = doc(database, "conversations", documentId);
 
@@ -133,7 +124,6 @@ export const addChatMessage = async (text, image, conversationId, authorId, user
         author: userData.name,
         authorId: userData.id,
         createdAt: new Date(),
-        negativeUnixTimeStamp: -Date.now(),
     })
     const messageId = docRef.id
     let lastMessage = text

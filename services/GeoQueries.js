@@ -1,7 +1,7 @@
-import { doc, updateDoc, addDoc, collection, query, orderBy, startAt, endAt, getDocs, where } from 'firebase/firestore';
+import { collection, endAt, getDocs, orderBy, query, startAt, where } from 'firebase/firestore';
 
-import { database } from '../firebase'
-import * as geofire from 'geofire-common'
+import * as geofire from 'geofire-common';
+import { database } from '../firebase';
 
 export const getGeoHash = (location) => {
     try {
@@ -56,6 +56,5 @@ export const radiusQuery = async (lastLocation) => {
             }
         }
     }
-    console.log(matchingDocs)
     return matchingDocs
 }

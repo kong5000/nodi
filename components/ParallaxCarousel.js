@@ -124,11 +124,9 @@ const styles = StyleSheet.create({
   },
   slider: {
     height: height * 0.45,
-    // borderBottomEndRadius: 55
   },
   footer: {
     flex: 1,
-    // height: height * 1.5,
     position: 'relative',
     top: -40
   },
@@ -149,7 +147,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     position: 'absolute',
     top: 0
-    // borderTopLeftRadius: 50
   },
 });
 
