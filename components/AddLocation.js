@@ -60,10 +60,8 @@ const AddLocation = ({ onAdd, scrollTo }) => {
                     onFocus={() => {
                         if (inputRef.current) {
                             inputRef.current.measure((x, y, width, height, pageX, pageY) => {
-                                console.log(pageY)
                                 if (scrollTo) {
                                     scrollTo({ x: 0, y: pageY })
-
                                 }
                             });
                         }

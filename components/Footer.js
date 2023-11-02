@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 const Footer = () => {
     const navigation = useNavigation()
     const { userData } = getUserData()
-    if (userData)
+    if (userData?.name)
         return (
             <View style={styles.footer}>
                 <TouchableOpacity onPress={() => {

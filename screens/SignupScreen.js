@@ -10,7 +10,6 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { HelperText, TextInput } from 'react-native-paper';
 import AddLocation from '../components/AddLocation';
 import CustomButton from '../components/CustomButton';
-import Footer from '../components/Footer';
 import Interests from '../components/Interests';
 import LocationSearch from '../components/LocationSearch';
 import ProfilePicture from '../components/ProfilePicture';
@@ -550,7 +549,7 @@ const SignupScreen = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        setFutureLocations(prev => prev.filter((location) => location.name != loc.name))
+                                        setFutureLocations(prev => prev.filter((location) => location != loc))
                                     }}
                                 >
                                     <Ionicons
@@ -620,7 +619,7 @@ const SignupScreen = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        setFavoriteLocations(prev => prev.filter((location) => location.name != loc.name))
+                                        setFavoriteLocations(prev => prev.filter((location) => location != loc))
                                     }}
                                 >
                                     <Ionicons
@@ -633,8 +632,8 @@ const SignupScreen = () => {
                     }
                 </View>
             }
-            {
-                step == 5 && <View style={{ width: "80%", display: 'flex' }}>
+            {step == 5 &&
+                <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText
                         text="Write your intro"
                         fontSize={34}
@@ -663,11 +662,10 @@ const SignupScreen = () => {
                             onChangeText={text => setIntro(text)}
                         />
                     </View>
-
                 </View>
             }
-            {
-                step == 6 && <View style={{ width: "80%", display: 'flex' }}>
+            {step == 6 &&
+                <View style={{ width: "80%", display: 'flex' }}>
                     <StyleText
                         text="Interests"
                         fontSize={34}
