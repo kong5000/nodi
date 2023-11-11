@@ -7,6 +7,7 @@ import { calculateAge } from '../services/Utils';
 import * as style from '../style';
 import NextDestinations from './NextDestinations';
 import UserDetail from './UserDetail';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import {
     Animated,
@@ -117,6 +118,20 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                 marginLeft: '10%',
                                 marginTop: '2%',
                             }}>
+                                <UserDetail
+                                    icon={
+                                        <FontAwesome5
+                                            name="map-marker-alt"
+                                            size={33}
+                                            color={COLORS.mainTheme}
+                                            style={{ marginRight: "4%" }}
+                                        />
+                                    }
+                                    text={item.distanceInKm + " km away"}
+                                    textStyle={{
+                                        color: COLORS.mainTheme,
+                                    }}
+                                />
                                 {item.home && <UserDetail
                                     icon={<Ionicons
                                         color={COLORS.neutralGrey}
@@ -157,7 +172,7 @@ const ProfileCard = ({ item, showConnectModal, instagramImages, instagramHandle,
                                     fontSize={22}
                                     style={{ marginBottom: "3%" }}
                                 />
-                                <Profile />
+                                <Profile text={item.intro} />
                             </View>
                             <View
                                 style={{

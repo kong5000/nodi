@@ -8,7 +8,7 @@ import { COLORS, FLEX_CENTERED } from '../style';
 
 const BOTTOM_MARGIN = "7%"
 const SettingsScreen = () => {
-    const [showSaved, setShowSaved] = useState(true)
+    const [showSaved, setShowSaved] = useState(false)
     const [settingMenu, setSettingMenu] = useState("profile")
 
     const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 });
@@ -45,23 +45,6 @@ const SettingsScreen = () => {
                             text="Settings"
                             fontSize={34}
                         />
-                        {showSaved &&
-                            <View style={{
-                                ...FLEX_CENTERED,
-                                borderRadius: 30,
-                                backgroundColor: COLORS.neutralBlueGrey,
-                                paddingVertical: 10,
-                                paddingHorizontal: 15
-                            }}>
-                                <StyleText
-                                    text="✓ Saved"
-                                    fontSize={15}
-                                    style={{
-                                        color: COLORS.mainTheme
-                                    }}
-                                />
-                            </View>
-                        }
                     </View>
 
                     <ToggleButton.Row
@@ -123,7 +106,7 @@ const SettingsScreen = () => {
                             value="account" >
                         </ToggleButton>
                     </ToggleButton.Row>
-                    {settingMenu == 'profile' && <UserSettings scrollTo={scrollTo} />}
+                    {settingMenu == 'profile' && <UserSettings setShowSaved={setShowSaved} scrollTo={scrollTo} />}
                     {settingMenu == 'account' && <AccountSettings />}
                 </View>
             </ScrollView>

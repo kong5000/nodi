@@ -29,7 +29,7 @@ const LoginScreen = () => {
         setPassword('password')
     }
     const testLogin = () => {
-        setEmail('a@a.com')
+        setEmail('keith_5000@hotmail.com')
         setPassword('password')
     }
     const testLogin2 = () => {
